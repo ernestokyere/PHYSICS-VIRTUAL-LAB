@@ -1,585 +1,1350 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physics Virtual Lab — Motion Lab</title>
 
-    <title>Physics Virtual Lab</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #172033;
+}
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #172033;
-        }
+button,
+input {
+    font: inherit;
+}
 
-        /* =========================
-           HEADER
-        ========================= */
+/* =========================
+   HEADER
+========================= */
 
-        .header {
-            background: #101828;
-            color: white;
-            padding: 18px 6%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
+.header {
+    background: #101828;
+    color: white;
+    padding: 16px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-        .logo-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: #2563eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 23px;
-        }
+.logo-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
 
-        .logo h1 {
-            font-size: 20px;
-        }
+.logo h1 {
+    font-size: 19px;
+}
 
-        .logo p {
-            font-size: 12px;
-            color: #98a2b3;
-            margin-top: 3px;
-        }
+.logo p {
+    color: #98a2b3;
+    font-size: 12px;
+    margin-top: 3px;
+}
 
-        .header-btn {
-            border: none;
-            background: #2563eb;
-            color: white;
-            padding: 11px 18px;
-            border-radius: 9px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+.back-btn {
+    background: transparent;
+    border: 1px solid #475467;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 9px;
+    cursor: pointer;
+}
 
-        /* =========================
-           HERO
-        ========================= */
+/* =========================
+   PAGE
+========================= */
 
-        .hero {
-            padding: 55px 6%;
-            background: linear-gradient(135deg, #0f172a, #1d4ed8);
-            color: white;
-        }
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 35px auto;
+}
 
-        .hero-content {
-            max-width: 850px;
-        }
+.page-title {
+    margin-bottom: 25px;
+}
 
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.12);
-            padding: 7px 12px;
-            border-radius: 30px;
-            font-size: 13px;
-            margin-bottom: 18px;
-        }
+.lab-badge {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1d4ed8;
+    padding: 7px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
 
-        .hero h2 {
-            font-size: clamp(32px, 6vw, 58px);
-            line-height: 1.05;
-            margin-bottom: 18px;
-        }
+.page-title h2 {
+    font-size: clamp(28px, 5vw, 42px);
+    margin-bottom: 8px;
+}
 
-        .hero h2 span {
-            color: #93c5fd;
-        }
+.page-title p {
+    color: #667085;
+    line-height: 1.6;
+}
 
-        .hero p {
-            max-width: 650px;
-            line-height: 1.7;
-            color: #dbeafe;
-            margin-bottom: 25px;
-        }
+/* =========================
+   LAB LAYOUT
+========================= */
 
-        .start-btn {
-            display: inline-block;
-            border: none;
-            background: white;
-            color: #1d4ed8;
-            padding: 14px 22px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.lab-layout {
+    display: grid;
+    grid-template-columns: 330px 1fr;
+    gap: 22px;
+}
 
-        /* =========================
-           MAIN
-        ========================= */
+/* =========================
+   CONTROL PANEL
+========================= */
 
-        .main {
-            width: 88%;
-            max-width: 1200px;
-            margin: 40px auto;
-        }
+.panel {
+    background: white;
+    border: 1px solid #e4e7ec;
+    border-radius: 16px;
+    padding: 22px;
+}
 
-        .section-heading {
-            margin-bottom: 22px;
-        }
+.panel h3 {
+    margin-bottom: 5px;
+}
 
-        .section-heading h2 {
-            font-size: 27px;
-            margin-bottom: 7px;
-        }
+.panel-description {
+    color: #667085;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
 
-        .section-heading p {
-            color: #667085;
-        }
+.control {
+    margin-bottom: 22px;
+}
 
-        /* =========================
-           LAB CARDS
-        ========================= */
+.control-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 9px;
+}
 
-        .lab-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
+.control-header label {
+    font-weight: bold;
+    font-size: 14px;
+}
 
-        .lab-card {
-            background: white;
-            border: 1px solid #e4e7ec;
-            border-radius: 16px;
-            padding: 24px;
-            cursor: pointer;
-            transition: 0.2s ease;
-        }
+.value {
+    color: #2563eb;
+    font-weight: bold;
+}
 
-        .lab-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(16,24,40,0.09);
-        }
+input[type="range"] {
+    width: 100%;
+    accent-color: #2563eb;
+}
 
-        .lab-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
-            background: #eff6ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 25px;
-            margin-bottom: 17px;
-        }
+.range-info {
+    display: flex;
+    justify-content: space-between;
+    color: #98a2b3;
+    font-size: 11px;
+    margin-top: 5px;
+}
 
-        .lab-card h3 {
-            margin-bottom: 8px;
-        }
+/* =========================
+   BUTTONS
+========================= */
 
-        .lab-card p {
-            color: #667085;
-            line-height: 1.5;
-            font-size: 14px;
-            margin-bottom: 18px;
-        }
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 10px;
+}
 
-        .open-lab {
-            color: #2563eb;
-            font-size: 14px;
-            font-weight: bold;
-        }
+.action-btn {
+    border: none;
+    border-radius: 9px;
+    padding: 12px;
+    cursor: pointer;
+    font-weight: bold;
+}
 
-        /* =========================
-           QUICK STATS
-        ========================= */
+.start {
+    background: #2563eb;
+    color: white;
+}
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-top: 40px;
-        }
+.pause {
+    background: #eef2ff;
+    color: #1d4ed8;
+}
 
-        .stat {
-            background: white;
-            border: 1px solid #e4e7ec;
-            padding: 20px;
-            border-radius: 14px;
-        }
+.reset {
+    background: #f2f4f7;
+    color: #344054;
+    grid-column: 1 / -1;
+}
 
-        .stat strong {
-            display: block;
-            font-size: 25px;
-            margin-bottom: 5px;
-        }
+/* =========================
+   SIMULATION
+========================= */
 
-        .stat span {
-            color: #667085;
-            font-size: 13px;
-        }
+.simulation-card {
+    background: white;
+    border: 1px solid #e4e7ec;
+    border-radius: 16px;
+    padding: 20px;
+}
 
-        /* =========================
-           NOTIFICATION
-        ========================= */
+.simulation-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 15px;
+}
 
-        .notification {
-            position: fixed;
-            bottom: 22px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #101828;
-            color: white;
-            padding: 13px 18px;
-            border-radius: 10px;
-            display: none;
-            z-index: 1000;
-            max-width: 90%;
-            text-align: center;
-        }
+.simulation-header h3 {
+    font-size: 18px;
+}
 
-        /* =========================
-           RESPONSIVE
-        ========================= */
+.status {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #ecfdf3;
+    color: #027a48;
+    white-space: nowrap;
+}
 
-        @media (max-width: 850px) {
-            .lab-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+/* =========================
+   TRACK
+========================= */
 
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+.track {
+    position: relative;
+    height: 210px;
+    background: #eef2f6;
+    border: 1px solid #d0d5dd;
+    border-radius: 13px;
+    overflow: hidden;
+}
 
-        @media (max-width: 600px) {
-            .header {
-                padding: 14px 5%;
-            }
+.track-line {
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    bottom: 55px;
+    height: 4px;
+    background: #667085;
+}
 
-            .header-btn {
-                display: none;
-            }
+.track-start,
+.track-end {
+    position: absolute;
+    bottom: 35px;
+    font-size: 11px;
+    color: #667085;
+}
 
-            .hero {
-                padding: 45px 5%;
-            }
+.track-start {
+    left: 5%;
+}
 
-            .main {
-                width: 90%;
-            }
+.track-end {
+    right: 5%;
+}
 
-            .lab-grid {
-                grid-template-columns: 1fr;
-            }
+.object {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    left: 5%;
+    bottom: 57px;
+    background: #2563eb;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    box-shadow: 0 5px 12px rgba(0,0,0,.15);
+}
 
-            .stats {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-    </style>
+/* =========================
+   MEASUREMENTS
+========================= */
+
+.measurements {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.measurement {
+    background: #f8fafc;
+    border: 1px solid #eaecf0;
+    border-radius: 11px;
+    padding: 14px;
+}
+
+.measurement span {
+    display: block;
+    color: #667085;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.measurement strong {
+    font-size: 20px;
+}
+
+/* =========================
+   GRAPH
+========================= */
+
+.graph-card {
+    margin-top: 22px;
+}
+
+.graph-card h3 {
+    margin-bottom: 12px;
+}
+
+.graph {
+    width: 100%;
+    height: 250px;
+    border: 1px solid #eaecf0;
+    border-radius: 11px;
+    background:
+        linear-gradient(#edf2f7 1px, transparent 1px),
+        linear-gradient(90deg, #edf2f7 1px, transparent 1px);
+    background-size: 40px 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+#motionGraph {
+    width: 100%;
+    height: 100%;
+}
+
+/* =========================
+   THEORY
+========================= */
+
+.theory {
+    margin-top: 22px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 13px;
+    padding: 18px;
+}
+
+.theory h3 {
+    margin-bottom: 9px;
+}
+
+.theory p {
+    color: #475467;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.formula {
+    margin-top: 12px;
+    background: white;
+    padding: 13px;
+    border-radius: 9px;
+    font-weight: bold;
+    color: #1d4ed8;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+    .lab-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .measurements {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 92%;
+        margin-top: 25px;
+    }
+
+    .header {
+        padding: 14px 4%;
+    }
+
+    .back-btn {
+        padding: 9px 11px;
+        font-size: 12px;
+    }
+
+    .track {
+        height: 180px;
+    }
+
+    .measurements {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <header class="header">
+<header class="header">
 
-        <div class="logo">
+    <div class="logo">
 
-            <div class="logo-icon">
-                ⚛️
-            </div>
-
-            <div>
-                <h1>Physics Virtual Lab</h1>
-                <p>Explore. Experiment. Understand.</p>
-            </div>
-
+        <div class="logo-icon">
+            ⚛️
         </div>
 
-        <button class="header-btn" id="myProgressBtn">
-            My Progress
-        </button>
-
-    </header>
-
-
-    <!-- HERO -->
-    <section class="hero">
-
-        <div class="hero-content">
-
-            <span class="hero-badge">
-                🧪 INTERACTIVE PHYSICS LAB
-            </span>
-
-            <h2>
-                Learn Physics by
-                <span>Experimenting.</span>
-            </h2>
-
-            <p>
-                Perform virtual experiments, change variables, observe
-                what happens, collect results and understand the physics
-                behind every experiment.
-            </p>
-
-            <button class="start-btn" id="startBtn">
-                Start Experimenting →
-            </button>
-
+        <div>
+            <h1>Physics Virtual Lab</h1>
+            <p>Explore. Experiment. Understand.</p>
         </div>
+
+    </div>
+
+    <button class="back-btn" id="backBtn">
+        ← Laboratory
+    </button>
+
+</header>
+
+
+<main class="container">
+
+    <section class="page-title">
+
+        <span class="lab-badge">
+            ⚙️ MECHANICS LABORATORY
+        </span>
+
+        <h2>Motion Lab</h2>
+
+        <p>
+            Investigate how velocity and acceleration affect the motion
+            of an object. Change the variables and observe the results.
+        </p>
 
     </section>
 
 
-    <!-- MAIN -->
-    <main class="main">
+    <section class="lab-layout">
 
-        <div class="section-heading">
-            <h2>Choose a Laboratory</h2>
-            <p>
-                Select a physics topic and begin your virtual experiment.
+        <!-- CONTROL PANEL -->
+
+        <aside class="panel">
+
+            <h3>Experiment Controls</h3>
+
+            <p class="panel-description">
+                Adjust the variables below, then start the simulation.
             </p>
-        </div>
 
 
-        <!-- LABORATORIES -->
-        <section class="lab-grid">
+            <div class="control">
 
-            <article class="lab-card" data-lab="mechanics">
+                <div class="control-header">
 
-                <div class="lab-icon">
-                    ⚙️
+                    <label for="velocity">
+                        Initial Velocity
+                    </label>
+
+                    <span class="value">
+                        <span id="velocityValue">5</span> m/s
+                    </span>
+
                 </div>
 
-                <h3>Mechanics</h3>
+                <input
+                    id="velocity"
+                    type="range"
+                    min="0"
+                    max="20"
+                    step="0.5"
+                    value="5"
+                >
 
-                <p>
-                    Explore motion, forces, Newton's laws,
-                    energy, momentum and projectile motion.
-                </p>
-
-                <span class="open-lab">
-                    Open Laboratory →
-                </span>
-
-            </article>
-
-
-            <article class="lab-card" data-lab="electricity">
-
-                <div class="lab-icon">
-                    ⚡
+                <div class="range-info">
+                    <span>0 m/s</span>
+                    <span>20 m/s</span>
                 </div>
 
-                <h3>Electricity & Circuits</h3>
-
-                <p>
-                    Build circuits and investigate voltage,
-                    current, resistance and Ohm's law.
-                </p>
-
-                <span class="open-lab">
-                    Open Laboratory →
-                </span>
-
-            </article>
+            </div>
 
 
-            <article class="lab-card" data-lab="waves">
+            <div class="control">
 
-                <div class="lab-icon">
-                    🌊
+                <div class="control-header">
+
+                    <label for="acceleration">
+                        Acceleration
+                    </label>
+
+                    <span class="value">
+                        <span id="accelerationValue">0</span> m/s²
+                    </span>
+
                 </div>
 
-                <h3>Waves & Sound</h3>
+                <input
+                    id="acceleration"
+                    type="range"
+                    min="-5"
+                    max="5"
+                    step="0.5"
+                    value="0"
+                >
 
-                <p>
-                    Investigate wavelength, frequency,
-                    amplitude, sound and wave motion.
-                </p>
-
-                <span class="open-lab">
-                    Open Laboratory →
-                </span>
-
-            </article>
-
-
-            <article class="lab-card" data-lab="optics">
-
-                <div class="lab-icon">
-                    🔭
+                <div class="range-info">
+                    <span>-5 m/s²</span>
+                    <span>+5 m/s²</span>
                 </div>
 
-                <h3>Optics</h3>
-
-                <p>
-                    Experiment with mirrors, lenses,
-                    reflection and refraction.
-                </p>
-
-                <span class="open-lab">
-                    Open Laboratory →
-                </span>
-
-            </article>
+            </div>
 
 
-            <article class="lab-card" data-lab="magnetism">
+            <div class="control">
 
-                <div class="lab-icon">
-                    🧲
+                <div class="control-header">
+
+                    <label for="duration">
+                        Simulation Time
+                    </label>
+
+                    <span class="value">
+                        <span id="durationValue">10</span> s
+                    </span>
+
                 </div>
 
-                <h3>Magnetism</h3>
+                <input
+                    id="duration"
+                    type="range"
+                    min="5"
+                    max="20"
+                    step="1"
+                    value="10"
+                >
 
-                <p>
-                    Explore magnetic fields, electromagnets
-                    and electromagnetic forces.
-                </p>
-
-                <span class="open-lab">
-                    Open Laboratory →
-                </span>
-
-            </article>
-
-
-            <article class="lab-card" data-lab="thermal">
-
-                <div class="lab-icon">
-                    🌡️
+                <div class="range-info">
+                    <span>5 s</span>
+                    <span>20 s</span>
                 </div>
 
-                <h3>Heat & Thermodynamics</h3>
+            </div>
+
+
+            <div class="actions">
+
+                <button
+                    class="action-btn start"
+                    id="startBtn"
+                    type="button"
+                >
+                    ▶ Start
+                </button>
+
+                <button
+                    class="action-btn pause"
+                    id="pauseBtn"
+                    type="button"
+                >
+                    ⏸ Pause
+                </button>
+
+                <button
+                    class="action-btn reset"
+                    id="resetBtn"
+                    type="button"
+                >
+                    ↻ Reset
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- SIMULATION -->
+
+        <section>
+
+            <div class="simulation-card">
+
+                <div class="simulation-header">
+
+                    <h3>🏎️ Virtual Experiment</h3>
+
+                    <span
+                        class="status"
+                        id="status"
+                    >
+                        Ready
+                    </span>
+
+                </div>
+
+
+                <div class="track">
+
+                    <div class="track-line"></div>
+
+                    <span class="track-start">
+                        0 m
+                    </span>
+
+                    <span class="track-end">
+                        100 m
+                    </span>
+
+                    <div
+                        class="object"
+                        id="object"
+                    >
+                        🏎️
+                    </div>
+
+                </div>
+
+
+                <div class="measurements">
+
+                    <div class="measurement">
+
+                        <span>Time</span>
+
+                        <strong>
+                            <span id="time">0.00</span> s
+                        </strong>
+
+                    </div>
+
+
+                    <div class="measurement">
+
+                        <span>Position</span>
+
+                        <strong>
+                            <span id="position">0.00</span> m
+                        </strong>
+
+                    </div>
+
+
+                    <div class="measurement">
+
+                        <span>Velocity</span>
+
+                        <strong>
+                            <span id="currentVelocity">5.00</span>
+                            m/s
+                        </strong>
+
+                    </div>
+
+
+                    <div class="measurement">
+
+                        <span>Acceleration</span>
+
+                        <strong>
+                            <span id="currentAcceleration">0.00</span>
+                            m/s²
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- GRAPH -->
+
+                <div class="graph-card">
+
+                    <h3>📊 Position vs Time</h3>
+
+                    <div class="graph">
+
+                        <canvas id="motionGraph"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- THEORY -->
+
+            <div class="theory">
+
+                <h3>📘 Physics Behind the Experiment</h3>
 
                 <p>
-                    Explore temperature, heat transfer,
-                    expansion and gas behaviour.
+                    For an object moving with constant acceleration,
+                    its position can be calculated using the equation:
                 </p>
 
-                <span class="open-lab">
-                    Open Laboratory →
-                </span>
+                <div class="formula">
+                    s = ut + ½at²
+                </div>
 
-            </article>
+                <p style="margin-top:10px;">
+                    Where <strong>s</strong> is displacement,
+                    <strong>u</strong> is initial velocity,
+                    <strong>a</strong> is acceleration and
+                    <strong>t</strong> is time.
+                </p>
+
+            </div>
 
         </section>
 
+    </section>
 
-        <!-- STATS -->
-        <section class="stats">
-
-            <div class="stat">
-                <strong>6</strong>
-                <span>Physics Laboratories</span>
-            </div>
-
-            <div class="stat">
-                <strong>0</strong>
-                <span>Experiments Completed</span>
-            </div>
-
-            <div class="stat">
-                <strong>0 XP</strong>
-                <span>Physics Experience</span>
-            </div>
-
-            <div class="stat">
-                <strong>Beginner</strong>
-                <span>Current Level</span>
-            </div>
-
-        </section>
-
-    </main>
+</main>
 
 
-    <!-- NOTIFICATION -->
-    <div class="notification" id="notification"></div>
+<script>
+
+const velocityInput =
+    document.getElementById("velocity");
+
+const accelerationInput =
+    document.getElementById("acceleration");
+
+const durationInput =
+    document.getElementById("duration");
 
 
-    <script>
+const velocityValue =
+    document.getElementById("velocityValue");
 
-        const notification =
-            document.getElementById("notification");
+const accelerationValue =
+    document.getElementById("accelerationValue");
+
+const durationValue =
+    document.getElementById("durationValue");
 
 
-        function showNotification(message) {
+const timeDisplay =
+    document.getElementById("time");
 
-            notification.textContent = message;
+const positionDisplay =
+    document.getElementById("position");
 
-            notification.style.display = "block";
+const currentVelocityDisplay =
+    document.getElementById("currentVelocity");
 
-            setTimeout(() => {
-                notification.style.display = "none";
-            }, 2500);
+const currentAccelerationDisplay =
+    document.getElementById("currentAcceleration");
+
+
+const object =
+    document.getElementById("object");
+
+const status =
+    document.getElementById("status");
+
+
+const canvas =
+    document.getElementById("motionGraph");
+
+const ctx =
+    canvas.getContext("2d");
+
+
+const startBtn =
+    document.getElementById("startBtn");
+
+const pauseBtn =
+    document.getElementById("pauseBtn");
+
+const resetBtn =
+    document.getElementById("resetBtn");
+
+const backBtn =
+    document.getElementById("backBtn");
+
+
+let animationFrame = null;
+
+let running = false;
+
+let elapsed = 0;
+
+let lastTimestamp = null;
+
+let graphData = [];
+
+
+/* =========================
+   INPUT DISPLAY
+========================= */
+
+function updateControls() {
+
+    velocityValue.textContent =
+        Number(velocityInput.value).toFixed(1);
+
+    accelerationValue.textContent =
+        Number(accelerationInput.value).toFixed(1);
+
+    durationValue.textContent =
+        durationInput.value;
+
+    if (!running) {
+        currentVelocityDisplay.textContent =
+            Number(velocityInput.value).toFixed(2);
+
+        currentAccelerationDisplay.textContent =
+            Number(accelerationInput.value).toFixed(2);
+    }
+}
+
+
+velocityInput.addEventListener(
+    "input",
+    updateControls
+);
+
+accelerationInput.addEventListener(
+    "input",
+    updateControls
+);
+
+durationInput.addEventListener(
+    "input",
+    updateControls
+);
+
+
+/* =========================
+   CANVAS
+========================= */
+
+function resizeCanvas() {
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    const ratio =
+        window.devicePixelRatio || 1;
+
+    canvas.width =
+        rect.width * ratio;
+
+    canvas.height =
+        rect.height * ratio;
+
+    ctx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+    );
+
+    drawGraph();
+}
+
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+/* =========================
+   GRAPH
+========================= */
+
+function drawGraph() {
+
+    const width =
+        canvas.clientWidth;
+
+    const height =
+        canvas.clientHeight;
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    const padding = 38;
+
+    const graphWidth =
+        width - padding * 2;
+
+    const graphHeight =
+        height - padding * 2;
+
+
+    /* Axes */
+
+    ctx.strokeStyle = "#667085";
+
+    ctx.lineWidth = 1;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        padding,
+        padding
+    );
+
+    ctx.lineTo(
+        padding,
+        height - padding
+    );
+
+    ctx.lineTo(
+        width - padding,
+        height - padding
+    );
+
+    ctx.stroke();
+
+
+    /* Labels */
+
+    ctx.fillStyle = "#667085";
+
+    ctx.font = "11px Arial";
+
+    ctx.fillText(
+        "Position (m)",
+        8,
+        17
+    );
+
+    ctx.fillText(
+        "Time (s)",
+        width - 55,
+        height - 10
+    );
+
+
+    if (graphData.length < 2) {
+        return;
+    }
+
+
+    const maxTime =
+        Math.max(
+            Number(durationInput.value),
+            1
+        );
+
+    const maxPosition =
+        Math.max(
+            ...graphData.map(
+                point => point.position
+            ),
+            10
+        );
+
+
+    ctx.strokeStyle = "#2563eb";
+
+    ctx.lineWidth = 3;
+
+    ctx.beginPath();
+
+
+    graphData.forEach(
+        (point, index) => {
+
+            const x =
+                padding +
+                (point.time / maxTime) *
+                graphWidth;
+
+            const y =
+                height -
+                padding -
+                (Math.max(
+                    point.position,
+                    0
+                ) / maxPosition) *
+                graphHeight;
+
+
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+
+        }
+    );
+
+
+    ctx.stroke();
+}
+
+
+/* =========================
+   PHYSICS
+========================= */
+
+function calculateMotion(t) {
+
+    const u =
+        Number(velocityInput.value);
+
+    const a =
+        Number(accelerationInput.value);
+
+
+    const position =
+        u * t +
+        0.5 * a * t * t;
+
+
+    const velocity =
+        u + a * t;
+
+
+    return {
+        position,
+        velocity,
+        acceleration: a
+    };
+}
+
+
+/* =========================
+   UPDATE SIMULATION
+========================= */
+
+function updateSimulation() {
+
+    const result =
+        calculateMotion(elapsed);
+
+
+    timeDisplay.textContent =
+        elapsed.toFixed(2);
+
+
+    positionDisplay.textContent =
+        result.position.toFixed(2);
+
+
+    currentVelocityDisplay.textContent =
+        result.velocity.toFixed(2);
+
+
+    currentAccelerationDisplay.textContent =
+        result.acceleration.toFixed(2);
+
+
+    /*
+       Keep the object visually
+       inside the track.
+    */
+
+    const visualPosition =
+        Math.max(
+            0,
+            Math.min(
+                result.position,
+                100
+            )
+        );
+
+
+    const percentage =
+        5 +
+        (visualPosition / 100) * 90;
+
+
+    object.style.left =
+        `calc(${percentage}% - 21px)`;
+
+
+    graphData.push({
+        time: elapsed,
+        position: result.position
+    });
+
+
+    if (graphData.length > 300) {
+        graphData.shift();
+    }
+
+
+    drawGraph();
+}
+
+
+/* =========================
+   ANIMATION
+========================= */
+
+function animate(timestamp) {
+
+    if (!running) {
+        return;
+    }
+
+
+    if (lastTimestamp === null) {
+        lastTimestamp = timestamp;
+    }
+
+
+    const delta =
+        (timestamp - lastTimestamp) / 1000;
+
+
+    lastTimestamp = timestamp;
+
+
+    elapsed += delta;
+
+
+    const duration =
+        Number(durationInput.value);
+
+
+    if (elapsed >= duration) {
+
+        elapsed = duration;
+
+        updateSimulation();
+
+        running = false;
+
+        status.textContent =
+            "Completed";
+
+        status.style.background =
+            "#ecfdf3";
+
+        status.style.color =
+            "#027a48";
+
+        return;
+    }
+
+
+    updateSimulation();
+
+
+    animationFrame =
+        requestAnimationFrame(animate);
+}
+
+
+/* =========================
+   START
+========================= */
+
+startBtn.addEventListener(
+    "click",
+    () => {
+
+        if (running) {
+            return;
         }
 
 
-        document
-            .getElementById("startBtn")
-            .addEventListener("click", () => {
+        if (
+            elapsed >=
+            Number(durationInput.value)
+        ) {
 
-                document
-                    .querySelector(".lab-grid")
-                    .scrollIntoView({
-                        behavior: "smooth"
-                    });
+            resetSimulation();
 
-            });
+        }
 
 
-        document
-            .getElementById("myProgressBtn")
-            .addEventListener("click", () => {
+        running = true;
 
-                showNotification(
-                    "Your progress dashboard will be available soon."
-                );
+        lastTimestamp = null;
 
-            });
+        status.textContent =
+            "Running";
+
+        status.style.background =
+            "#eff6ff";
+
+        status.style.color =
+            "#1d4ed8";
 
 
-        document
-            .querySelectorAll(".lab-card")
-            .forEach(card => {
+        animationFrame =
+            requestAnimationFrame(
+                animate
+            );
 
-                card.addEventListener("click", () => {
+    }
+);
 
-                    const lab =
-                        card.dataset.lab;
 
-                    if (lab === "mechanics") {
+/* =========================
+   PAUSE
+========================= */
 
-                        showNotification(
-                            "Mechanics Laboratory selected."
-                        );
+pauseBtn.addEventListener(
+    "click",
+    () => {
 
-                    } else {
+        running = false;
 
-                        showNotification(
-                            card.querySelector("h3").textContent +
-                            " will be available in the next stage."
-                        );
+        lastTimestamp = null;
 
-                    }
+        cancelAnimationFrame(
+            animationFrame
+        );
 
-                });
+        status.textContent =
+            "Paused";
 
-            });
+        status.style.background =
+            "#fff7ed";
 
-    </script>
+        status.style.color =
+            "#c2410c";
+
+    }
+);
+
+
+/* =========================
+   RESET
+========================= */
+
+function resetSimulation() {
+
+    running = false;
+
+    cancelAnimationFrame(
+        animationFrame
+    );
+
+    elapsed = 0;
+
+    lastTimestamp = null;
+
+    graphData = [];
+
+
+    object.style.left =
+        "5%";
+
+
+    timeDisplay.textContent =
+        "0.00";
+
+
+    positionDisplay.textContent =
+        "0.00";
+
+
+    currentVelocityDisplay.textContent =
+        Number(
+            velocityInput.value
+        ).toFixed(2);
+
+
+    currentAccelerationDisplay.textContent =
+        Number(
+            accelerationInput.value
+        ).toFixed(2);
+
+
+    status.textContent =
+        "Ready";
+
+    status.style.background =
+        "#ecfdf3";
+
+    status.style.color =
+        "#027a48";
+
+
+    drawGraph();
+}
+
+
+resetBtn.addEventListener(
+    "click",
+    resetSimulation
+);
+
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+backBtn.addEventListener(
+    "click",
+    () => {
+
+        window.history.back();
+
+    }
+);
+
+
+/* =========================
+   INITIALIZE
+========================= */
+
+updateControls();
+
+resizeCanvas();
+
+resetSimulation();
+
+</script>
 
 </body>
 </html>
