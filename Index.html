@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Physics Virtual Lab</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            background: #101828;
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .logo h1 {
+            font-size: 20px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #98a2b3;
+            margin-top: 3px;
+        }
+
+        .header-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            padding: 55px 6%;
+            background: linear-gradient(135deg, #0f172a, #1d4ed8);
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 850px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.12);
+            padding: 7px 12px;
+            border-radius: 30px;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .hero h2 {
+            font-size: clamp(32px, 6vw, 58px);
+            line-height: 1.05;
+            margin-bottom: 18px;
+        }
+
+        .hero h2 span {
+            color: #93c5fd;
+        }
+
+        .hero p {
+            max-width: 650px;
+            line-height: 1.7;
+            color: #dbeafe;
+            margin-bottom: 25px;
+        }
+
+        .start-btn {
+            display: inline-block;
+            border: none;
+            background: white;
+            color: #1d4ed8;
+            padding: 14px 22px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            width: 88%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .section-heading {
+            margin-bottom: 22px;
+        }
+
+        .section-heading h2 {
+            font-size: 27px;
+            margin-bottom: 7px;
+        }
+
+        .section-heading p {
+            color: #667085;
+        }
+
+        /* =========================
+           LAB CARDS
+        ========================= */
+
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .lab-card {
+            background: white;
+            border: 1px solid #e4e7ec;
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .lab-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(16,24,40,0.09);
+        }
+
+        .lab-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            margin-bottom: 17px;
+        }
+
+        .lab-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .lab-card p {
+            color: #667085;
+            line-height: 1.5;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .open-lab {
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           QUICK STATS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .stat {
+            background: white;
+            border: 1px solid #e4e7ec;
+            padding: 20px;
+            border-radius: 14px;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        .stat span {
+            color: #667085;
+            font-size: 13px;
+        }
+
+        /* =========================
+           NOTIFICATION
+        ========================= */
+
+        .notification {
+            position: fixed;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #101828;
+            color: white;
+            padding: 13px 18px;
+            border-radius: 10px;
+            display: none;
+            z-index: 1000;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+            .lab-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 14px 5%;
+            }
+
+            .header-btn {
+                display: none;
+            }
+
+            .hero {
+                padding: 45px 5%;
+            }
+
+            .main {
+                width: 90%;
+            }
+
+            .lab-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                ⚛️
+            </div>
+
+            <div>
+                <h1>Physics Virtual Lab</h1>
+                <p>Explore. Experiment. Understand.</p>
+            </div>
+
+        </div>
+
+        <button class="header-btn" id="myProgressBtn">
+            My Progress
+        </button>
+
+    </header>
+
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <span class="hero-badge">
+                🧪 INTERACTIVE PHYSICS LAB
+            </span>
+
+            <h2>
+                Learn Physics by
+                <span>Experimenting.</span>
+            </h2>
+
+            <p>
+                Perform virtual experiments, change variables, observe
+                what happens, collect results and understand the physics
+                behind every experiment.
+            </p>
+
+            <button class="start-btn" id="startBtn">
+                Start Experimenting →
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <div class="section-heading">
+            <h2>Choose a Laboratory</h2>
+            <p>
+                Select a physics topic and begin your virtual experiment.
+            </p>
+        </div>
+
+
+        <!-- LABORATORIES -->
+        <section class="lab-grid">
+
+            <article class="lab-card" data-lab="mechanics">
+
+                <div class="lab-icon">
+                    ⚙️
+                </div>
+
+                <h3>Mechanics</h3>
+
+                <p>
+                    Explore motion, forces, Newton's laws,
+                    energy, momentum and projectile motion.
+                </p>
+
+                <span class="open-lab">
+                    Open Laboratory →
+                </span>
+
+            </article>
+
+
+            <article class="lab-card" data-lab="electricity">
+
+                <div class="lab-icon">
+                    ⚡
+                </div>
+
+                <h3>Electricity & Circuits</h3>
+
+                <p>
+                    Build circuits and investigate voltage,
+                    current, resistance and Ohm's law.
+                </p>
+
+                <span class="open-lab">
+                    Open Laboratory →
+                </span>
+
+            </article>
+
+
+            <article class="lab-card" data-lab="waves">
+
+                <div class="lab-icon">
+                    🌊
+                </div>
+
+                <h3>Waves & Sound</h3>
+
+                <p>
+                    Investigate wavelength, frequency,
+                    amplitude, sound and wave motion.
+                </p>
+
+                <span class="open-lab">
+                    Open Laboratory →
+                </span>
+
+            </article>
+
+
+            <article class="lab-card" data-lab="optics">
+
+                <div class="lab-icon">
+                    🔭
+                </div>
+
+                <h3>Optics</h3>
+
+                <p>
+                    Experiment with mirrors, lenses,
+                    reflection and refraction.
+                </p>
+
+                <span class="open-lab">
+                    Open Laboratory →
+                </span>
+
+            </article>
+
+
+            <article class="lab-card" data-lab="magnetism">
+
+                <div class="lab-icon">
+                    🧲
+                </div>
+
+                <h3>Magnetism</h3>
+
+                <p>
+                    Explore magnetic fields, electromagnets
+                    and electromagnetic forces.
+                </p>
+
+                <span class="open-lab">
+                    Open Laboratory →
+                </span>
+
+            </article>
+
+
+            <article class="lab-card" data-lab="thermal">
+
+                <div class="lab-icon">
+                    🌡️
+                </div>
+
+                <h3>Heat & Thermodynamics</h3>
+
+                <p>
+                    Explore temperature, heat transfer,
+                    expansion and gas behaviour.
+                </p>
+
+                <span class="open-lab">
+                    Open Laboratory →
+                </span>
+
+            </article>
+
+        </section>
+
+
+        <!-- STATS -->
+        <section class="stats">
+
+            <div class="stat">
+                <strong>6</strong>
+                <span>Physics Laboratories</span>
+            </div>
+
+            <div class="stat">
+                <strong>0</strong>
+                <span>Experiments Completed</span>
+            </div>
+
+            <div class="stat">
+                <strong>0 XP</strong>
+                <span>Physics Experience</span>
+            </div>
+
+            <div class="stat">
+                <strong>Beginner</strong>
+                <span>Current Level</span>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification"></div>
+
+
+    <script>
+
+        const notification =
+            document.getElementById("notification");
+
+
+        function showNotification(message) {
+
+            notification.textContent = message;
+
+            notification.style.display = "block";
+
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 2500);
+        }
+
+
+        document
+            .getElementById("startBtn")
+            .addEventListener("click", () => {
+
+                document
+                    .querySelector(".lab-grid")
+                    .scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+            });
+
+
+        document
+            .getElementById("myProgressBtn")
+            .addEventListener("click", () => {
+
+                showNotification(
+                    "Your progress dashboard will be available soon."
+                );
+
+            });
+
+
+        document
+            .querySelectorAll(".lab-card")
+            .forEach(card => {
+
+                card.addEventListener("click", () => {
+
+                    const lab =
+                        card.dataset.lab;
+
+                    if (lab === "mechanics") {
+
+                        showNotification(
+                            "Mechanics Laboratory selected."
+                        );
+
+                    } else {
+
+                        showNotification(
+                            card.querySelector("h3").textContent +
+                            " will be available in the next stage."
+                        );
+
+                    }
+
+                });
+
+            });
+
+    </script>
+
+</body>
+</html>
