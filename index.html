@@ -2018,4 +2018,291 @@ function drawOptics() {
         const rad = incident*Math.PI/180;
 
         const x0 = w*.5;
-        const length = Math.min(w*.35
+        const length = Math.min(w*.35,h*.35);
+
+        const xStart = x0-length*Math.sin(rad);
+        const yStart = boundary-length*Math.cos(rad);
+
+        ctx.strokeStyle = "#38bdf8";
+        ctx.lineWidth = 4;
+
+        ctx.beginPath();
+        ctx.moveTo(xStart,yStart);
+        ctx.lineTo(x0,boundary);
+        ctx.stroke();
+
+        const sinR = n1*Math.sin(rad)/n2;
+
+        if(Math.abs(sinR)<=1){
+
+            const refracted =
+                Math.asin(sinR);
+
+            const xEnd =
+                x0+length*Math.sin(refracted);
+
+            const yEnd =
+                boundary+length*Math.cos(refracted);
+
+            ctx.strokeStyle = "#fbbf24";
+
+            ctx.beginPath();
+            ctx.moveTo(x0,boundary);
+            ctx.lineTo(xEnd,yEnd);
+            ctx.stroke();
+
+        }
+
+        ctx.strokeStyle = "#8da5bb";
+        ctx.setLineDash([6,6]);
+
+        ctx.beginPath();
+        ctx.moveTo(x0,30);
+        ctx.lineTo(x0,h-30);
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = "#9fb6cc";
+        ctx.fillText("Normal",x0+10,55);
+
+    } else {
+
+        const isLens =
+            currentOptics === "convexLens" ||
+            currentOptics === "concaveLens";
+
+        const isConcaveMirror =
+            currentOptics === "concaveMirror";
+
+        const objectDistance = optVal("object");
+        const focal = optVal("focal");
+
+        const opticalX = w*.65;
+
+        /* optical element */
+
+        ctx.strokeStyle = "#cbd5e1";
+        ctx.lineWidth = 5;
+
+        if(isLens){
+
+            ctx.beginPath();
+
+            if(currentOptics === "convexLens"){
+
+                ctx.moveTo(opticalX-10,60);
+                ctx.quadraticCurveTo(
+                    opticalX+25,
+                    axis,
+                    opticalX-10,
+                    h-60
+                );
+
+                ctx.moveTo(opticalX+10,60);
+                ctx.quadraticCurveTo(
+                    opticalX-25,
+                    axis,
+                    opticalX+10,
+                    h-60
+                );
+
+            } else {
+
+                ctx.moveTo(opticalX-15,60);
+                ctx.quadraticCurveTo(
+                    opticalX+20,
+                    axis,
+                    opticalX-15,
+                    h-60
+                );
+
+                ctx.moveTo(opticalX+15,60);
+                ctx.quadraticCurveTo(
+                    opticalX-20,
+                    axis,
+                    opticalX+15,
+                    h-60
+                );
+            }
+
+            ctx.stroke();
+
+        } else {
+
+            ctx.beginPath();
+
+            ctx.arc(
+                opticalX+45,
+                axis,
+                160,
+                isConcaveMirror ? -Math.PI/2 : Math.PI/2,
+                isConcaveMirror ? Math.PI/2 : -Math.PI/2
+            );
+
+            ctx.stroke();
+        }
+
+        /* object */
+
+        const objectX =
+            opticalX -
+            Math.min(260,objectDistance*.7);
+
+        ctx.strokeStyle = "#38bdf8";
+        ctx.lineWidth = 5;
+
+        ctx.beginPath();
+        ctx.moveTo(objectX,axis);
+        ctx.lineTo(objectX,axis-80);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(objectX,axis-80);
+        ctx.lineTo(objectX-8,axis-65);
+        ctx.moveTo(objectX,axis-80);
+        ctx.lineTo(objectX+8,axis-65);
+        ctx.stroke();
+
+        ctx.fillStyle = "#9fb6cc";
+        ctx.font = "14px Arial";
+        ctx.fillText("Object",objectX-25,axis-95);
+
+        /* focal point */
+
+        const focalX =
+            opticalX -
+            Math.min(180,focal*.9);
+
+        ctx.fillStyle = "#fbbf24";
+        ctx.beginPath();
+        ctx.arc(focalX,axis,5,0,Math.PI*2);
+        ctx.fill();
+
+        ctx.fillText("F",focalX-5,axis+25);
+
+        /* rays */
+
+        ctx.strokeStyle = "#38bdf8";
+        ctx.lineWidth = 2;
+
+        /* parallel ray */
+
+        ctx.beginPath();
+        ctx.moveTo(objectX,axis-80);
+        ctx.lineTo(opticalX,axis-80);
+        ctx.stroke();
+
+        if(currentOptics === "convexLens"){
+
+            ctx.beginPath();
+            ctx.moveTo(opticalX,axis-80);
+            ctx.lineTo(w-20,axis);
+            ctx.stroke();
+
+        } else if(currentOptics === "concaveLens"){
+
+            ctx.beginPath();
+            ctx.moveTo(opticalX,axis-80);
+            ctx.lineTo(w-20,axis-130);
+            ctx.stroke();
+
+        } else if(currentOptics === "concaveMirror"){
+
+            ctx.beginPath();
+            ctx.moveTo(opticalX,axis-80);
+            ctx.lineTo(objectX,axis);
+            ctx.stroke();
+
+        } else {
+
+            ctx.beginPath();
+            ctx.moveTo(opticalX,axis-80);
+            ctx.lineTo(objectX+100,axis-30);
+            ctx.stroke();
+        }
+
+        ctx.fillStyle = "#9fb6cc";
+
+        ctx.fillText(
+            isLens ? "Lens" : "Mirror",
+            opticalX-25,
+            40
+        );
+    }
+
+    updateOpticsMeasurements();
+}
+
+
+/* ============================================================
+   ANIMATION LOOP
+============================================================ */
+
+let lastFrame = performance.now();
+
+function animate(now) {
+
+    const dt = (now-lastFrame)/1000;
+    lastFrame = now;
+
+    if(mechRunning){
+
+        mechTime += dt;
+
+        const maxTime =
+            currentMech === "motion"
+            ? mechVal("time")
+            : 100;
+
+        if(mechTime > maxTime){
+            mechTime = 0;
+        }
+
+        drawMechanics();
+    }
+
+    if(circuitRunning){
+
+        circuitOffset += dt*40;
+        drawCircuit();
+    }
+
+    if(waveRunning){
+
+        waveTime += dt;
+
+        if(waveTime > 1000)
+            waveTime = 0;
+
+        drawWave();
+    }
+
+    requestAnimationFrame(animate);
+}
+
+
+/* ============================================================
+   INITIALIZE
+============================================================ */
+
+renderMechanics();
+updateCircuit();
+updateWave();
+renderOptics();
+
+window.addEventListener("resize", () => {
+
+    drawMechanics();
+    drawCircuit();
+    drawWave();
+    drawOptics();
+
+});
+
+requestAnimationFrame(animate);
+
+</script>
+
+</body>
+</html>
