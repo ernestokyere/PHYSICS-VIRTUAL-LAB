@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Physics Virtual Lab - Stage 5</title>
+<title>Physics Virtual Lab — Stage 6</title>
 
 <style>
 * {
@@ -14,140 +14,77 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: #08111f;
-    color: #ffffff;
+    background: #07111f;
+    color: #f8fafc;
     min-height: 100vh;
 }
 
-button,
-input,
-select {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-}
-
-/* =========================
-   HEADER
-========================= */
-
 header {
-    background: #0d1b2f;
-    border-bottom: 1px solid #203552;
-    padding: 18px 6%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.logo {
-    font-size: 1.35rem;
-    font-weight: 800;
-}
-
-.logo span {
-    color: #39bdf8;
-}
-
-.header-right {
-    color: #9db0c7;
-    font-size: 0.9rem;
-}
-
-/* =========================
-   MAIN
-========================= */
-
-main {
-    width: min(1200px, 92%);
-    margin: auto;
-    padding: 35px 0 60px;
-}
-
-.hero {
+    background: linear-gradient(135deg, #0b1f38, #102d4d);
+    padding: 28px 20px;
     text-align: center;
-    margin-bottom: 30px;
+    border-bottom: 1px solid #24415f;
 }
 
-.badge {
-    display: inline-block;
-    padding: 8px 14px;
-    border-radius: 30px;
-    background: #112a44;
-    color: #4fc3f7;
-    font-size: 0.85rem;
-    margin-bottom: 14px;
+header h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
 }
 
-.hero h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    margin-bottom: 10px;
+header p {
+    color: #9fb6cc;
+    font-size: 15px;
 }
 
-.hero p {
-    color: #9fb1c7;
-    max-width: 700px;
-    margin: auto;
-    line-height: 1.6;
+.container {
+    width: min(1200px, 94%);
+    margin: 25px auto 50px;
 }
 
-/* =========================
-   LAB SELECTOR
-========================= */
+.section-title {
+    margin: 28px 0 15px;
+    font-size: 22px;
+}
 
 .lab-selector {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-    margin: 30px 0;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 25px;
 }
 
 .lab-card {
-    background: #0d1b2f;
-    border: 1px solid #203552;
-    border-radius: 18px;
-    padding: 22px;
-    transition: 0.25s;
+    background: #0d1d30;
+    border: 1px solid #203b57;
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    transition: .2s;
 }
 
 .lab-card:hover {
     transform: translateY(-3px);
-    border-color: #39bdf8;
+    border-color: #38bdf8;
 }
 
 .lab-card.active {
-    border-color: #39bdf8;
-    box-shadow: 0 0 0 1px #39bdf8;
+    border-color: #38bdf8;
+    background: #102943;
 }
 
-.lab-card h2 {
-    margin-bottom: 8px;
+.lab-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.lab-card h3 {
+    margin-bottom: 6px;
 }
 
 .lab-card p {
-    color: #93a7be;
-    line-height: 1.5;
-    margin-bottom: 16px;
+    color: #9fb6cc;
+    font-size: 13px;
 }
-
-.lab-button {
-    border: none;
-    border-radius: 10px;
-    padding: 11px 16px;
-    background: #39bdf8;
-    color: #04101c;
-    font-weight: 700;
-}
-
-/* =========================
-   LAB AREA
-========================= */
 
 .lab-section {
     display: none;
@@ -157,333 +94,208 @@ main {
     display: block;
 }
 
-.section-title {
-    margin-bottom: 20px;
-}
-
-.section-title h2 {
-    font-size: 2rem;
-    margin-bottom: 6px;
-}
-
-.section-title p {
-    color: #94a9c0;
-}
-
-/* =========================
-   EXPERIMENT SELECTOR
-========================= */
-
-.experiment-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 22px;
-}
-
-.experiment-button {
-    background: #0d1b2f;
-    color: white;
-    border: 1px solid #203552;
-    border-radius: 12px;
-    padding: 14px 10px;
-    min-height: 75px;
-    transition: 0.2s;
-}
-
-.experiment-button:hover {
-    border-color: #39bdf8;
-}
-
-.experiment-button.active {
-    background: #12334d;
-    border-color: #39bdf8;
-}
-
-/* =========================
-   CONTROL PANEL
-========================= */
-
-.lab-layout {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 20px;
-}
-
-.panel {
-    background: #0d1b2f;
-    border: 1px solid #203552;
-    border-radius: 18px;
-    padding: 20px;
-}
-
-.panel h3 {
+.experiment-tabs {
+    display: flex;
+    gap: 9px;
+    flex-wrap: wrap;
     margin-bottom: 18px;
 }
 
+.exp-tab {
+    border: 1px solid #294863;
+    background: #0c1b2d;
+    color: #d9e7f3;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.exp-tab.active {
+    background: #123b5d;
+    border-color: #38bdf8;
+}
+
+.panel {
+    background: #0c1b2d;
+    border: 1px solid #203b57;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 18px;
+}
+
+.panel h2 {
+    margin-bottom: 8px;
+}
+
+.description {
+    color: #9fb6cc;
+    margin-bottom: 18px;
+    line-height: 1.6;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
 .control {
-    margin-bottom: 20px;
+    background: #081625;
+    border: 1px solid #1e354d;
+    border-radius: 12px;
+    padding: 14px;
 }
 
 .control label {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 8px;
-    color: #c9d6e4;
-}
-
-.control-value {
-    color: #39bdf8;
-    font-weight: 700;
+    margin-bottom: 10px;
+    color: #cbd9e6;
+    font-size: 14px;
 }
 
 input[type="range"] {
     width: 100%;
-    accent-color: #39bdf8;
+    accent-color: #38bdf8;
 }
 
-.action-buttons {
+select {
+    width: 100%;
+    padding: 10px;
+    background: #07111f;
+    color: white;
+    border: 1px solid #294863;
+    border-radius: 8px;
+}
+
+.buttons {
     display: flex;
     gap: 10px;
+    margin-top: 17px;
     flex-wrap: wrap;
 }
 
-.btn {
+button {
     border: none;
-    border-radius: 10px;
-    padding: 11px 15px;
-    font-weight: 700;
+    padding: 11px 17px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
-.btn-primary {
-    background: #39bdf8;
-    color: #04101c;
+.primary {
+    background: #38bdf8;
+    color: #03111d;
 }
 
-.btn-secondary {
-    background: #203552;
+.secondary {
+    background: #1c334a;
     color: white;
 }
 
-.btn-danger {
-    background: #71313b;
+.danger {
+    background: #7f1d1d;
     color: white;
-}
-
-/* =========================
-   SIMULATION
-========================= */
-
-.simulation-panel {
-    min-width: 0;
-}
-
-.canvas-wrapper {
-    background: #07101d;
-    border: 1px solid #1e324b;
-    border-radius: 14px;
-    padding: 10px;
-    overflow: hidden;
 }
 
 canvas {
-    display: block;
     width: 100%;
-    height: 380px;
-    background: #07101d;
-    border-radius: 10px;
+    height: 390px;
+    display: block;
+    background: #050c15;
+    border-radius: 14px;
+    border: 1px solid #1d354d;
 }
-
-/* =========================
-   MEASUREMENTS
-========================= */
 
 .measurements {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
-    margin-top: 18px;
+    margin-top: 15px;
 }
 
 .measurement {
-    background: #101f33;
-    border: 1px solid #203552;
+    background: #081625;
+    border: 1px solid #1e354d;
     border-radius: 12px;
     padding: 15px;
 }
 
-.measurement small {
+.measurement span {
     display: block;
-    color: #8399b2;
-    margin-bottom: 7px;
+    color: #8da5bb;
+    font-size: 12px;
+    margin-bottom: 5px;
 }
 
 .measurement strong {
-    font-size: 1.25rem;
-    color: #ffffff;
+    font-size: 20px;
 }
-
-/* =========================
-   FORMULAS
-========================= */
 
 .formulas {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    margin-top: 18px;
+    margin-top: 15px;
 }
 
 .formula {
-    background: #0f2036;
-    border: 1px solid #203552;
+    background: #101f31;
+    padding: 17px;
     border-radius: 12px;
-    padding: 16px;
+    text-align: center;
+    font-size: 19px;
+    border: 1px solid #203b57;
 }
 
-.formula h4 {
-    margin-bottom: 8px;
-}
-
-.formula code {
-    color: #6ed4ff;
-    font-size: 1.05rem;
-}
-
-/* =========================
-   EXPLANATION
-========================= */
-
-.explanation {
-    background: #0d1b2f;
-    border: 1px solid #203552;
-    border-radius: 18px;
-    padding: 22px;
-    margin-top: 20px;
-}
-
-.explanation h3 {
-    margin-bottom: 10px;
-}
-
-.explanation p {
-    color: #9fb1c7;
-    line-height: 1.7;
-}
-
-/* =========================
-   ELECTRICITY
-========================= */
-
-.circuit-status {
-    margin-bottom: 15px;
-    padding: 12px 15px;
-    border-radius: 10px;
-    background: #111f31;
-    border: 1px solid #203552;
-    color: #a9bad0;
-}
-
-.circuit-status span {
-    font-weight: 700;
-}
-
-.switch-control {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #111f31;
-    border: 1px solid #203552;
-    border-radius: 12px;
-    padding: 13px;
-    margin-bottom: 18px;
-}
-
-.switch-btn {
-    min-width: 105px;
-    border: none;
-    border-radius: 9px;
-    padding: 10px 14px;
-    font-weight: 700;
-    color: white;
-    background: #71313b;
-}
-
-.switch-btn.on {
-    background: #1f7a52;
-}
-
-.electricity-note {
-    margin-top: 18px;
-    color: #879db5;
+.info {
+    margin-top: 15px;
+    padding: 15px;
+    background: #0a2032;
+    border-left: 4px solid #38bdf8;
+    border-radius: 8px;
+    color: #b9cddd;
     line-height: 1.6;
 }
 
-/* =========================
-   TOAST
-========================= */
-
-.toast {
-    position: fixed;
-    bottom: 22px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: #12263d;
-    border: 1px solid #39bdf8;
-    color: white;
-    padding: 12px 18px;
-    border-radius: 10px;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.3s;
-    z-index: 1000;
+.hidden {
+    display: none !important;
 }
 
-.toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
+.status {
+    margin-top: 12px;
+    color: #8fd9ff;
+    font-size: 14px;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 950px) {
-    .experiment-grid {
+@media(max-width: 850px) {
+    .lab-selector {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .lab-layout {
-        grid-template-columns: 1fr;
+    .controls {
+        grid-template-columns: 1fr 1fr;
     }
 
     .measurements {
         grid-template-columns: repeat(2, 1fr);
     }
-}
 
-@media (max-width: 650px) {
-    header {
-        padding: 15px 4%;
-    }
-
-    main {
-        width: 94%;
-        padding-top: 25px;
-    }
-
-    .lab-selector {
-        grid-template-columns: 1fr;
-    }
-
-    .experiment-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .measurements,
     .formulas {
         grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media(max-width: 550px) {
+    header h1 {
+        font-size: 25px;
+    }
+
+    .lab-selector,
+    .controls,
+    .measurements,
+    .formulas {
+        grid-template-columns: 1fr;
     }
 
     canvas {
@@ -496,1281 +308,410 @@ canvas {
 <body>
 
 <header>
-    <div class="logo">⚛️ <span>Physics</span> Virtual Lab</div>
-    <div class="header-right">Stage 5 • Electricity & Circuits</div>
+    <h1>⚛️ Physics Virtual Lab</h1>
+    <p>Explore. Experiment. Understand.</p>
 </header>
 
-<main>
+<div class="container">
 
-<section class="hero">
-    <div class="badge">🧪 Interactive Physics Laboratory</div>
-    <h1>Explore. Experiment. Understand.</h1>
-    <p>
-        Perform virtual physics experiments, change variables, observe
-        results and understand the equations behind each experiment.
-    </p>
-</section>
+    <h2 class="section-title">Choose a Laboratory</h2>
 
-<!-- =========================
-     LAB SELECTOR
-========================= -->
-
-<section class="lab-selector">
-
-    <div class="lab-card active" id="mechanicsCard">
-        <h2>⚙️ Mechanics Laboratory</h2>
-        <p>
-            Explore motion, forces, energy, projectile motion,
-            friction and circular motion.
-        </p>
-        <button class="lab-button" onclick="showLab('mechanics')">
-            Open Mechanics
-        </button>
-    </div>
-
-    <div class="lab-card" id="electricityCard">
-        <h2>⚡ Electricity & Circuits</h2>
-        <p>
-            Build a virtual circuit and investigate voltage,
-            current, resistance, power and Ohm's Law.
-        </p>
-        <button class="lab-button" onclick="showLab('electricity')">
-            Open Electricity
-        </button>
-    </div>
-
-</section>
-
-<!-- =====================================================
-     MECHANICS LABORATORY
-===================================================== -->
-
-<section class="lab-section active" id="mechanicsLab">
-
-    <div class="section-title">
-        <h2>⚙️ Mechanics Laboratory</h2>
-        <p>Select an experiment and interact with the simulation.</p>
-    </div>
-
-    <div class="experiment-grid">
-
-        <button class="experiment-button active"
-                onclick="selectMechanicsExperiment('motion', this)">
-            🏎️<br>Motion & Kinematics
-        </button>
-
-        <button class="experiment-button"
-                onclick="selectMechanicsExperiment('freefall', this)">
-            🪂<br>Free Fall
-        </button>
-
-        <button class="experiment-button"
-                onclick="selectMechanicsExperiment('newton', this)">
-            ⚖️<br>Newton's 2nd Law
-        </button>
-
-        <button class="experiment-button"
-                onclick="selectMechanicsExperiment('friction', this)">
-            🧱<br>Friction
-        </button>
-
-        <button class="experiment-button"
-                onclick="selectMechanicsExperiment('circular', this)">
-            🌀<br>Circular Motion
-        </button>
-
-        <button class="experiment-button"
-                onclick="selectMechanicsExperiment('energy', this)">
-            ⚡<br>Work & Energy
-        </button>
-
-        <button class="experiment-button"
-                onclick="selectMechanicsExperiment('projectile', this)">
-            🎯<br>Projectile Motion
-        </button>
-
-    </div>
-
-    <div class="lab-layout">
-
-        <aside class="panel">
-
-            <h3 id="mechanicsExperimentTitle">
-                🏎️ Motion & Kinematics
-            </h3>
-
-            <div id="mechanicsControls"></div>
-
-            <div class="action-buttons">
-                <button class="btn btn-primary" onclick="startSimulation()">
-                    ▶ Start
-                </button>
-
-                <button class="btn btn-secondary" onclick="pauseSimulation()">
-                    ⏸ Pause
-                </button>
-
-                <button class="btn btn-danger" onclick="resetSimulation()">
-                    ↻ Reset
-                </button>
-            </div>
-
-        </aside>
-
-        <div class="simulation-panel">
-
-            <div class="canvas-wrapper">
-                <canvas id="mechanicsCanvas"></canvas>
-            </div>
-
-            <div class="measurements" id="mechanicsMeasurements"></div>
-
-            <div class="formulas" id="mechanicsFormulas"></div>
-
+    <div class="lab-selector">
+        <div class="lab-card active" data-lab="mechanics">
+            <div class="lab-icon">🏎️</div>
+            <h3>Mechanics</h3>
+            <p>Motion, forces, energy and projectiles.</p>
         </div>
 
+        <div class="lab-card" data-lab="electricity">
+            <div class="lab-icon">⚡</div>
+            <h3>Electricity</h3>
+            <p>Circuits, current, voltage and power.</p>
+        </div>
+
+        <div class="lab-card" data-lab="waves">
+            <div class="lab-icon">🌊</div>
+            <h3>Waves & Sound</h3>
+            <p>Frequency, wavelength and wave motion.</p>
+        </div>
+
+        <div class="lab-card" data-lab="optics">
+            <div class="lab-icon">🔭</div>
+            <h3>Optics</h3>
+            <p>Mirrors, lenses and refraction.</p>
+        </div>
     </div>
 
-    <div class="explanation">
-        <h3>📘 Experiment Explanation</h3>
-        <p id="mechanicsExplanation"></p>
-    </div>
+    <!-- =========================================================
+         MECHANICS
+    ========================================================== -->
 
-</section>
+    <section class="lab-section active" id="mechanics">
 
-<!-- =====================================================
-     ELECTRICITY LABORATORY
-===================================================== -->
-
-<section class="lab-section" id="electricityLab">
-
-    <div class="section-title">
-        <h2>⚡ Electricity & Circuits Laboratory</h2>
-        <p>
-            Investigate how voltage, current and resistance are related
-            in a simple series circuit.
-        </p>
-    </div>
-
-    <div class="lab-layout">
-
-        <!-- CONTROLS -->
-
-        <aside class="panel">
-
-            <h3>🎛️ Circuit Controls</h3>
-
-            <div class="control">
-
-                <label>
-                    <span>Battery Voltage</span>
-                    <span class="control-value">
-                        <span id="voltageValue">12</span> V
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="voltageSlider"
-                    min="1"
-                    max="24"
-                    step="1"
-                    value="12"
-                >
-
-            </div>
-
-            <div class="control">
-
-                <label>
-                    <span>Resistance</span>
-                    <span class="control-value">
-                        <span id="resistanceValue">6</span> Ω
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="resistanceSlider"
-                    min="1"
-                    max="24"
-                    step="1"
-                    value="6"
-                >
-
-            </div>
-
-            <div class="switch-control">
-
-                <span>🔘 Circuit Switch</span>
-
-                <button
-                    class="switch-btn"
-                    id="switchButton"
-                    onclick="toggleSwitch()"
-                >
-                    OPEN
-                </button>
-
-            </div>
-
-            <div class="action-buttons">
-
-                <button
-                    class="btn btn-primary"
-                    onclick="startCircuit()"
-                >
-                    ▶ Run
-                </button>
-
-                <button
-                    class="btn btn-secondary"
-                    onclick="pauseCircuit()"
-                >
-                    ⏸ Pause
-                </button>
-
-                <button
-                    class="btn btn-danger"
-                    onclick="resetCircuit()"
-                >
-                    ↻ Reset
-                </button>
-
-            </div>
-
-            <p class="electricity-note">
-                Change the battery voltage and resistance, then close
-                the switch to observe how the current changes.
+        <div class="panel">
+            <h2>🏎️ Mechanics Laboratory</h2>
+            <p class="description">
+                Explore the major mechanics experiments through interactive simulations.
             </p>
 
-        </aside>
-
-        <!-- SIMULATION -->
-
-        <div class="simulation-panel">
-
-            <div class="circuit-status">
-                Circuit status:
-                <span id="circuitStatus">OPEN</span>
+            <div class="experiment-tabs">
+                <button class="exp-tab active" data-mech="motion">🏎️ Motion</button>
+                <button class="exp-tab" data-mech="freefall">🪂 Free Fall</button>
+                <button class="exp-tab" data-mech="newton">⚖️ Newton's 2nd Law</button>
+                <button class="exp-tab" data-mech="friction">🧱 Friction</button>
+                <button class="exp-tab" data-mech="circular">🌀 Circular Motion</button>
+                <button class="exp-tab" data-mech="work">⚡ Work & Energy</button>
+                <button class="exp-tab" data-mech="projectile">🎯 Projectile</button>
             </div>
 
-            <div class="canvas-wrapper">
+            <h2 id="mechTitle">Motion & Kinematics</h2>
+            <p class="description" id="mechDescription">
+                Investigate how velocity and acceleration affect motion.
+            </p>
+
+            <div class="controls" id="mechControls"></div>
+
+            <div class="buttons">
+                <button class="primary" id="mechStart">▶ Start</button>
+                <button class="secondary" id="mechPause">⏸ Pause</button>
+                <button class="danger" id="mechReset">↺ Reset</button>
+            </div>
+
+            <div style="margin-top:18px;">
+                <canvas id="mechCanvas"></canvas>
+            </div>
+
+            <div class="measurements" id="mechMeasurements"></div>
+            <div class="formulas" id="mechFormulas"></div>
+            <div class="info" id="mechInfo"></div>
+        </div>
+
+    </section>
+
+    <!-- =========================================================
+         ELECTRICITY
+    ========================================================== -->
+
+    <section class="lab-section" id="electricity">
+
+        <div class="panel">
+            <h2>⚡ Electricity & Circuits Laboratory</h2>
+
+            <p class="description">
+                Build and investigate a simple series circuit using Ohm's Law.
+            </p>
+
+            <div class="controls">
+
+                <div class="control">
+                    <label>
+                        Battery Voltage
+                        <b><span id="voltageValue">12</span> V</b>
+                    </label>
+                    <input id="voltage" type="range" min="1" max="24" value="12">
+                </div>
+
+                <div class="control">
+                    <label>
+                        Resistance
+                        <b><span id="resistanceValue">6</span> Ω</b>
+                    </label>
+                    <input id="resistance" type="range" min="1" max="24" value="6">
+                </div>
+
+                <div class="control">
+                    <label>
+                        Switch
+                        <b id="switchValue">Closed</b>
+                    </label>
+                    <select id="switchState">
+                        <option value="closed">Closed</option>
+                        <option value="open">Open</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="buttons">
+                <button class="primary" id="circuitStart">▶ Run</button>
+                <button class="secondary" id="circuitPause">⏸ Pause</button>
+                <button class="danger" id="circuitReset">↺ Reset</button>
+            </div>
+
+            <div style="margin-top:18px;">
                 <canvas id="circuitCanvas"></canvas>
             </div>
 
             <div class="measurements">
 
                 <div class="measurement">
-                    <small>Voltage</small>
-                    <strong>
-                        <span id="liveVoltage">12.00</span> V
-                    </strong>
+                    <span>Voltage</span>
+                    <strong id="currentVoltage">12 V</strong>
                 </div>
 
                 <div class="measurement">
-                    <small>Current</small>
-                    <strong>
-                        <span id="liveCurrent">0.00</span> A
-                    </strong>
+                    <span>Current</span>
+                    <strong id="currentCurrent">2 A</strong>
                 </div>
 
                 <div class="measurement">
-                    <small>Resistance</small>
-                    <strong>
-                        <span id="liveResistance">6.00</span> Ω
-                    </strong>
+                    <span>Resistance</span>
+                    <strong id="currentResistance">6 Ω</strong>
                 </div>
 
                 <div class="measurement">
-                    <small>Power</small>
-                    <strong>
-                        <span id="livePower">0.00</span> W
-                    </strong>
+                    <span>Power</span>
+                    <strong id="currentPower">24 W</strong>
                 </div>
 
             </div>
 
             <div class="formulas">
+                <div class="formula">V = IR</div>
+                <div class="formula">I = V / R</div>
+                <div class="formula">P = VI = I²R</div>
+            </div>
 
-                <div class="formula">
-                    <h4>Ohm's Law</h4>
-                    <code>V = IR</code>
-                </div>
-
-                <div class="formula">
-                    <h4>Current</h4>
-                    <code>I = V / R</code>
-                </div>
-
-                <div class="formula">
-                    <h4>Power</h4>
-                    <code>P = VI = I²R</code>
-                </div>
-
+            <div class="info">
+                When the switch is closed, charge can flow through the circuit.
+                For this idealized model, current is calculated using Ohm's Law.
             </div>
 
         </div>
 
-    </div>
+    </section>
 
-    <div class="explanation">
+    <!-- =========================================================
+         WAVES
+    ========================================================== -->
 
-        <h3>📘 Simple Series Circuit</h3>
+    <section class="lab-section" id="waves">
 
-        <p>
-            In this virtual experiment, the battery provides electrical
-            potential difference. When the switch is closed, the circuit
-            becomes complete and current can flow through the resistor
-            and bulb. According to Ohm's Law, the current is determined
-            by the relationship V = IR. Increasing voltage increases
-            current, while increasing resistance decreases current
-            when the other variable is held constant.
-        </p>
+        <div class="panel">
 
-    </div>
+            <h2>🌊 Waves & Sound Laboratory</h2>
 
-</section>
+            <p class="description">
+                Investigate transverse waves, longitudinal waves and sound.
+                Adjust the wave properties and observe how the waveform changes.
+            </p>
 
-</main>
+            <div class="experiment-tabs">
 
-<div class="toast" id="toast"></div>
+                <button class="exp-tab active" data-wave="transverse">
+                    🌊 Transverse Wave
+                </button>
+
+                <button class="exp-tab" data-wave="longitudinal">
+                    ↔️ Longitudinal Wave
+                </button>
+
+                <button class="exp-tab" data-wave="sound">
+                    🔊 Sound Wave
+                </button>
+
+                <button class="exp-tab" data-wave="speed">
+                    📐 Wave Speed
+                </button>
+
+            </div>
+
+            <h2 id="waveTitle">Transverse Wave</h2>
+
+            <p class="description" id="waveDescription">
+                A transverse wave oscillates perpendicular to the direction of propagation.
+            </p>
+
+            <div class="controls">
+
+                <div class="control">
+                    <label>
+                        Frequency
+                        <b><span id="frequencyValue">2</span> Hz</b>
+                    </label>
+                    <input id="frequency" type="range" min="0.5" max="10" step="0.5" value="2">
+                </div>
+
+                <div class="control">
+                    <label>
+                        Amplitude
+                        <b><span id="amplitudeValue">1</span></b>
+                    </label>
+                    <input id="amplitude" type="range" min="0.2" max="2" step="0.1" value="1">
+                </div>
+
+                <div class="control">
+                    <label>
+                        Wavelength
+                        <b><span id="wavelengthValue">2</span> m</b>
+                    </label>
+                    <input id="wavelength" type="range" min="0.5" max="5" step="0.1" value="2">
+                </div>
+
+                <div class="control">
+                    <label>
+                        Wave Speed
+                        <b><span id="waveSpeedValue">4</span> m/s</b>
+                    </label>
+                    <div style="color:#9fb6cc;font-size:13px;">
+                        Calculated from v = fλ
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="buttons">
+                <button class="primary" id="waveStart">▶ Start</button>
+                <button class="secondary" id="wavePause">⏸ Pause</button>
+                <button class="danger" id="waveReset">↺ Reset</button>
+            </div>
+
+            <div style="margin-top:18px;">
+                <canvas id="waveCanvas"></canvas>
+            </div>
+
+            <div class="measurements">
+
+                <div class="measurement">
+                    <span>Frequency</span>
+                    <strong id="waveFrequency">2 Hz</strong>
+                </div>
+
+                <div class="measurement">
+                    <span>Amplitude</span>
+                    <strong id="waveAmplitude">1</strong>
+                </div>
+
+                <div class="measurement">
+                    <span>Wavelength</span>
+                    <strong id="waveWavelength">2 m</strong>
+                </div>
+
+                <div class="measurement">
+                    <span>Speed</span>
+                    <strong id="waveSpeed">4 m/s</strong>
+                </div>
+
+            </div>
+
+            <div class="formulas">
+                <div class="formula">v = fλ</div>
+                <div class="formula">f = 1 / T</div>
+                <div class="formula">T = 1 / f</div>
+            </div>
+
+            <div class="info" id="waveInfo">
+                Increase frequency to produce more oscillations per second.
+                Increase wavelength to increase the distance between successive crests.
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================================================
+         OPTICS
+    ========================================================== -->
+
+    <section class="lab-section" id="optics">
+
+        <div class="panel">
+
+            <h2>🔭 Optics Laboratory</h2>
+
+            <p class="description">
+                Investigate reflection, refraction and image formation using
+                interactive ray diagrams.
+            </p>
+
+            <div class="experiment-tabs">
+
+                <button class="exp-tab active" data-optics="plane">
+                    🪞 Plane Mirror
+                </button>
+
+                <button class="exp-tab" data-optics="concaveMirror">
+                    🥄 Concave Mirror
+                </button>
+
+                <button class="exp-tab" data-optics="convexMirror">
+                    🔍 Convex Mirror
+                </button>
+
+                <button class="exp-tab" data-optics="refraction">
+                    💧 Refraction
+                </button>
+
+                <button class="exp-tab" data-optics="convexLens">
+                    🔎 Convex Lens
+                </button>
+
+                <button class="exp-tab" data-optics="concaveLens">
+                    🔬 Concave Lens
+                </button>
+
+            </div>
+
+            <h2 id="opticsTitle">Plane Mirror</h2>
+
+            <p class="description" id="opticsDescription">
+                Explore the law of reflection using a plane mirror.
+            </p>
+
+            <div class="controls" id="opticsControls"></div>
+
+            <div style="margin-top:18px;">
+                <canvas id="opticsCanvas"></canvas>
+            </div>
+
+            <div class="measurements" id="opticsMeasurements"></div>
+
+            <div class="formulas" id="opticsFormulas"></div>
+
+            <div class="info" id="opticsInfo"></div>
+
+        </div>
+
+    </section>
+
+</div>
 
 <script>
 
-/* =====================================================
-   GENERAL LAB NAVIGATION
-===================================================== */
+/* ============================================================
+   GENERAL LAB SELECTOR
+============================================================ */
 
-function showLab(lab) {
+const labCards = document.querySelectorAll(".lab-card");
+const labSections = document.querySelectorAll(".lab-section");
 
-    const mechanicsLab = document.getElementById("mechanicsLab");
-    const electricityLab = document.getElementById("electricityLab");
+labCards.forEach(card => {
 
-    const mechanicsCard = document.getElementById("mechanicsCard");
-    const electricityCard = document.getElementById("electricityCard");
+    card.addEventListener("click", () => {
 
-    if (lab === "mechanics") {
+        labCards.forEach(c => c.classList.remove("active"));
+        labSections.forEach(s => s.classList.remove("active"));
 
-        mechanicsLab.classList.add("active");
-        electricityLab.classList.remove("active");
+        card.classList.add("active");
 
-        mechanicsCard.classList.add("active");
-        electricityCard.classList.remove("active");
+        const lab = card.dataset.lab;
+        document.getElementById(lab).classList.add("active");
 
-    } else {
-
-        mechanicsLab.classList.remove("active");
-        electricityLab.classList.add("active");
-
-        mechanicsCard.classList.remove("active");
-        electricityCard.classList.add("active");
-
-        drawCircuit();
-
-    }
-
-    window.scrollTo({
-        top: document.querySelector(".lab-selector").offsetTop - 80,
-        behavior: "smooth"
-    });
-}
-
-
-/* =====================================================
-   TOAST
-===================================================== */
-
-function showToast(message) {
-
-    const toast = document.getElementById("toast");
-
-    toast.textContent = message;
-    toast.classList.add("show");
-
-    setTimeout(() => {
-        toast.classList.remove("show");
-    }, 1800);
-}
-
-
-/* =====================================================
-   MECHANICS LAB
-===================================================== */
-
-const mechanicsCanvas =
-    document.getElementById("mechanicsCanvas");
-
-const mechanicsCtx =
-    mechanicsCanvas.getContext("2d");
-
-let mechanicsExperiment = "motion";
-
-let mechanicsRunning = false;
-let mechanicsTime = 0;
-let mechanicsLastFrame = null;
-
-const mechanicsData = {
-
-    motion: {
-        title: "🏎️ Motion & Kinematics",
-
-        controls: `
-            <div class="control">
-                <label>
-                    <span>Initial Velocity</span>
-                    <span class="control-value">
-                        <span id="motionUValue">5</span> m/s
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="motionUSlider"
-                    min="0"
-                    max="20"
-                    value="5"
-                    step="1"
-                >
-            </div>
-
-            <div class="control">
-                <label>
-                    <span>Acceleration</span>
-                    <span class="control-value">
-                        <span id="motionAValue">0</span> m/s²
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="motionASlider"
-                    min="-5"
-                    max="5"
-                    value="0"
-                    step="0.1"
-                >
-            </div>
-
-            <div class="control">
-                <label>
-                    <span>Simulation Time</span>
-                    <span class="control-value">
-                        <span id="motionTValue">10</span> s
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="motionTSlider"
-                    min="5"
-                    max="20"
-                    value="10"
-                    step="1"
-                >
-            </div>
-        `,
-
-        explanation:
-        "Investigate how initial velocity and acceleration affect an object's motion. The simulation uses v = u + at and s = ut + ½at²."
-    },
-
-    freefall: {
-
-        title: "🪂 Free Fall",
-
-        controls: `
-            <div class="control">
-                <label>
-                    <span>Initial Height</span>
-                    <span class="control-value">
-                        <span id="freeHeightValue">50</span> m
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="freeHeightSlider"
-                    min="10"
-                    max="100"
-                    value="50"
-                    step="1"
-                >
-            </div>
-
-            <div class="control">
-                <label>
-                    <span>Gravity</span>
-                    <span class="control-value">
-                        <span id="gravityValue">9.8</span> m/s²
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="gravitySlider"
-                    min="1"
-                    max="15"
-                    value="9.8"
-                    step="0.1"
-                >
-            </div>
-        `,
-
-        explanation:
-        "Free fall describes motion under gravity. Ignoring air resistance, an object's acceleration near Earth's surface is approximately 9.8 m/s² downward."
-    },
-
-    newton: {
-
-        title: "⚖️ Newton's 2nd Law",
-
-        controls: `
-            <div class="control">
-                <label>
-                    <span>Force</span>
-                    <span class="control-value">
-                        <span id="forceValue">20</span> N
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="forceSlider"
-                    min="1"
-                    max="100"
-                    value="20"
-                    step="1"
-                >
-            </div>
-
-            <div class="control">
-                <label>
-                    <span>Mass</span>
-                    <span class="control-value">
-                        <span id="massValue">5</span> kg
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="massSlider"
-                    min="1"
-                    max="20"
-                    value="5"
-                    step="1"
-                >
-            </div>
-        `,
-
-        explanation:
-        "Newton's Second Law states that the net force on an object equals its mass multiplied by its acceleration: F = ma."
-    },
-
-    friction: {
-
-        title: "🧱 Friction Lab",
-
-        controls: `
-            <div class="control">
-                <label>
-                    <span>Applied Force</span>
-                    <span class="control-value">
-                        <span id="frictionForceValue">30</span> N
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="frictionForceSlider"
-                    min="0"
-                    max="100"
-                    value="30"
-                    step="1"
-                >
-            </div>
-
-            <div class="control">
-                <label>
-                    <span>Mass</span>
-                    <span class="control-value">
-                        <span id="frictionMassValue">5</span> kg
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="frictionMassSlider"
-                    min="1"
-                    max="20"
-                    value="5"
-                    step="1"
-                >
-            </div>
-
-            <div class="control">
-                <label>
-                    <span>Friction Coefficient</span>
-                    <span class="control-value">
-                        <span id="muValue">0.3</span>
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="muSlider"
-                    min="0"
-                    max="1"
-                    value="0.3"
-                    step="0.05"
-                >
-            </div>
-        `,
-
-        explanation:
-        "Friction opposes relative motion between surfaces. In this simplified model, friction is calculated using Ff = μN."
-    },
-
-    circular: {
-
-        title: "🌀 Circular Motion",
-
-        controls: `
-            <div class="control">
-                <label>
-                    <span>Radius</span>
-                    <span class="control-value">
-                        <span id="radiusValue">5</span> m
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="radiusSlider"
-                    min="1"
-                    max="20"
-                    value="5"
-                    step="1"
-                >
-            </div>
-
-            <div class="control">
-                <label>
-                    <span>Speed</span>
-                    <span class="control-value">
-                        <span id="circularSpeedValue">10</span> m/s
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="circularSpeedSlider"
-                    min="1"
-                    max="30"
-                    value="10"
-                    step="1"
-                >
-            </div>
-
-            <div class="control">
-                <label>
-                    <span>Mass</span>
-                    <span class="control-value">
-                        <span id="circularMassValue">2</span> kg
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="circularMassSlider"
-                    min="1"
-                    max="20"
-                    value="2"
-                    step="1"
-                >
-            </div>
-        `,
-
-        explanation:
-        "Circular motion requires centripetal acceleration directed toward the center. The centripetal force is Fc = mv²/r."
-    },
-
-    energy: {
-
-        title: "⚡ Work & Energy",
-
-        controls: `
-            <div class="control">
-                <label>
-                    <span>Force</span>
-                    <span class="control-value">
-                        <span id="energyForceValue">20</span> N
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="energyForceSlider"
-                    min="1"
-                    max="100"
-                    value="20"
-                    step="1"
-                >
-            </div>
-
-            <div class="control">
-                <label>
-                    <span>Distance</span>
-                    <span class="control-value">
-                        <span id="distanceValue">10</span> m
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="distanceSlider"
-                    min="1"
-                    max="50"
-                    value="10"
-                    step="1"
-                >
-            </div>
-        `,
-
-        explanation:
-        "Mechanical work is the energy transferred when a force moves an object through a distance. For a constant force in the direction of motion, W = Fd."
-    },
-
-    projectile: {
-
-        title: "🎯 Projectile Motion",
-
-        controls: `
-            <div class="control">
-                <label>
-                    <span>Launch Speed</span>
-                    <span class="control-value">
-                        <span id="projectileSpeedValue">20</span> m/s
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="projectileSpeedSlider"
-                    min="5"
-                    max="40"
-                    value="20"
-                    step="1"
-                >
-            </div>
-
-            <div class="control">
-                <label>
-                    <span>Launch Angle</span>
-                    <span class="control-value">
-                        <span id="angleValue">45</span>°
-                    </span>
-                </label>
-
-                <input
-                    type="range"
-                    id="angleSlider"
-                    min="10"
-                    max="80"
-                    value="45"
-                    step="1"
-                >
-            </div>
-        `,
-
-        explanation:
-        "Projectile motion combines horizontal motion with vertical motion under gravity. The trajectory depends on launch speed, launch angle and gravity."
-    }
-
-};
-
-
-function selectMechanicsExperiment(name, button) {
-
-    mechanicsExperiment = name;
-
-    document
-        .querySelectorAll(".experiment-button")
-        .forEach(btn => btn.classList.remove("active"));
-
-    button.classList.add("active");
-
-    const data = mechanicsData[name];
-
-    document.getElementById(
-        "mechanicsExperimentTitle"
-    ).textContent = data.title;
-
-    document.getElementById(
-        "mechanicsControls"
-    ).innerHTML = data.controls;
-
-    document.getElementById(
-        "mechanicsExplanation"
-    ).textContent = data.explanation;
-
-    setupMechanicsListeners();
-
-    resetSimulation();
-}
-
-
-function setupMechanicsListeners() {
-
-    document
-        .querySelectorAll("#mechanicsControls input")
-        .forEach(input => {
-
-            input.addEventListener("input", () => {
-
-                updateMechanicsValues();
-
-                calculateMechanics();
-
-                drawMechanics();
-
-            });
-
-        });
-
-    updateMechanicsValues();
-}
-
-
-function updateMechanicsValues() {
-
-    const map = {
-
-        motionUSlider: "motionUValue",
-        motionASlider: "motionAValue",
-        motionTSlider: "motionTValue",
-
-        freeHeightSlider: "freeHeightValue",
-        gravitySlider: "gravityValue",
-
-        forceSlider: "forceValue",
-        massSlider: "massValue",
-
-        frictionForceSlider: "frictionForceValue",
-        frictionMassSlider: "frictionMassValue",
-        muSlider: "muValue",
-
-        radiusSlider: "radiusValue",
-        circularSpeedSlider: "circularSpeedValue",
-        circularMassSlider: "circularMassValue",
-
-        energyForceSlider: "energyForceValue",
-        distanceSlider: "distanceValue",
-
-        projectileSpeedSlider: "projectileSpeedValue",
-        angleSlider: "angleValue"
-    };
-
-    Object.keys(map).forEach(sliderId => {
-
-        const slider = document.getElementById(sliderId);
-        const value = document.getElementById(map[sliderId]);
-
-        if (slider && value) {
-            value.textContent = slider.value;
-        }
+        if (lab === "electricity") drawCircuit();
+        if (lab === "waves") drawWave();
+        if (lab === "optics") drawOptics();
+        if (lab === "mechanics") drawMechanics();
 
     });
-}
 
+});
 
-function getNumber(id) {
 
-    const el = document.getElementById(id);
+/* ============================================================
+   CANVAS HELPERS
+============================================================ */
 
-    return el ? Number(el.value) : 0;
-}
-
-
-function calculateMechanics() {
-
-    const measurements =
-        document.getElementById("mechanicsMeasurements");
-
-    const formulas =
-        document.getElementById("mechanicsFormulas");
-
-    if (mechanicsExperiment === "motion") {
-
-        const u = getNumber("motionUSlider");
-        const a = getNumber("motionASlider");
-        const t = mechanicsTime;
-
-        const v = u + a * t;
-        const s = u * t + 0.5 * a * t * t;
-
-        measurements.innerHTML = `
-            <div class="measurement">
-                <small>Time</small>
-                <strong>${t.toFixed(2)} s</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Position</small>
-                <strong>${s.toFixed(2)} m</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Velocity</small>
-                <strong>${v.toFixed(2)} m/s</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Acceleration</small>
-                <strong>${a.toFixed(2)} m/s²</strong>
-            </div>
-        `;
-
-        formulas.innerHTML = `
-            <div class="formula">
-                <h4>Velocity</h4>
-                <code>v = u + at</code>
-            </div>
-
-            <div class="formula">
-                <h4>Displacement</h4>
-                <code>s = ut + ½at²</code>
-            </div>
-
-            <div class="formula">
-                <h4>Current Values</h4>
-                <code>u=${u}, a=${a}</code>
-            </div>
-        `;
-
-    }
-
-    else if (mechanicsExperiment === "freefall") {
-
-        const h = getNumber("freeHeightSlider");
-        const g = getNumber("gravitySlider");
-        const t = Math.min(mechanicsTime, Math.sqrt(2 * h / g));
-
-        const distance = 0.5 * g * t * t;
-        const velocity = g * t;
-        const remaining = Math.max(0, h - distance);
-
-        measurements.innerHTML = `
-            <div class="measurement">
-                <small>Time</small>
-                <strong>${t.toFixed(2)} s</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Distance Fallen</small>
-                <strong>${distance.toFixed(2)} m</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Velocity</small>
-                <strong>${velocity.toFixed(2)} m/s</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Height Remaining</small>
-                <strong>${remaining.toFixed(2)} m</strong>
-            </div>
-        `;
-
-        formulas.innerHTML = `
-            <div class="formula">
-                <h4>Distance</h4>
-                <code>s = ½gt²</code>
-            </div>
-
-            <div class="formula">
-                <h4>Velocity</h4>
-                <code>v = gt</code>
-            </div>
-
-            <div class="formula">
-                <h4>Gravity</h4>
-                <code>g = ${g.toFixed(1)} m/s²</code>
-            </div>
-        `;
-
-    }
-
-    else if (mechanicsExperiment === "newton") {
-
-        const F = getNumber("forceSlider");
-        const m = getNumber("massSlider");
-        const a = F / m;
-
-        measurements.innerHTML = `
-            <div class="measurement">
-                <small>Force</small>
-                <strong>${F.toFixed(2)} N</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Mass</small>
-                <strong>${m.toFixed(2)} kg</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Acceleration</small>
-                <strong>${a.toFixed(2)} m/s²</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Time</small>
-                <strong>${mechanicsTime.toFixed(2)} s</strong>
-            </div>
-        `;
-
-        formulas.innerHTML = `
-            <div class="formula">
-                <h4>Newton's 2nd Law</h4>
-                <code>F = ma</code>
-            </div>
-
-            <div class="formula">
-                <h4>Acceleration</h4>
-                <code>a = F/m</code>
-            </div>
-
-            <div class="formula">
-                <h4>Calculated</h4>
-                <code>a = ${a.toFixed(2)} m/s²</code>
-            </div>
-        `;
-
-    }
-
-    else if (mechanicsExperiment === "friction") {
-
-        const F = getNumber("frictionForceSlider");
-        const m = getNumber("frictionMassSlider");
-        const mu = getNumber("muSlider");
-
-        const g = 9.8;
-        const normal = m * g;
-        const friction = mu * normal;
-        const net = Math.max(0, F - friction);
-        const acceleration = net / m;
-
-        measurements.innerHTML = `
-            <div class="measurement">
-                <small>Applied Force</small>
-                <strong>${F.toFixed(2)} N</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Friction</small>
-                <strong>${friction.toFixed(2)} N</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Net Force</small>
-                <strong>${net.toFixed(2)} N</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Acceleration</small>
-                <strong>${acceleration.toFixed(2)} m/s²</strong>
-            </div>
-        `;
-
-        formulas.innerHTML = `
-            <div class="formula">
-                <h4>Friction</h4>
-                <code>Ff = μN</code>
-            </div>
-
-            <div class="formula">
-                <h4>Normal Force</h4>
-                <code>N = mg</code>
-            </div>
-
-            <div class="formula">
-                <h4>Net Force</h4>
-                <code>Fnet = F - Ff</code>
-            </div>
-        `;
-
-    }
-
-    else if (mechanicsExperiment === "circular") {
-
-        const r = getNumber("radiusSlider");
-        const v = getNumber("circularSpeedSlider");
-        const m = getNumber("circularMassSlider");
-
-        const acceleration = v * v / r;
-        const force = m * acceleration;
-
-        measurements.innerHTML = `
-            <div class="measurement">
-                <small>Radius</small>
-                <strong>${r.toFixed(2)} m</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Speed</small>
-                <strong>${v.toFixed(2)} m/s</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Centripetal Acc.</small>
-                <strong>${acceleration.toFixed(2)} m/s²</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Centripetal Force</small>
-                <strong>${force.toFixed(2)} N</strong>
-            </div>
-        `;
-
-        formulas.innerHTML = `
-            <div class="formula">
-                <h4>Acceleration</h4>
-                <code>ac = v²/r</code>
-            </div>
-
-            <div class="formula">
-                <h4>Force</h4>
-                <code>Fc = mv²/r</code>
-            </div>
-
-            <div class="formula">
-                <h4>Radius</h4>
-                <code>r = ${r} m</code>
-            </div>
-        `;
-
-    }
-
-    else if (mechanicsExperiment === "energy") {
-
-        const F = getNumber("energyForceSlider");
-        const d = getNumber("distanceSlider");
-
-        const work = F * d;
-
-        measurements.innerHTML = `
-            <div class="measurement">
-                <small>Force</small>
-                <strong>${F.toFixed(2)} N</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Distance</small>
-                <strong>${d.toFixed(2)} m</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Work</small>
-                <strong>${work.toFixed(2)} J</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Energy Transferred</small>
-                <strong>${work.toFixed(2)} J</strong>
-            </div>
-        `;
-
-        formulas.innerHTML = `
-            <div class="formula">
-                <h4>Work</h4>
-                <code>W = Fd</code>
-            </div>
-
-            <div class="formula">
-                <h4>Unit</h4>
-                <code>1 J = 1 Nm</code>
-            </div>
-
-            <div class="formula">
-                <h4>Calculated Work</h4>
-                <code>${work.toFixed(2)} J</code>
-            </div>
-        `;
-
-    }
-
-    else if (mechanicsExperiment === "projectile") {
-
-        const speed =
-            getNumber("projectileSpeedSlider");
-
-        const angle =
-            getNumber("angleSlider") * Math.PI / 180;
-
-        const g = 9.8;
-
-        const horizontal =
-            speed * Math.cos(angle);
-
-        const vertical =
-            speed * Math.sin(angle);
-
-        const flightTime =
-            2 * vertical / g;
-
-        const range =
-            horizontal * flightTime;
-
-        const maxHeight =
-            vertical * vertical / (2 * g);
-
-        measurements.innerHTML = `
-            <div class="measurement">
-                <small>Launch Speed</small>
-                <strong>${speed.toFixed(2)} m/s</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Angle</small>
-                <strong>${(angle * 180 / Math.PI).toFixed(0)}°</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Range</small>
-                <strong>${range.toFixed(2)} m</strong>
-            </div>
-
-            <div class="measurement">
-                <small>Maximum Height</small>
-                <strong>${maxHeight.toFixed(2)} m</strong>
-            </div>
-        `;
-
-        formulas.innerHTML = `
-            <div class="formula">
-                <h4>Horizontal Velocity</h4>
-                <code>vx = v cosθ</code>
-            </div>
-
-            <div class="formula">
-                <h4>Flight Time</h4>
-                <code>t = 2vᵧ/g</code>
-            </div>
-
-            <div class="formula">
-                <h4>Range</h4>
-                <code>R = vx × t</code>
-            </div>
-        `;
-    }
-}
-
-
-/* =====================================================
-   MECHANICS DRAWING
-===================================================== */
-
-function resizeCanvas(canvas) {
+function prepareCanvas(canvas) {
 
     const rect = canvas.getBoundingClientRect();
 
@@ -1781,1130 +722,1300 @@ function resizeCanvas(canvas) {
 
     const ctx = canvas.getContext("2d");
 
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.scale(dpr, dpr);
 
     return {
+        ctx,
         width: rect.width,
         height: rect.height
     };
 }
 
 
+/* ============================================================
+   MECHANICS
+============================================================ */
+
+const mechData = {
+
+    motion: {
+        title: "Motion & Kinematics",
+        description: "Investigate how velocity and acceleration affect motion.",
+        controls: [
+            ["velocity", "Initial Velocity", 0, 20, 5, 0.5, "m/s"],
+            ["acceleration", "Acceleration", -5, 5, 0, 0.1, "m/s²"],
+            ["time", "Simulation Time", 5, 20, 10, 1, "s"]
+        ],
+        formulas: ["v = u + at", "s = ut + ½at²"],
+        info: "The simulation uses the standard constant-acceleration equations."
+    },
+
+    freefall: {
+        title: "Free Fall",
+        description: "Study an object falling under Earth's gravitational acceleration.",
+        controls: [
+            ["height", "Initial Height", 10, 100, 50, 1, "m"],
+            ["gravity", "Gravity", 1, 15, 9.8, 0.1, "m/s²"]
+        ],
+        formulas: ["s = ½gt²", "v = gt"],
+        info: "Air resistance is ignored in this idealized model."
+    },
+
+    newton: {
+        title: "Newton's 2nd Law",
+        description: "Investigate the relationship between force, mass and acceleration.",
+        controls: [
+            ["force", "Force", 1, 100, 20, 1, "N"],
+            ["mass", "Mass", 1, 50, 10, 1, "kg"]
+        ],
+        formulas: ["F = ma", "a = F / m"],
+        info: "Increasing force increases acceleration, while increasing mass reduces acceleration for the same force."
+    },
+
+    friction: {
+        title: "Friction Lab",
+        description: "Investigate friction between two surfaces.",
+        controls: [
+            ["mass", "Mass", 1, 50, 10, 1, "kg"],
+            ["mu", "Coefficient μ", 0.05, 1, 0.3, 0.05, ""],
+            ["force", "Applied Force", 0, 100, 40, 1, "N"]
+        ],
+        formulas: ["Ff = μN", "Fnet = F − Ff"],
+        info: "This model uses kinetic-style friction with N = mg."
+    },
+
+    circular: {
+        title: "Circular Motion",
+        description: "Explore centripetal acceleration and force.",
+        controls: [
+            ["mass", "Mass", 1, 20, 5, 0.5, "kg"],
+            ["radius", "Radius", 1, 20, 5, 0.5, "m"],
+            ["speed", "Speed", 1, 30, 10, 0.5, "m/s"]
+        ],
+        formulas: ["ac = v²/r", "Fc = mv²/r"],
+        info: "Centripetal acceleration always points toward the center of the circular path."
+    },
+
+    work: {
+        title: "Work & Energy",
+        description: "Investigate work done by a force moving an object.",
+        controls: [
+            ["force", "Force", 1, 100, 30, 1, "N"],
+            ["distance", "Distance", 1, 50, 10, 1, "m"]
+        ],
+        formulas: ["W = Fd", "P = W/t"],
+        info: "For this simple model, force and displacement act in the same direction."
+    },
+
+    projectile: {
+        title: "Projectile Motion",
+        description: "Study the trajectory of an object launched through the air.",
+        controls: [
+            ["speed", "Initial Speed", 5, 50, 20, 1, "m/s"],
+            ["angle", "Launch Angle", 5, 85, 45, 1, "°"],
+            ["gravity", "Gravity", 1, 15, 9.8, 0.1, "m/s²"]
+        ],
+        formulas: ["vx = v cosθ", "vy = v sinθ", "y = vᵧt − ½gt²"],
+        info: "Air resistance is ignored in this idealized projectile model."
+    }
+
+};
+
+let currentMech = "motion";
+let mechRunning = false;
+let mechTime = 0;
+let mechLast = null;
+
+const mechCanvas = document.getElementById("mechCanvas");
+
+function makeRangeControl(id, label, min, max, value, step, unit) {
+
+    return `
+        <div class="control">
+            <label>
+                ${label}
+                <b><span id="mech_${id}_value">${value}</span> ${unit}</b>
+            </label>
+            <input
+                id="mech_${id}"
+                type="range"
+                min="${min}"
+                max="${max}"
+                value="${value}"
+                step="${step}">
+        </div>
+    `;
+}
+
+function renderMechanics() {
+
+    const d = mechData[currentMech];
+
+    document.getElementById("mechTitle").textContent = d.title;
+    document.getElementById("mechDescription").textContent = d.description;
+
+    document.getElementById("mechControls").innerHTML =
+        d.controls.map(c => makeRangeControl(...c)).join("");
+
+    d.controls.forEach(c => {
+
+        const id = c[0];
+
+        document.getElementById(`mech_${id}`)
+            .addEventListener("input", () => {
+
+                document.getElementById(`mech_${id}_value`).textContent =
+                    document.getElementById(`mech_${id}`).value;
+
+                drawMechanics();
+            });
+
+    });
+
+    document.getElementById("mechFormulas").innerHTML =
+        d.formulas.map(x => `<div class="formula">${x}</div>`).join("");
+
+    document.getElementById("mechInfo").textContent = d.info;
+
+    mechTime = 0;
+
+    updateMechanicsMeasurements();
+    drawMechanics();
+}
+
+function mechVal(id) {
+    return Number(document.getElementById(`mech_${id}`).value);
+}
+
+function updateMechanicsMeasurements() {
+
+    let html = "";
+
+    if (currentMech === "motion") {
+
+        const u = mechVal("velocity");
+        const a = mechVal("acceleration");
+        const t = mechTime;
+
+        const v = u + a * t;
+        const s = u * t + 0.5 * a * t * t;
+
+        html = `
+            <div class="measurement"><span>Time</span><strong>${t.toFixed(2)} s</strong></div>
+            <div class="measurement"><span>Position</span><strong>${s.toFixed(2)} m</strong></div>
+            <div class="measurement"><span>Velocity</span><strong>${v.toFixed(2)} m/s</strong></div>
+            <div class="measurement"><span>Acceleration</span><strong>${a.toFixed(2)} m/s²</strong></div>
+        `;
+
+    } else if (currentMech === "freefall") {
+
+        const h = mechVal("height");
+        const g = mechVal("gravity");
+        const t = Math.min(mechTime, Math.sqrt(2*h/g));
+
+        const fallen = 0.5 * g * t*t;
+        const v = g*t;
+
+        html = `
+            <div class="measurement"><span>Time</span><strong>${t.toFixed(2)} s</strong></div>
+            <div class="measurement"><span>Fallen</span><strong>${fallen.toFixed(2)} m</strong></div>
+            <div class="measurement"><span>Velocity</span><strong>${v.toFixed(2)} m/s</strong></div>
+            <div class="measurement"><span>Height Left</span><strong>${Math.max(0,h-fallen).toFixed(2)} m</strong></div>
+        `;
+
+    } else if (currentMech === "newton") {
+
+        const F = mechVal("force");
+        const m = mechVal("mass");
+        const a = F/m;
+
+        html = `
+            <div class="measurement"><span>Force</span><strong>${F.toFixed(1)} N</strong></div>
+            <div class="measurement"><span>Mass</span><strong>${m.toFixed(1)} kg</strong></div>
+            <div class="measurement"><span>Acceleration</span><strong>${a.toFixed(2)} m/s²</strong></div>
+            <div class="measurement"><span>Time</span><strong>${mechTime.toFixed(2)} s</strong></div>
+        `;
+
+    } else if (currentMech === "friction") {
+
+        const m = mechVal("mass");
+        const mu = mechVal("mu");
+        const F = mechVal("force");
+        const g = 9.8;
+
+        const friction = mu*m*g;
+        const net = F-friction;
+        const a = net/m;
+
+        html = `
+            <div class="measurement"><span>Normal Force</span><strong>${(m*g).toFixed(2)} N</strong></div>
+            <div class="measurement"><span>Friction</span><strong>${friction.toFixed(2)} N</strong></div>
+            <div class="measurement"><span>Net Force</span><strong>${net.toFixed(2)} N</strong></div>
+            <div class="measurement"><span>Acceleration</span><strong>${a.toFixed(2)} m/s²</strong></div>
+        `;
+
+    } else if (currentMech === "circular") {
+
+        const m = mechVal("mass");
+        const r = mechVal("radius");
+        const v = mechVal("speed");
+
+        const ac = v*v/r;
+        const Fc = m*ac;
+
+        html = `
+            <div class="measurement"><span>Speed</span><strong>${v.toFixed(2)} m/s</strong></div>
+            <div class="measurement"><span>Radius</span><strong>${r.toFixed(2)} m</strong></div>
+            <div class="measurement"><span>Acceleration</span><strong>${ac.toFixed(2)} m/s²</strong></div>
+            <div class="measurement"><span>Centripetal Force</span><strong>${Fc.toFixed(2)} N</strong></div>
+        `;
+
+    } else if (currentMech === "work") {
+
+        const F = mechVal("force");
+        const d = mechVal("distance");
+        const W = F*d;
+
+        html = `
+            <div class="measurement"><span>Force</span><strong>${F.toFixed(1)} N</strong></div>
+            <div class="measurement"><span>Distance</span><strong>${d.toFixed(1)} m</strong></div>
+            <div class="measurement"><span>Work</span><strong>${W.toFixed(1)} J</strong></div>
+            <div class="measurement"><span>Time</span><strong>${mechTime.toFixed(2)} s</strong></div>
+        `;
+
+    } else if (currentMech === "projectile") {
+
+        const v = mechVal("speed");
+        const angle = mechVal("angle") * Math.PI/180;
+        const g = mechVal("gravity");
+
+        const vx = v*Math.cos(angle);
+        const vy = v*Math.sin(angle);
+
+        const flight = 2*vy/g;
+        const range = vx*flight;
+        const maxHeight = vy*vy/(2*g);
+
+        html = `
+            <div class="measurement"><span>Horizontal Velocity</span><strong>${vx.toFixed(2)} m/s</strong></div>
+            <div class="measurement"><span>Vertical Velocity</span><strong>${vy.toFixed(2)} m/s</strong></div>
+            <div class="measurement"><span>Maximum Height</span><strong>${maxHeight.toFixed(2)} m</strong></div>
+            <div class="measurement"><span>Range</span><strong>${range.toFixed(2)} m</strong></div>
+        `;
+    }
+
+    document.getElementById("mechMeasurements").innerHTML = html;
+}
+
 function drawMechanics() {
 
-    const size = resizeCanvas(mechanicsCanvas);
+    const {ctx,wid,width,height} = (() => {
+        const r = prepareCanvas(mechCanvas);
+        return {
+            ctx:r.ctx,
+            width:r.width,
+            height:r.height
+        };
+    })();
 
-    const w = size.width;
-    const h = size.height;
+    const ctx = ctx;
+    const width = wid || document.getElementById("mechCanvas").getBoundingClientRect().width;
+    const height = document.getElementById("mechCanvas").getBoundingClientRect().height;
 
-    mechanicsCtx.clearRect(0, 0, w, h);
+    ctx.fillStyle = "#050c15";
+    ctx.fillRect(0,0,width,height);
 
-    mechanicsCtx.fillStyle = "#07101d";
-    mechanicsCtx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = "#27445f";
+    ctx.lineWidth = 2;
 
-    if (mechanicsExperiment === "motion") {
-        drawMotion(w, h);
-    }
+    if (currentMech === "motion") {
 
-    else if (mechanicsExperiment === "freefall") {
-        drawFreeFall(w, h);
-    }
+        const u = mechVal("velocity");
+        const a = mechVal("acceleration");
+        const t = mechTime;
 
-    else if (mechanicsExperiment === "newton") {
-        drawNewton(w, h);
-    }
+        const s = u*t + .5*a*t*t;
 
-    else if (mechanicsExperiment === "friction") {
-        drawFriction(w, h);
-    }
+        const scale = Math.min((width-100)/Math.max(20, Math.abs(u*10)), 5);
 
-    else if (mechanicsExperiment === "circular") {
-        drawCircular(w, h);
-    }
+        const x = Math.max(40, Math.min(width-70, 50+s*scale));
 
-    else if (mechanicsExperiment === "energy") {
-        drawEnergy(w, h);
-    }
+        ctx.fillStyle = "#38bdf8";
+        ctx.fillRect(0,height-70,width,4);
 
-    else if (mechanicsExperiment === "projectile") {
-        drawProjectile(w, h);
-    }
-}
+        ctx.font = "45px Arial";
+        ctx.fillText("🏎️",x,height-80);
 
+        ctx.fillStyle = "#9fb6cc";
+        ctx.font = "14px Arial";
+        ctx.fillText("Motion simulation",20,30);
 
-function drawMotion(w, h) {
+    } else if (currentMech === "freefall") {
 
-    const ctx = mechanicsCtx;
+        const h = mechVal("height");
+        const g = mechVal("gravity");
 
-    const u = getNumber("motionUSlider");
-    const a = getNumber("motionASlider");
+        const maxT = Math.sqrt(2*h/g);
+        const t = Math.min(mechTime,maxT);
+        const fallen = .5*g*t*t;
 
-    const t = mechanicsTime;
+        const ground = height-55;
+        const top = 55;
+        const y = top + (fallen/h)*(ground-top);
 
-    const s = u * t + 0.5 * a * t * t;
+        ctx.strokeStyle = "#607d94";
+        ctx.beginPath();
+        ctx.moveTo(width/2,top);
+        ctx.lineTo(width/2,ground);
+        ctx.stroke();
 
-    const trackY = h * 0.65;
+        ctx.fillStyle = "#38bdf8";
+        ctx.beginPath();
+        ctx.arc(width/2,y,16,0,Math.PI*2);
+        ctx.fill();
 
-    ctx.strokeStyle = "#31516e";
-    ctx.lineWidth = 4;
+        ctx.fillStyle = "#9fb6cc";
+        ctx.font = "14px Arial";
+        ctx.fillText("Gravity",20,30);
 
-    ctx.beginPath();
-    ctx.moveTo(40, trackY);
-    ctx.lineTo(w - 40, trackY);
-    ctx.stroke();
+    } else if (currentMech === "newton" || currentMech === "friction") {
 
-    const maxDistance = Math.max(
-        20,
-        Math.abs(
-            u * getNumber("motionTSlider") +
-            0.5 * a * getNumber("motionTSlider") ** 2
-        )
-    );
+        const mass = mechVal("mass");
+        const force = mechVal("force");
 
-    let x = 50 + (Math.max(0, s) / maxDistance) * (w - 100);
+        let acceleration = force/mass;
 
-    x = Math.min(w - 60, Math.max(50, x));
-
-    ctx.fillStyle = "#39bdf8";
-    ctx.fillRect(x - 25, trackY - 30, 50, 28);
-
-    ctx.fillStyle = "#08111f";
-
-    ctx.beginPath();
-    ctx.arc(x - 14, trackY, 6, 0, Math.PI * 2);
-    ctx.arc(x + 14, trackY, 6, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "16px Arial";
-
-    ctx.fillText(
-        `t = ${t.toFixed(2)} s`,
-        30,
-        35
-    );
-
-    ctx.fillText(
-        `s = ${s.toFixed(2)} m`,
-        30,
-        60
-    );
-}
-
-
-function drawFreeFall(w, h) {
-
-    const ctx = mechanicsCtx;
-
-    const height =
-        getNumber("freeHeightSlider");
-
-    const g =
-        getNumber("gravitySlider");
-
-    const maxTime =
-        Math.sqrt(2 * height / g);
-
-    const t =
-        Math.min(mechanicsTime, maxTime);
-
-    const fallen =
-        0.5 * g * t * t;
-
-    const ratio =
-        Math.min(1, fallen / height);
-
-    const groundY = h - 50;
-    const topY = 60;
-
-    ctx.strokeStyle = "#31516e";
-    ctx.lineWidth = 3;
-
-    ctx.beginPath();
-    ctx.moveTo(w / 2, topY);
-    ctx.lineTo(w / 2, groundY);
-    ctx.stroke();
-
-    const y =
-        topY + ratio * (groundY - topY);
-
-    ctx.fillStyle = "#ffcc66";
-
-    ctx.beginPath();
-    ctx.arc(w / 2, y, 16, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "16px Arial";
-
-    ctx.fillText(
-        `Height: ${Math.max(0, height - fallen).toFixed(2)} m`,
-        25,
-        30
-    );
-}
-
-
-function drawNewton(w, h) {
-
-    const ctx = mechanicsCtx;
-
-    const F = getNumber("forceSlider");
-    const m = getNumber("massSlider");
-
-    const acceleration = F / m;
-
-    const x =
-        Math.min(
-            w - 80,
-            80 + mechanicsTime * acceleration * 4
-        );
-
-    const y = h / 2;
-
-    ctx.fillStyle = "#718096";
-    ctx.fillRect(x, y - 25, 60, 50);
-
-    ctx.strokeStyle = "#39bdf8";
-    ctx.lineWidth = 5;
-
-    ctx.beginPath();
-    ctx.moveTo(x + 60, y);
-    ctx.lineTo(x + 130, y);
-    ctx.stroke();
-
-    ctx.fillStyle = "#39bdf8";
-    ctx.beginPath();
-    ctx.moveTo(x + 130, y);
-    ctx.lineTo(x + 115, y - 9);
-    ctx.lineTo(x + 115, y + 9);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "16px Arial";
-
-    ctx.fillText(
-        `F = ${F} N`,
-        25,
-        30
-    );
-
-    ctx.fillText(
-        `a = ${acceleration.toFixed(2)} m/s²`,
-        25,
-        55
-    );
-}
-
-
-function drawFriction(w, h) {
-
-    const ctx = mechanicsCtx;
-
-    const F = getNumber("frictionForceSlider");
-    const m = getNumber("frictionMassSlider");
-    const mu = getNumber("muSlider");
-
-    const friction = mu * m * 9.8;
-    const net = Math.max(0, F - friction);
-
-    const x =
-        Math.min(
-            w - 100,
-            80 + mechanicsTime * net / m * 5
-        );
-
-    const y = h * 0.65;
-
-    ctx.strokeStyle = "#31516e";
-    ctx.lineWidth = 5;
-
-    ctx.beginPath();
-    ctx.moveTo(30, y + 30);
-    ctx.lineTo(w - 30, y + 30);
-    ctx.stroke();
-
-    ctx.fillStyle = "#9a7b52";
-    ctx.fillRect(x, y - 10, 75, 40);
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "16px Arial";
-
-    ctx.fillText(
-        `Applied: ${F.toFixed(1)} N`,
-        25,
-        30
-    );
-
-    ctx.fillText(
-        `Friction: ${friction.toFixed(1)} N`,
-        25,
-        55
-    );
-}
-
-
-function drawCircular(w, h) {
-
-    const ctx = mechanicsCtx;
-
-    const r = Math.min(w, h) * 0.25;
-
-    const cx = w / 2;
-    const cy = h / 2;
-
-    const speed =
-        getNumber("circularSpeedSlider");
-
-    const angle =
-        mechanicsTime * speed / 10;
-
-    ctx.strokeStyle = "#31516e";
-    ctx.lineWidth = 3;
-
-    ctx.beginPath();
-    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.stroke();
-
-    const x = cx + Math.cos(angle) * r;
-    const y = cy + Math.sin(angle) * r;
-
-    ctx.fillStyle = "#39bdf8";
-
-    ctx.beginPath();
-    ctx.arc(x, y, 16, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "16px Arial";
-
-    ctx.fillText(
-        `v = ${speed} m/s`,
-        25,
-        30
-    );
-}
-
-
-function drawEnergy(w, h) {
-
-    const ctx = mechanicsCtx;
-
-    const F = getNumber("energyForceSlider");
-    const d = getNumber("distanceSlider");
-
-    const ratio =
-        Math.min(
-            1,
-            mechanicsTime /
-            Math.max(1, d / Math.max(F / 10, 1))
-        );
-
-    const x =
-        50 + ratio * (w - 100);
-
-    const y = h * 0.65;
-
-    ctx.strokeStyle = "#31516e";
-    ctx.lineWidth = 5;
-
-    ctx.beginPath();
-    ctx.moveTo(30, y + 25);
-    ctx.lineTo(w - 30, y + 25);
-    ctx.stroke();
-
-    ctx.fillStyle = "#e9a23b";
-    ctx.fillRect(x, y - 25, 50, 50);
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "16px Arial";
-
-    ctx.fillText(
-        `Work = ${(F * d).toFixed(1)} J`,
-        25,
-        30
-    );
-}
-
-
-function drawProjectile(w, h) {
-
-    const ctx = mechanicsCtx;
-
-    const speed =
-        getNumber("projectileSpeedSlider");
-
-    const angle =
-        getNumber("angleSlider") *
-        Math.PI / 180;
-
-    const g = 9.8;
-
-    const vx = speed * Math.cos(angle);
-    const vy = speed * Math.sin(angle);
-
-    const totalTime =
-        2 * vy / g;
-
-    const t =
-        Math.min(mechanicsTime, totalTime);
-
-    const xPhysics = vx * t;
-
-    const yPhysics =
-        vy * t - 0.5 * g * t * t;
-
-    const range =
-        vx * totalTime;
-
-    const maxHeight =
-        vy * vy / (2 * g);
-
-    const scaleX =
-        (w - 80) / Math.max(range, 1);
-
-    const scaleY =
-        (h - 100) / Math.max(maxHeight, 1);
-
-    const x =
-        40 + xPhysics * scaleX;
-
-    const y =
-        h - 45 - yPhysics * scaleY;
-
-    ctx.strokeStyle = "#31516e";
-    ctx.lineWidth = 3;
-
-    ctx.beginPath();
-    ctx.moveTo(30, h - 45);
-    ctx.lineTo(w - 30, h - 45);
-    ctx.stroke();
-
-    ctx.fillStyle = "#ff6b6b";
-
-    ctx.beginPath();
-    ctx.arc(
-        Math.min(w - 30, x),
-        Math.min(h - 45, y),
-        9,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fill();
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "16px Arial";
-
-    ctx.fillText(
-        `Range ≈ ${range.toFixed(2)} m`,
-        25,
-        30
-    );
-}
-
-
-/* =====================================================
-   MECHANICS SIMULATION
-===================================================== */
-
-function startSimulation() {
-
-    if (mechanicsRunning) return;
-
-    mechanicsRunning = true;
-    mechanicsLastFrame = performance.now();
-
-    requestAnimationFrame(mechanicsLoop);
-
-    showToast("Mechanics simulation started");
-}
-
-
-function pauseSimulation() {
-
-    mechanicsRunning = false;
-
-    showToast("Mechanics simulation paused");
-}
-
-
-function resetSimulation() {
-
-    mechanicsRunning = false;
-    mechanicsTime = 0;
-
-    calculateMechanics();
-    drawMechanics();
-
-    showToast("Mechanics simulation reset");
-}
-
-
-function mechanicsLoop(timestamp) {
-
-    if (!mechanicsRunning) return;
-
-    const dt =
-        (timestamp - mechanicsLastFrame) / 1000;
-
-    mechanicsLastFrame = timestamp;
-
-    mechanicsTime += dt;
-
-    const maxTime =
-        getNumber("motionTSlider") || 10;
-
-    if (mechanicsExperiment === "motion") {
-
-        if (mechanicsTime >= maxTime) {
-            mechanicsTime = maxTime;
-            mechanicsRunning = false;
+        if (currentMech === "friction") {
+            const friction = mechVal("mu")*mass*9.8;
+            acceleration = (force-friction)/mass;
         }
 
-    }
-
-    if (mechanicsExperiment === "freefall") {
-
-        const h =
-            getNumber("freeHeightSlider");
-
-        const g =
-            getNumber("gravitySlider");
-
-        const fallTime =
-            Math.sqrt(2 * h / g);
-
-        if (mechanicsTime >= fallTime) {
-            mechanicsTime = fallTime;
-            mechanicsRunning = false;
-        }
-
-    }
-
-    if (mechanicsExperiment === "projectile") {
-
-        const speed =
-            getNumber("projectileSpeedSlider");
-
-        const angle =
-            getNumber("angleSlider") *
-            Math.PI / 180;
-
-        const flight =
-            2 * speed * Math.sin(angle) / 9.8;
-
-        if (mechanicsTime >= flight) {
-            mechanicsTime = flight;
-            mechanicsRunning = false;
-        }
-    }
-
-    calculateMechanics();
-    drawMechanics();
-
-    requestAnimationFrame(mechanicsLoop);
-}
-
-
-/* =====================================================
-   ELECTRICITY LAB
-===================================================== */
-
-const circuitCanvas =
-    document.getElementById("circuitCanvas");
-
-const circuitCtx =
-    circuitCanvas.getContext("2d");
-
-let circuitClosed = false;
-let circuitRunning = false;
-
-let circuitAnimation = 0;
-
-
-const voltageSlider =
-    document.getElementById("voltageSlider");
-
-const resistanceSlider =
-    document.getElementById("resistanceSlider");
-
-
-voltageSlider.addEventListener("input", updateCircuit);
-
-resistanceSlider.addEventListener("input", updateCircuit);
-
-
-function getVoltage() {
-    return Number(voltageSlider.value);
-}
-
-
-function getResistance() {
-    return Number(resistanceSlider.value);
-}
-
-
-function getCurrent() {
-
-    if (!circuitClosed) {
-        return 0;
-    }
-
-    return getVoltage() / getResistance();
-}
-
-
-function getPower() {
-
-    const I = getCurrent();
-
-    return I * I * getResistance();
-}
-
-
-function updateCircuit() {
-
-    document.getElementById("voltageValue")
-        .textContent = getVoltage();
-
-    document.getElementById("resistanceValue")
-        .textContent = getResistance();
-
-    const V = getVoltage();
-    const R = getResistance();
-    const I = getCurrent();
-    const P = getPower();
-
-    document.getElementById("liveVoltage")
-        .textContent = V.toFixed(2);
-
-    document.getElementById("liveResistance")
-        .textContent = R.toFixed(2);
-
-    document.getElementById("liveCurrent")
-        .textContent = I.toFixed(2);
-
-    document.getElementById("livePower")
-        .textContent = P.toFixed(2);
-
-    drawCircuit();
-}
-
-
-function toggleSwitch() {
-
-    circuitClosed = !circuitClosed;
-
-    const button =
-        document.getElementById("switchButton");
-
-    const status =
-        document.getElementById("circuitStatus");
-
-    if (circuitClosed) {
-
-        button.textContent = "CLOSED";
-        button.classList.add("on");
-
-        status.textContent = "CLOSED";
-
-        showToast("Circuit closed — current can flow");
-
-    } else {
-
-        button.textContent = "OPEN";
-        button.classList.remove("on");
-
-        status.textContent = "OPEN";
-
-        showToast("Circuit opened — current stopped");
-
-    }
-
-    updateCircuit();
-}
-
-
-function startCircuit() {
-
-    circuitRunning = true;
-
-    showToast("Circuit simulation running");
-
-    animateCircuit();
-}
-
-
-function pauseCircuit() {
-
-    circuitRunning = false;
-
-    showToast("Circuit simulation paused");
-}
-
-
-function resetCircuit() {
-
-    circuitRunning = false;
-    circuitClosed = false;
-
-    voltageSlider.value = 12;
-    resistanceSlider.value = 6;
-
-    document.getElementById("switchButton")
-        .textContent = "OPEN";
-
-    document.getElementById("switchButton")
-        .classList.remove("on");
-
-    document.getElementById("circuitStatus")
-        .textContent = "OPEN";
-
-    updateCircuit();
-
-    showToast("Circuit reset");
-}
-
-
-function animateCircuit() {
-
-    if (!circuitRunning) return;
-
-    circuitAnimation += 0.08;
-
-    drawCircuit();
-
-    requestAnimationFrame(animateCircuit);
-}
-
-
-/* =====================================================
-   CIRCUIT DRAWING
-===================================================== */
-
-function drawCircuit() {
-
-    const size =
-        resizeCanvas(circuitCanvas);
-
-    const w = size.width;
-    const h = size.height;
-
-    circuitCtx.clearRect(0, 0, w, h);
-
-    circuitCtx.fillStyle = "#07101d";
-    circuitCtx.fillRect(0, 0, w, h);
-
-    const left = w * 0.18;
-    const right = w * 0.82;
-
-    const top = h * 0.25;
-    const bottom = h * 0.72;
-
-    const batteryX = left;
-    const resistorX = w / 2;
-    const bulbX = right;
-
-    /* Wires */
-
-    circuitCtx.strokeStyle = "#7891a9";
-    circuitCtx.lineWidth = 5;
-
-    circuitCtx.beginPath();
-
-    circuitCtx.moveTo(batteryX, top);
-    circuitCtx.lineTo(resistorX - 55, top);
-
-    circuitCtx.moveTo(resistorX + 55, top);
-    circuitCtx.lineTo(bulbX, top);
-
-    circuitCtx.moveTo(bulbX, top);
-    circuitCtx.lineTo(bulbX, bottom);
-
-    circuitCtx.moveTo(bulbX, bottom);
-    circuitCtx.lineTo(batteryX, bottom);
-
-    circuitCtx.stroke();
-
-
-    /* Battery */
-
-    circuitCtx.strokeStyle = "#ffffff";
-    circuitCtx.lineWidth = 6;
-
-    circuitCtx.beginPath();
-
-    circuitCtx.moveTo(batteryX - 12, top - 35);
-    circuitCtx.lineTo(batteryX - 12, top + 35);
-
-    circuitCtx.moveTo(batteryX + 12, top - 20);
-    circuitCtx.lineTo(batteryX + 12, top + 20);
-
-    circuitCtx.stroke();
-
-    circuitCtx.fillStyle = "#ffffff";
-    circuitCtx.font = "16px Arial";
-
-    circuitCtx.fillText(
-        `${getVoltage()} V`,
-        batteryX - 28,
-        top + 65
-    );
-
-
-    /* Resistor */
-
-    drawResistor(
-        resistorX,
-        top
-    );
-
-
-    /* Bulb */
-
-    drawBulb(
-        bulbX,
-        top
-    );
-
-
-    /* Switch */
-
-    drawSwitch(
-        batteryX,
-        bottom
-    );
-
-
-    /* Current particles */
-
-    if (circuitClosed && circuitRunning) {
-
-        drawCurrentParticles(
-            batteryX,
-            resistorX,
-            bulbX,
-            top,
-            bottom
-        );
-    }
-
-
-    /* Labels */
-
-    circuitCtx.fillStyle = "#ffffff";
-    circuitCtx.font = "bold 15px Arial";
-
-    circuitCtx.fillText(
-        "🔋 Battery",
-        batteryX - 38,
-        top - 55
-    );
-
-    circuitCtx.fillText(
-        "🟫 Resistor",
-        resistorX - 40,
-        top - 45
-    );
-
-    circuitCtx.fillText(
-        "💡 Bulb",
-        bulbX - 25,
-        top - 55
-    );
-
-    circuitCtx.fillText(
-        "🔘 Switch",
-        batteryX - 35,
-        bottom + 55
-    );
-
-    if (!circuitClosed) {
-
-        circuitCtx.fillStyle = "#ff8585";
-
-        circuitCtx.fillText(
-            "Circuit OPEN",
-            w / 2 - 45,
-            h - 20
+        const x = Math.min(width-90,70 + Math.max(0,acceleration)*25);
+
+        ctx.fillStyle = "#1b344d";
+        ctx.fillRect(0,height-80,width,30);
+
+        ctx.fillStyle = "#38bdf8";
+        ctx.fillRect(x,height-115,70,35);
+
+        ctx.fillStyle = "#9fb6cc";
+        ctx.font = "14px Arial";
+        ctx.fillText(
+            currentMech === "newton"
+            ? "F = ma"
+            : "Applied force vs friction",
+            20,30
         );
 
-    } else {
+    } else if (currentMech === "circular") {
 
-        circuitCtx.fillStyle = "#70e0a1";
+        const r = Math.min(width,height)*.28;
+        const cx = width/2;
+        const cy = height/2;
 
-        circuitCtx.fillText(
-            `Current = ${getCurrent().toFixed(2)} A`,
-            w / 2 - 65,
-            h - 20
-        );
-    }
-}
+        ctx.strokeStyle = "#34566f";
+        ctx.beginPath();
+        ctx.arc(cx,cy,r,0,Math.PI*2);
+        ctx.stroke();
 
+        const angle = mechTime*2;
 
-function drawResistor(x, y) {
+        const x = cx + r*Math.cos(angle);
+        const y = cy + r*Math.sin(angle);
 
-    const ctx = circuitCtx;
+        ctx.fillStyle = "#38bdf8";
+        ctx.beginPath();
+        ctx.arc(x,y,14,0,Math.PI*2);
+        ctx.fill();
 
-    ctx.strokeStyle = "#d39b5a";
-    ctx.lineWidth = 5;
+        ctx.fillStyle = "#9fb6cc";
+        ctx.font = "14px Arial";
+        ctx.fillText("Centripetal motion",20,30);
 
-    ctx.beginPath();
+    } else if (currentMech === "work") {
 
-    ctx.moveTo(x - 55, y);
+        const distance = mechVal("distance");
+        const force = mechVal("force");
 
-    ctx.lineTo(x - 40, y);
+        const progress = Math.min(1,mechTime/5);
+        const x = 50 + progress*Math.min(distance*25,width-120);
 
-    const points = [
-        [-40, 0],
-        [-30, -15],
-        [-20, 15],
-        [-10, -15],
-        [0, 15],
-        [10, -15],
-        [20, 15],
-        [30, -15],
-        [40, 0]
-    ];
+        ctx.fillStyle = "#1b344d";
+        ctx.fillRect(0,height-70,width,25);
 
-    for (let i = 1; i < points.length; i++) {
+        ctx.fillStyle = "#38bdf8";
+        ctx.fillRect(x,height-110,60,40);
 
-        const px = x + points[i][0];
-        const py = y + points[i][1];
+        ctx.fillStyle = "#fbbf24";
+        ctx.beginPath();
+        ctx.moveTo(x+70,height-90);
+        ctx.lineTo(x+120,height-90);
+        ctx.lineTo(x+105,height-100);
+        ctx.moveTo(x+120,height-90);
+        ctx.lineTo(x+105,height-80);
+        ctx.stroke();
 
-        ctx.lineTo(px, py);
-    }
+    } else if (currentMech === "projectile") {
 
-    ctx.lineTo(x + 55, y);
+        const v = mechVal("speed");
+        const angle = mechVal("angle")*Math.PI/180;
+        const g = mechVal("gravity");
 
-    ctx.stroke();
+        const vx = v*Math.cos(angle);
+        const vy = v*Math.sin(angle);
 
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "14px Arial";
+        const total = 2*vy/g;
 
-    ctx.fillText(
-        `${getResistance()} Ω`,
-        x - 22,
-        y + 35
-    );
-}
+        ctx.strokeStyle = "#294863";
+        ctx.beginPath();
+        ctx.moveTo(35,height-45);
+        ctx.lineTo(width-35,height-45);
+        ctx.stroke();
 
-
-function drawBulb(x, y) {
-
-    const ctx = circuitCtx;
-
-    const current =
-        getCurrent();
-
-    const brightness =
-        Math.min(
-            1,
-            current / 4
-        );
-
-    if (circuitClosed) {
-
-        const glow =
-            25 + brightness * 35;
-
-        ctx.shadowBlur = glow;
-        ctx.shadowColor = "#ffe66d";
-
-    } else {
-
-        ctx.shadowBlur = 0;
-    }
-
-    ctx.fillStyle =
-        circuitClosed
-            ? "#ffe66d"
-            : "#536477";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y,
-        25,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fill();
-
-    ctx.shadowBlur = 0;
-
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 3;
-
-    ctx.beginPath();
-
-    ctx.moveTo(x - 10, y + 22);
-    ctx.lineTo(x - 7, y + 38);
-
-    ctx.lineTo(x + 7, y + 38);
-    ctx.lineTo(x + 10, y + 22);
-
-    ctx.stroke();
-}
-
-
-function drawSwitch(x, y) {
-
-    const ctx = circuitCtx;
-
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 5;
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x - 18,
-        y,
-        5,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.arc(
-        x + 18,
-        y,
-        5,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.stroke();
-
-    ctx.beginPath();
-
-    ctx.moveTo(x - 18, y);
-
-    if (circuitClosed) {
-
-        ctx.lineTo(x + 18, y);
-
-    } else {
-
-        ctx.lineTo(x + 8, y - 22);
-    }
-
-    ctx.stroke();
-}
-
-
-function drawCurrentParticles(
-    batteryX,
-    resistorX,
-    bulbX,
-    top,
-    bottom
-) {
-
-    const ctx = circuitCtx;
-
-    const path = [
-        {
-            x: batteryX,
-            y: bottom
-        },
-        {
-            x: resistorX,
-            y: bottom
-        },
-        {
-            x: bulbX,
-            y: bottom
-        },
-        {
-            x: bulbX,
-            y: top
-        },
-        {
-            x: resistorX,
-            y: top
-        },
-        {
-            x: batteryX,
-            y: top
-        }
-    ];
-
-    for (let i = 0; i < 12; i++) {
-
-        const progress =
-            (circuitAnimation + i * 0.5) % 6;
-
-        const segment =
-            Math.floor(progress);
-
-        const local =
-            progress - segment;
-
-        const start =
-            path[segment];
-
-        const end =
-            path[segment + 1];
-
-        if (!start || !end) continue;
-
-        const x =
-            start.x +
-            (end.x - start.x) * local;
-
-        const y =
-            start.y +
-            (end.y - start.y) * local;
-
-        ctx.fillStyle = "#5ee7ff";
-
+        ctx.strokeStyle = "#38bdf8";
         ctx.beginPath();
 
-        ctx.arc(
-            x,
-            y,
-            4,
-            0,
-            Math.PI * 2
-        );
+        for(let i=0;i<=100;i++){
 
+            const t = total*i/100;
+            const x = 45 + (vx*t)*(width-90)/(Math.max(1,vx*total));
+            const yPhysics = vy*t-.5*g*t*t;
+            const maxHeight = vy*vy/(2*g);
+
+            const y = height-45-yPhysics*(height-100)/Math.max(1,maxHeight);
+
+            if(i===0) ctx.moveTo(x,y);
+            else ctx.lineTo(x,y);
+        }
+
+        ctx.stroke();
+
+        const t = Math.min(mechTime,total);
+
+        const px = 45 + vx*t*(width-90)/(Math.max(1,vx*total));
+        const py = vy*t-.5*g*t*t;
+        const pyy = height-45-py*(height-100)/Math.max(1,vy*vy/(2*g));
+
+        ctx.fillStyle = "#38bdf8";
+        ctx.beginPath();
+        ctx.arc(px,pyy,9,0,Math.PI*2);
         ctx.fill();
     }
+
+    updateMechanicsMeasurements();
 }
 
+document.querySelectorAll("[data-mech]").forEach(tab => {
 
-/* =====================================================
-   INITIALIZATION
-===================================================== */
+    tab.addEventListener("click", () => {
 
-function initialize() {
+        document.querySelectorAll("[data-mech]")
+            .forEach(x => x.classList.remove("active"));
 
-    selectMechanicsExperiment(
-        "motion",
-        document.querySelector(".experiment-button")
-    );
+        tab.classList.add("active");
 
-    updateCircuit();
+        currentMech = tab.dataset.mech;
 
-    drawCircuit();
-}
-
-
-window.addEventListener("resize", () => {
-
-    drawMechanics();
-    drawCircuit();
+        renderMechanics();
+    });
 
 });
 
+document.getElementById("mechStart").onclick = () => {
+    mechRunning = true;
+};
 
-initialize();
+document.getElementById("mechPause").onclick = () => {
+    mechRunning = false;
+};
 
-</script>
+document.getElementById("mechReset").onclick = () => {
+    mechRunning = false;
+    mechTime = 0;
+    drawMechanics();
+};
 
-</body>
-</html>
+
+/* ============================================================
+   ELECTRICITY
+============================================================ */
+
+const voltage = document.getElementById("voltage");
+const resistance = document.getElementById("resistance");
+const switchState = document.getElementById("switchState");
+
+let circuitRunning = false;
+let circuitOffset = 0;
+
+function updateCircuit() {
+
+    const V = Number(voltage.value);
+    const R = Number(resistance.value);
+    const closed = switchState.value === "closed";
+
+    const I = closed ? V/R : 0;
+    const P = closed ? V*I : 0;
+
+    document.getElementById("voltageValue").textContent = V;
+    document.getElementById("resistanceValue").textContent = R;
+    document.getElementById("switchValue").textContent = closed ? "Closed" : "Open";
+
+    document.getElementById("currentVoltage").textContent = V + " V";
+    document.getElementById("currentCurrent").textContent = I.toFixed(2) + " A";
+    document.getElementById("currentResistance").textContent = R + " Ω";
+    document.getElementById("currentPower").textContent = P.toFixed(2) + " W";
+
+    drawCircuit();
+}
+
+[voltage,resistance,switchState].forEach(x => {
+    x.addEventListener("input",updateCircuit);
+    x.addEventListener("change",updateCircuit);
+});
+
+function drawCircuit() {
+
+    const r = prepareCanvas(document.getElementById("circuitCanvas"));
+
+    const ctx = r.ctx;
+    const w = r.width;
+    const h = r.height;
+
+    ctx.fillStyle = "#050c15";
+    ctx.fillRect(0,0,w,h);
+
+    const closed = switchState.value === "closed";
+    const V = Number(voltage.value);
+    const R = Number(resistance.value);
+
+    const I = closed ? V/R : 0;
+
+    const left = w*.18;
+    const right = w*.82;
+    const top = h*.25;
+    const bottom = h*.75;
+
+    ctx.strokeStyle = "#7891a8";
+    ctx.lineWidth = 5;
+
+    ctx.beginPath();
+
+    ctx.moveTo(left,top);
+    ctx.lineTo(right,top);
+
+    ctx.lineTo(right,bottom);
+
+    ctx.lineTo(left,bottom);
+
+    ctx.lineTo(left,top);
+
+    ctx.stroke();
+
+    /* Battery */
+
+    ctx.strokeStyle = "#38bdf8";
+    ctx.lineWidth = 5;
+
+    ctx.beginPath();
+    ctx.moveTo(left-12,top-25);
+    ctx.lineTo(left-12,top+25);
+    ctx.moveTo(left+12,top-40);
+    ctx.lineTo(left+12,top+40);
+    ctx.stroke();
+
+    ctx.fillStyle = "#d7e5f0";
+    ctx.font = "14px Arial";
+    ctx.fillText(`${V} V`,left-28,top+65);
+
+    /* Resistor */
+
+    const rx = w*.48;
+
+    ctx.strokeStyle = "#fbbf24";
+    ctx.lineWidth = 4;
+
+    ctx.beginPath();
+    ctx.moveTo(rx-55,top);
+
+    for(let i=0;i<6;i++){
+
+        ctx.lineTo(
+            rx-45+i*18,
+            top+(i%2===0?-15:15)
+        );
+    }
+
+    ctx.lineTo(rx+55,top);
+    ctx.stroke();
+
+    ctx.fillStyle = "#fbbf24";
+    ctx.fillText(`${R} Ω`,rx-25,top-25);
+
+    /* Bulb */
+
+    const bx = right;
+    const by = h/2;
+
+    ctx.strokeStyle = "#38bdf8";
+    ctx.beginPath();
+    ctx.arc(bx,by,27,0,Math.PI*2);
+    ctx.stroke();
+
+    const brightness = Math.min(1,I/4);
+
+    ctx.fillStyle = `rgba(255,220,70,${Math.max(.15,brightness)})`;
+
+    ctx.beginPath();
+    ctx.arc(bx,by,19,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.fillStyle = "#fff";
+    ctx.font = "13px Arial";
+    ctx.fillText("Bulb",bx-15,by+50);
+
+    /* Switch */
+
+    const sx = left;
+    const sy = bottom;
+
+    ctx.strokeStyle = "#7891a8";
+
+    ctx.beginPath();
+    ctx.moveTo(sx,sy);
+    ctx.lineTo(sx+55,sy);
+
+    if(closed){
+
+        ctx.lineTo(sx+95,sy);
+    } else {
+
+        ctx.moveTo(sx+55,sy);
+        ctx.lineTo(sx+90,sy-30);
+        ctx.moveTo(sx+95,sy);
+    }
+
+    ctx.lineTo(sx+135,sy);
+    ctx.stroke();
+
+    ctx.fillStyle = "#9fb6cc";
+    ctx.fillText(closed ? "Closed" : "Open",sx+55,sy+30);
+
+    /* Current particles */
+
+    if(circuitRunning && closed){
+
+        const points = [
+            [left,top],
+            [right,top],
+            [right,bottom],
+            [left,bottom]
+        ];
+
+        const totalSegments = points.length;
+        const progress = (circuitOffset % 100)/100;
+
+        const index = Math.floor(progress*totalSegments);
+        const local = progress*totalSegments-index;
+
+        const p1 = points[index];
+        const p2 = points[(index+1)%totalSegments];
+
+        const px = p1[0]+(p2[0]-p1[0])*local;
+        const py = p1[1]+(p2[1]-p1[1])*local;
+
+        ctx.fillStyle = "#fbbf24";
+        ctx.beginPath();
+        ctx.arc(px,py,6,0,Math.PI*2);
+        ctx.fill();
+    }
+
+    ctx.fillStyle = "#9fb6cc";
+    ctx.font = "14px Arial";
+    ctx.fillText(
+        closed ? "Current is flowing" : "Circuit is open",
+        20,
+        30
+    );
+}
+
+document.getElementById("circuitStart").onclick = () => {
+    circuitRunning = true;
+};
+
+document.getElementById("circuitPause").onclick = () => {
+    circuitRunning = false;
+};
+
+document.getElementById("circuitReset").onclick = () => {
+    circuitRunning = false;
+    circuitOffset = 0;
+    drawCircuit();
+};
+
+
+/* ============================================================
+   WAVES & SOUND
+============================================================ */
+
+let currentWave = "transverse";
+let waveRunning = false;
+let waveTime = 0;
+
+const frequency = document.getElementById("frequency");
+const amplitude = document.getElementById("amplitude");
+const wavelength = document.getElementById("wavelength");
+
+const waveDescriptions = {
+
+    transverse:
+        "A transverse wave oscillates perpendicular to the direction of propagation.",
+
+    longitudinal:
+        "A longitudinal wave oscillates parallel to the direction of propagation.",
+
+    sound:
+        "Sound is a mechanical wave. This visualization represents pressure variations in a medium.",
+
+    speed:
+        "Wave speed is related to frequency and wavelength by v = fλ."
+};
+
+document.querySelectorAll("[data-wave]").forEach(tab => {
+
+    tab.addEventListener("click", () => {
+
+        document.querySelectorAll("[data-wave]")
+            .forEach(x => x.classList.remove("active"));
+
+        tab.classList.add("active");
+
+        currentWave = tab.dataset.wave;
+
+        updateWave();
+    });
+
+});
+
+[frequency,amplitude,wavelength].forEach(input => {
+    input.addEventListener("input",updateWave);
+});
+
+function updateWave() {
+
+    const f = Number(frequency.value);
+    const A = Number(amplitude.value);
+    const lambda = Number(wavelength.value);
+
+    const v = f*lambda;
+    const T = 1/f;
+
+    document.getElementById("frequencyValue").textContent = f;
+    document.getElementById("amplitudeValue").textContent = A;
+    document.getElementById("wavelengthValue").textContent = lambda.toFixed(1);
+    document.getElementById("waveSpeedValue").textContent = v.toFixed(2);
+
+    document.getElementById("waveFrequency").textContent = f + " Hz";
+    document.getElementById("waveAmplitude").textContent = A;
+    document.getElementById("waveWavelength").textContent = lambda.toFixed(1) + " m";
+    document.getElementById("waveSpeed").textContent = v.toFixed(2) + " m/s";
+
+    document.getElementById("waveDescription").textContent =
+        waveDescriptions[currentWave];
+
+    drawWave();
+}
+
+function drawWave() {
+
+    const r = prepareCanvas(document.getElementById("waveCanvas"));
+
+    const ctx = r.ctx;
+    const w = r.width;
+    const h = r.height;
+
+    ctx.fillStyle = "#050c15";
+    ctx.fillRect(0,0,w,h);
+
+    const f = Number(frequency.value);
+    const A = Number(amplitude.value);
+    const lambda = Number(wavelength.value);
+
+    const center = h/2;
+
+    ctx.strokeStyle = "#294863";
+    ctx.lineWidth = 1;
+
+    ctx.beginPath();
+    ctx.moveTo(0,center);
+    ctx.lineTo(w,center);
+    ctx.stroke();
+
+    if(currentWave === "transverse" || currentWave === "speed") {
+
+        ctx.strokeStyle = "#38bdf8";
+        ctx.lineWidth = 3;
+
+        ctx.beginPath();
+
+        for(let x=0;x<=w;x++){
+
+            const waveX = x/(w/lambda*2*Math.PI);
+
+            const y =
+                center +
+                Math.sin(
+                    waveX*2*Math.PI +
+                    waveTime*f*2*Math.PI
+                ) *
+                A*55;
+
+            if(x===0) ctx.moveTo(x,y);
+            else ctx.lineTo(x,y);
+        }
+
+        ctx.stroke();
+
+        ctx.fillStyle = "#9fb6cc";
+        ctx.font = "14px Arial";
+        ctx.fillText("Transverse displacement",20,30);
+
+        /* wavelength marker */
+
+        const marker = Math.min(w*.8,lambda*90);
+
+        ctx.strokeStyle = "#fbbf24";
+        ctx.beginPath();
+        ctx.moveTo(50,center-A*55-35);
+        ctx.lineTo(50+marker,center-A*55-35);
+        ctx.stroke();
+
+        ctx.fillStyle = "#fbbf24";
+        ctx.fillText(
+            "λ",
+            50+marker/2,
+            center-A*55-45
+        );
+
+    } else {
+
+        const count = Math.max(5,Math.floor(8/lambda*2));
+
+        for(let i=0;i<count;i++){
+
+            const baseX = 50+i*(w-100)/(count-1);
+
+            const compression =
+                Math.sin(
+                    i/count*Math.PI*2*3 +
+                    waveTime*f*2*Math.PI
+                );
+
+            const spacing =
+                (w-100)/count;
+
+            const x =
+                baseX +
+                compression*A*15;
+
+            ctx.strokeStyle = "#38bdf8";
+            ctx.lineWidth = 3;
+
+            ctx.beginPath();
+            ctx.moveTo(x,center-55);
+            ctx.lineTo(x,center+55);
+            ctx.stroke();
+        }
+
+        ctx.fillStyle = "#9fb6cc";
+        ctx.font = "14px Arial";
+
+        ctx.fillText(
+            currentWave === "sound"
+            ? "Sound pressure / particle visualization"
+            : "Longitudinal particle motion",
+            20,
+            30
+        );
+    }
+}
+
+document.getElementById("waveStart").onclick = () => {
+    waveRunning = true;
+};
+
+document.getElementById("wavePause").onclick = () => {
+    waveRunning = false;
+};
+
+document.getElementById("waveReset").onclick = () => {
+    waveRunning = false;
+    waveTime = 0;
+    drawWave();
+};
+
+
+/* ============================================================
+   OPTICS
+============================================================ */
+
+let currentOptics = "plane";
+
+const opticsData = {
+
+    plane: {
+        title: "Plane Mirror",
+        description: "Explore reflection from a flat mirror.",
+        controls: [
+            ["angle", "Angle of Incidence", 5, 85, 30, 1, "°"]
+        ],
+        formulas: ["i = r", "Angle of incidence = Angle of reflection"],
+        info: "For a plane mirror, the angle of incidence equals the angle of reflection."
+    },
+
+    concaveMirror: {
+        title: "Concave Mirror",
+        description: "Investigate ray reflection from a converging concave mirror.",
+        controls: [
+            ["focal", "Focal Length", 30, 150, 80, 1, "cm"],
+            ["object", "Object Distance", 40, 300, 180, 1, "cm"]
+        ],
+        formulas: ["1/f = 1/u + 1/v", "m = v/u"],
+        info: "The mirror equation relates focal length, object distance and image distance."
+    },
+
+    convexMirror: {
+        title: "Convex Mirror",
+        description: "Investigate the diverging rays produced by a convex mirror.",
+        controls: [
+            ["focal", "Focal Length", 30, 150, 80, 1, "cm"],
+            ["object", "Object Distance", 50, 300, 180, 1, "cm"]
+        ],
+        formulas: ["1/f = 1/u + 1/v", "m = v/u"],
+        info: "A convex mirror produces a virtual, upright and reduced image in this idealized model."
+    },
+
+    refraction: {
+        title: "Refraction & Snell's Law",
+        description: "Observe how light changes direction when it enters another medium.",
+        controls: [
+            ["incident", "Incident Angle", 0, 80, 40, 1, "°"],
+            ["n1", "Medium 1 Refractive Index", 1, 2.5, 1, 0.01, ""],
+            ["n2", "Medium 2 Refractive Index", 1, 2.5, 1.5, 0.01, ""]
+        ],
+        formulas: ["n₁ sin θ₁ = n₂ sin θ₂", "sin θ₂ = n₁sinθ₁ / n₂"],
+        info: "When light enters a medium with a different refractive index, its direction can change."
+    },
+
+    convexLens: {
+        title: "Convex Lens",
+        description: "Explore how a converging lens forms images.",
+        controls: [
+            ["focal", "Focal Length", 30, 150, 80, 1, "cm"],
+            ["object", "Object Distance", 40, 300, 180, 1, "cm"]
+        ],
+        formulas: ["1/f = 1/u + 1/v", "m = v/u"],
+        info: "A convex lens converges parallel rays toward its focal point."
+    },
+
+    concaveLens: {
+        title: "Concave Lens",
+        description: "Explore how a diverging lens affects light rays.",
+        controls: [
+            ["focal", "Focal Length", 30, 150, 80, 1, "cm"],
+            ["object", "Object Distance", 40, 300, 180, 1, "cm"]
+        ],
+        formulas: ["1/f = 1/u + 1/v", "m = v/u"],
+        info: "A concave lens causes parallel rays to diverge as if they originated from a focal point."
+    }
+
+};
+
+function opticsControl(id,label,min,max,value,step,unit) {
+
+    return `
+        <div class="control">
+            <label>
+                ${label}
+                <b><span id="opt_${id}_value">${value}</span> ${unit}</b>
+            </label>
+
+            <input
+                id="opt_${id}"
+                type="range"
+                min="${min}"
+                max="${max}"
+                value="${value}"
+                step="${step}">
+        </div>
+    `;
+}
+
+document.querySelectorAll("[data-optics]").forEach(tab => {
+
+    tab.addEventListener("click", () => {
+
+        document.querySelectorAll("[data-optics]")
+            .forEach(x => x.classList.remove("active"));
+
+        tab.classList.add("active");
+
+        currentOptics = tab.dataset.optics;
+
+        renderOptics();
+    });
+
+});
+
+function renderOptics() {
+
+    const d = opticsData[currentOptics];
+
+    document.getElementById("opticsTitle").textContent = d.title;
+    document.getElementById("opticsDescription").textContent = d.description;
+
+    document.getElementById("opticsControls").innerHTML =
+        d.controls.map(c => opticsControl(...c)).join("");
+
+    d.controls.forEach(c => {
+
+        const id = c[0];
+
+        document.getElementById(`opt_${id}`)
+            .addEventListener("input", () => {
+
+                document.getElementById(`opt_${id}_value`).textContent =
+                    document.getElementById(`opt_${id}`).value;
+
+                drawOptics();
+            });
+    });
+
+    document.getElementById("opticsFormulas").innerHTML =
+        d.formulas.map(x => `<div class="formula">${x}</div>`).join("");
+
+    document.getElementById("opticsInfo").textContent = d.info;
+
+    updateOpticsMeasurements();
+    drawOptics();
+}
+
+function optVal(id) {
+    return Number(document.getElementById(`opt_${id}`).value);
+}
+
+function updateOpticsMeasurements() {
+
+    let html = "";
+
+    if(currentOptics === "plane") {
+
+        const i = optVal("angle");
+
+        html = `
+            <div class="measurement">
+                <span>Incidence Angle</span>
+                <strong>${i}°</strong>
+            </div>
+
+            <div class="measurement">
+                <span>Reflection Angle</span>
+                <strong>${i}°</strong>
+            </div>
+
+            <div class="measurement">
+                <span>Total Deviation</span>
+                <strong>${(180-2*i).toFixed(1)}°</strong>
+            </div>
+
+            <div class="measurement">
+                <span>Law</span>
+                <strong>i = r</strong>
+            </div>
+        `;
+
+    } else if(currentOptics === "refraction") {
+
+        const i = optVal("incident");
+        const n1 = optVal("n1");
+        const n2 = optVal("n2");
+
+        const sinR = n1*Math.sin(i*Math.PI/180)/n2;
+
+        let r = null;
+
+        if(Math.abs(sinR)<=1) {
+            r = Math.asin(sinR)*180/Math.PI;
+        }
+
+        html = `
+            <div class="measurement">
+                <span>Incident Angle</span>
+                <strong>${i}°</strong>
+            </div>
+
+            <div class="measurement">
+                <span>n₁</span>
+                <strong>${n1.toFixed(2)}</strong>
+            </div>
+
+            <div class="measurement">
+                <span>n₂</span>
+                <strong>${n2.toFixed(2)}</strong>
+            </div>
+
+            <div class="measurement">
+                <span>Refracted Angle</span>
+                <strong>${r === null ? "TIR" : r.toFixed(2)+"°"}</strong>
+            </div>
+        `;
+
+    } else {
+
+        const f = optVal("focal");
+        const u = optVal("object");
+
+        let imageDistance;
+
+        if(currentOptics === "concaveMirror" ||
+           currentOptics === "convexLens") {
+
+            imageDistance = (f*u)/(u-f);
+
+        } else if(currentOptics === "convexMirror") {
+
+            imageDistance = -(f*u)/(u+f);
+
+        } else {
+
+            imageDistance = -(f*u)/(u+f);
+        }
+
+        const magnification = imageDistance/u;
+
+        html = `
+            <div class="measurement">
+                <span>Focal Length</span>
+                <strong>${f} cm</strong>
+            </div>
+
+            <div class="measurement">
+                <span>Object Distance</span>
+                <strong>${u} cm</strong>
+            </div>
+
+            <div class="measurement">
+                <span>Image Distance</span>
+                <strong>${isFinite(imageDistance) ? imageDistance.toFixed(2)+" cm" : "∞"}</strong>
+            </div>
+
+            <div class="measurement">
+                <span>Magnification</span>
+                <strong>${isFinite(magnification) ? magnification.toFixed(2) : "—"}</strong>
+            </div>
+        `;
+    }
+
+    document.getElementById("opticsMeasurements").innerHTML = html;
+}
+
+function drawOptics() {
+
+    const r = prepareCanvas(document.getElementById("opticsCanvas"));
+
+    const ctx = r.ctx;
+    const w = r.width;
+    const h = r.height;
+
+    ctx.fillStyle = "#050c15";
+    ctx.fillRect(0,0,w,h);
+
+    ctx.strokeStyle = "#476176";
+    ctx.lineWidth = 2;
+
+    const axis = h/2;
+
+    ctx.beginPath();
+    ctx.moveTo(20,axis);
+    ctx.lineTo(w-20,axis);
+    ctx.stroke();
+
+    if(currentOptics === "plane") {
+
+        const mirrorX = w*.68;
+
+        ctx.strokeStyle = "#cbd5e1";
+        ctx.lineWidth = 6;
+
+        ctx.beginPath();
+        ctx.moveTo(mirrorX,60);
+        ctx.lineTo(mirrorX,h-60);
+        ctx.stroke();
+
+        ctx.fillStyle = "#9fb6cc";
+        ctx.font = "14px Arial";
+        ctx.fillText("Plane Mirror",mirrorX-45,40);
+
+        const angle = optVal("angle")*Math.PI/180;
+
+        const startX = mirrorX-240;
+        const startY = axis + 240*Math.tan(angle);
+
+        const hitY = axis;
+
+        ctx.strokeStyle = "#38bdf8";
+        ctx.lineWidth = 3;
+
+        ctx.beginPath();
+        ctx.moveTo(startX,startY);
+        ctx.lineTo(mirrorX,hitY);
+        ctx.stroke();
+
+        const reflectedX = mirrorX-240;
+        const reflectedY = axis+240*Math.tan(angle);
+
+        ctx.beginPath();
+        ctx.moveTo(mirrorX,hitY);
+        ctx.lineTo(reflectedX,reflectedY);
+        ctx.stroke();
+
+        ctx.strokeStyle = "#fbbf24";
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+        ctx.moveTo(mirrorX,60);
+        ctx.lineTo(mirrorX,h-60);
+        ctx.stroke();
+
+        ctx.fillStyle = "#9fb6cc";
+        ctx.fillText("Normal",mirrorX+10,axis-20);
+        ctx.fillText("i = r",mirrorX-30,axis-20);
+
+    } else if(currentOptics === "refraction") {
+
+        const boundary = axis;
+
+        ctx.strokeStyle = "#38bdf8";
+        ctx.lineWidth = 2;
+
+        ctx.fillStyle = "rgba(30,100,160,.12)";
+        ctx.fillRect(0,boundary,w,h-boundary);
+
+        ctx.fillStyle = "#9fb6cc";
+        ctx.font = "14px Arial";
+        ctx.fillText("Medium 1",20,35);
+        ctx.fillText("Medium 2",20,boundary+30);
+
+        ctx.strokeStyle = "#cbd5e1";
+        ctx.beginPath();
+        ctx.moveTo(0,boundary);
+        ctx.lineTo(w,boundary);
+        ctx.stroke();
+
+        const n1 = optVal("n1");
+        const n2 = optVal("n2");
+        const incident = optVal("incident");
+
+        const rad = incident*Math.PI/180;
+
+        const x0 = w*.5;
+        const length = Math.min(w*.35
