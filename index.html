@@ -2,636 +2,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="theme-color" content="#101827">
-
-    <meta
-        name="description"
-        content="PhysicsLab — an interactive digital physics laboratory for secondary and university students."
-    >
-
-    <title>PhysicsLab | Digital Physics Laboratory</title>
-
-    <!-- Main stylesheet -->
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- Application controller -->
-    <script src="js/app.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101827">
+  <meta name="description" content="PhysicsLab — an interactive physics learning and simulation laboratory.">
+  <title>PhysicsLab | Interactive Physics Laboratory</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/app.js" defer></script>
 </head>
-
 <body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#dashboard" data-go="dashboard">
+        <span class="brand-icon">Φ</span>
+        <span><strong>PhysicsLab</strong><small>INTERACTIVE LABORATORY</small></span>
+      </a>
 
-    <div class="app-shell">
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-view="dashboard">⌂ <span>Dashboard</span></button>
+        <button class="nav-item" data-view="laboratories">⚗ <span>Laboratories</span></button>
+        <button class="nav-item" data-view="experiments">◈ <span>Experiments</span></button>
+        <button class="nav-item" data-view="analysis">⌁ <span>Data Analysis</span></button>
+        <button class="nav-item" data-view="notebook">▤ <span>Lab Notebook</span></button>
+      </nav>
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar" id="sidebar">
+      <div class="sidebar-label">LEARNING</div>
+      <nav class="nav-list" aria-label="Learning navigation">
+        <button class="nav-item" data-view="concepts">◎ <span>Physics Concepts</span></button>
+        <button class="nav-item" data-view="assessments">✓ <span>Assessments</span></button>
+      </nav>
 
-            <a href="#dashboard" class="brand">
-                <span class="brand-mark">P<span>.</span></span>
+      <div class="sidebar-label">ACCOUNT</div>
+      <nav class="nav-list" aria-label="Account navigation">
+        <button class="nav-item" data-view="premium">✦ <span>Premium</span></button>
+        <button class="nav-item" data-view="settings">⚙ <span>Settings</span></button>
+      </nav>
 
-                <span class="brand-copy">
-                    <strong>PhysicsLab</strong>
-                    <small>INTERACTIVE LABORATORY</small>
-                </span>
-            </a>
+      <div class="sidebar-bottom">
+        <div class="sidebar-status"><span class="status-dot"></span> Laboratory environment</div>
+        <small>PhysicsLab · Foundation Edition</small>
+      </div>
+    </aside>
 
-            <p class="side-label">WORKSPACE</p>
+    <main class="main-content">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+        <div class="breadcrumb">PhysicsLab <span>/</span> <strong id="pageTitle">Dashboard</strong></div>
+        <div class="topbar-actions">
+          <input id="globalSearch" type="search" placeholder="Search laboratories…" aria-label="Search laboratories">
+          <button class="icon-button" id="themeToggle" aria-label="Toggle colour theme">☼</button>
+          <div class="avatar" id="topbarAvatar">S</div>
+        </div>
+      </header>
 
-            <nav class="main-nav" aria-label="Main navigation">
-
-                <button class="nav-item active" data-view="dashboard">
-                    <span class="nav-icon">⌂</span>
-                    Dashboard
-                </button>
-
-                <button class="nav-item" data-view="laboratories">
-                    <span class="nav-icon">◉</span>
-                    Laboratories
-                </button>
-
-                <button class="nav-item" data-view="experiments">
-                    <span class="nav-icon">⚗</span>
-                    Experiments
-                </button>
-
-                <button class="nav-item" data-view="analysis">
-                    <span class="nav-icon">⌁</span>
-                    Data Analysis
-                </button>
-
-                <button class="nav-item" data-view="notebook">
-                    <span class="nav-icon">▤</span>
-                    Lab Notebook
-                </button>
-
-            </nav>
-
-            <p class="side-label learning-label">LEARNING</p>
-
-            <nav class="main-nav" aria-label="Learning navigation">
-
-                <button class="nav-item" data-view="concepts">
-                    <span class="nav-icon">◇</span>
-                    Physics Concepts
-                </button>
-
-                <button class="nav-item" data-view="assessments">
-                    <span class="nav-icon">✓</span>
-                    Assessments
-                </button>
-
-                <button class="nav-item" data-view="premium">
-                    <span class="nav-icon">♛</span>
-                    Premium
-                </button>
-
-            </nav>
-
-            <div class="sidebar-bottom">
-
-                <div class="status-card">
-                    <span class="status-dot"></span>
-
-                    <div>
-                        <strong>Laboratory System</strong>
-                        <small>Foundation online</small>
-                    </div>
-                </div>
-
-                <button class="nav-item" data-view="settings">
-                    <span class="nav-icon">⚙</span>
-                    Settings
-                </button>
-
-                <div class="sidebar-footer">
-                    Built for curiosity.
-                    <br>
-                    <span>Learn · Experiment · Discover</span>
-                </div>
-
+      <div class="main-inner">
+        <section class="page-view" id="view-dashboard">
+          <div class="welcome-row">
+            <div>
+              <p class="eyebrow">YOUR DIGITAL PHYSICS LAB</p>
+              <h1>Explore the laws of <span>the universe.</span></h1>
+              <p class="muted">Learn the theory. Run experiments. Analyse results. Understand how the physical world works.</p>
+              <button class="primary-button" data-go="laboratories">Explore laboratories <span>→</span></button>
             </div>
-
-        </aside>
-
-
-        <!-- MAIN APPLICATION -->
-        <main class="main-content">
-
-            <!-- TOP BAR -->
-            <header class="topbar">
-
-                <button
-                    class="mobile-menu"
-                    id="mobileMenu"
-                    aria-label="Toggle navigation"
-                    aria-expanded="false"
-                >
-                    ☰
-                </button>
-
-                <div class="breadcrumb">
-                    <span>PhysicsLab</span>
-                    <span class="crumb-slash">/</span>
-                    <strong id="pageTitle">Dashboard</strong>
-                </div>
-
-                <div class="topbar-actions">
-
-                    <span class="system-pill">
-                        <i></i>
-                        Simulation Environment
-                    </span>
-
-                    <button class="avatar" aria-label="Student profile">
-                        S
-                    </button>
-
-                </div>
-
-            </header>
-
-
-            <!-- DASHBOARD -->
-            <section class="page-view active" id="view-dashboard">
-
-                <div class="welcome-row">
-
-                    <div>
-                        <p class="eyebrow">DIGITAL PHYSICS ENVIRONMENT</p>
-
-                        <h1>
-                            Explore the laws
-                            <br>
-                            that shape our world.
-                        </h1>
-
-                        <p class="welcome-text">
-                            Test scientific ideas, explore physical
-                            systems and discover the principles
-                            governing our universe.
-                        </p>
-
-                        <button class="primary-btn" data-go="laboratories">
-                            Explore Laboratories
-                            <span>↗</span>
-                        </button>
-                    </div>
-
-                    <div class="hero-visual" aria-hidden="true">
-                        <div class="orbit orbit-one"></div>
-                        <div class="orbit orbit-two"></div>
-                        <div class="orbit orbit-three"></div>
-
-                        <div class="planet planet-main"></div>
-                        <div class="planet planet-small"></div>
-                        <div class="planet planet-blue"></div>
-
-                        <span class="formula formula-one">F = ma</span>
-                        <span class="formula formula-two">E = mc²</span>
-                        <span class="formula formula-three">v = d/t</span>
-                    </div>
-
-                </div>
-
-
-                <!-- OVERVIEW -->
-                <div class="section-heading">
-                    <div>
-                        <p class="eyebrow">YOUR WORKSPACE</p>
-                        <h2>Laboratory Overview</h2>
-                    </div>
-
-                    <span class="muted-note">Stage 1 · Foundation</span>
-                </div>
-
-                <div class="stats-grid">
-
-                    <article class="stat-card">
-                        <div class="stat-top">
-                            <span>Physics Fields</span>
-                            <span class="stat-symbol purple">◉</span>
-                        </div>
-
-                        <strong>05</strong>
-                        <small>Core laboratory areas</small>
-                    </article>
-
-                    <article class="stat-card">
-                        <div class="stat-top">
-                            <span>Experiments</span>
-                            <span class="stat-symbol blue">⌁</span>
-                        </div>
-
-                        <strong>01</strong>
-                        <small>First experiment planned</small>
-                    </article>
-
-                    <article class="stat-card">
-                        <div class="stat-top">
-                            <span>Analysis Tools</span>
-                            <span class="stat-symbol mint">▥</span>
-                        </div>
-
-                        <strong>04</strong>
-                        <small>Scientific tools planned</small>
-                    </article>
-
-                    <article class="stat-card">
-                        <div class="stat-top">
-                            <span>Learning Level</span>
-                            <span class="stat-symbol amber">◇</span>
-                        </div>
-
-                        <strong class="level-value">Open</strong>
-                        <small>Secondary to university</small>
-                    </article>
-
-                </div>
-
-
-                <!-- LABORATORY CARDS -->
-                <div class="section-heading">
-                    <div>
-                        <p class="eyebrow">CHOOSE YOUR FIELD</p>
-                        <h2>Enter a Laboratory</h2>
-                    </div>
-
-                    <button class="text-btn" data-go="laboratories">
-                        View All Labs ↗
-                    </button>
-                </div>
-
-                <div class="lab-grid">
-
-                    <button class="lab-card" data-lab="mechanics">
-                        <span class="lab-icon icon-purple">↗</span>
-
-                        <span class="lab-card-top">
-                            01 <span>CORE FIELD</span>
-                        </span>
-
-                        <strong>Mechanics</strong>
-
-                        <p>
-                            Motion, forces, energy and momentum.
-                        </p>
-
-                        <span class="card-link">
-                            Open Laboratory <b>→</b>
-                        </span>
-                    </button>
-
-
-                    <button class="lab-card" data-lab="electricity">
-                        <span class="lab-icon icon-blue">ϟ</span>
-
-                        <span class="lab-card-top">
-                            02 <span>CORE FIELD</span>
-                        </span>
-
-                        <strong>Electricity & Magnetism</strong>
-
-                        <p>
-                            Circuits, current, voltage and fields.
-                        </p>
-
-                        <span class="card-link">
-                            Explore Field <b>→</b>
-                        </span>
-                    </button>
-
-
-                    <button class="lab-card" data-lab="optics">
-                        <span class="lab-icon icon-orange">◉</span>
-
-                        <span class="lab-card-top">
-                            03 <span>CORE FIELD</span>
-                        </span>
-
-                        <strong>Optics</strong>
-
-                        <p>
-                            Light, lenses, mirrors and refraction.
-                        </p>
-
-                        <span class="card-link">
-                            Explore Field <b>→</b>
-                        </span>
-                    </button>
-
-
-                    <button class="lab-card" data-lab="waves">
-                        <span class="lab-icon icon-mint">∿</span>
-
-                        <span class="lab-card-top">
-                            04 <span>CORE FIELD</span>
-                        </span>
-
-                        <strong>Waves & Oscillations</strong>
-
-                        <p>
-                            Frequency, resonance and wave motion.
-                        </p>
-
-                        <span class="card-link">
-                            Explore Field <b>→</b>
-                        </span>
-                    </button>
-
-
-                    <button class="lab-card" data-lab="thermal">
-                        <span class="lab-icon icon-pink">♨</span>
-
-                        <span class="lab-card-top">
-                            05 <span>CORE FIELD</span>
-                        </span>
-
-                        <strong>Thermal & Modern Physics</strong>
-
-                        <p>
-                            Heat, gases, atoms and quantum concepts.
-                        </p>
-
-                        <span class="card-link">
-                            Explore Field <b>→</b>
-                        </span>
-                    </button>
-
-                </div>
-
-
-                <!-- NEXT DEVELOPMENT STAGE -->
-                <div class="bottom-banner">
-
-                    <div class="banner-icon">✳</div>
-
-                    <div>
-                        <strong>Science begins with a question.</strong>
-
-                        <p>
-                            Next: an interactive mechanics simulation
-                            with adjustable variables and live results.
-                        </p>
-                    </div>
-
-                    <button class="secondary-btn" data-go="experiments">
-                        Experiment Roadmap
-                    </button>
-
-                </div>
-
-            </section>
-
-
-            <!-- OTHER PAGES -->
-            <section class="page-view" id="view-laboratories">
-                <div class="page-intro">
-                    <p class="eyebrow">PHYSICS DEPARTMENTS</p>
-                    <h1>Laboratories</h1>
-                    <p>Select a physics field to explore its experiments.</p>
-                </div>
-
-                <div class="lab-grid" id="allLaboratories"></div>
-            </section>
-
-
-            <section class="page-view" id="view-experiments">
-                <div class="page-intro">
-                    <p class="eyebrow">EXPERIMENT DIRECTORY</p>
-                    <h1>Experiments</h1>
-                    <p>
-                        Our first experiment will investigate
-                        Newton's second law of motion.
-                    </p>
-                </div>
-
-                <div class="empty-state">
-                    <div class="empty-symbol">↗</div>
-                    <h2>Newton's Second Law</h2>
-                    <p>
-                        Stage 2 will introduce adjustable force,
-                        mass, acceleration calculations and live graphs.
-                    </p>
-                </div>
-            </section>
-
-
-            <section class="page-view" id="view-analysis">
-                <div class="page-intro">
-                    <p class="eyebrow">SCIENTIFIC MEASUREMENTS</p>
-                    <h1>Data Analysis</h1>
-                    <p>
-                        Analyse experimental data using calculations,
-                        graphs and measurement tools.
-                    </p>
-                </div>
-
-                <div class="empty-state">
-                    <div class="empty-symbol">⌁</div>
-                    <h2>Scientific tools are planned</h2>
-                    <p>
-                        Graphing, data tables and uncertainty analysis
-                        will be added after the simulation engine.
-                    </p>
-                </div>
-            </section>
-
-
-            <section class="page-view" id="view-notebook">
-                <div class="page-intro">
-                    <p class="eyebrow">SCIENTIFIC RECORD</p>
-                    <h1>Lab Notebook</h1>
-                    <p>
-                        Record hypotheses, measurements, observations
-                        and experimental conclusions.
-                    </p>
-                </div>
-
-                <div class="empty-state">
-                    <div class="empty-symbol">▤</div>
-                    <h2>Your notebook starts here</h2>
-                    <p>
-                        Notebook entries and saving will be added
-                        in a later development stage.
-                    </p>
-                </div>
-            </section>
-
-
-            <section class="page-view" id="view-concepts">
-                <div class="page-intro">
-                    <p class="eyebrow">LEARN THE PRINCIPLES</p>
-                    <h1>Physics Concepts</h1>
-                    <p>
-                        Learn the principles behind the experiments.
-                    </p>
-                </div>
-
-                <div class="empty-state">
-                    <div class="empty-symbol">◇</div>
-                    <h2>Concept library planned</h2>
-                    <p>
-                        Physics explanations will be linked to
-                        relevant simulations and experiments.
-                    </p>
-                </div>
-            </section>
-
-
-            <section class="page-view" id="view-assessments">
-                <div class="page-intro">
-                    <p class="eyebrow">TEST YOUR UNDERSTANDING</p>
-                    <h1>Assessments</h1>
-                    <p>
-                        Check your understanding through
-                        experiment-based questions.
-                    </p>
-                </div>
-
-                <div class="empty-state">
-                    <div class="empty-symbol">✓</div>
-                    <h2>Assessments are planned</h2>
-                    <p>
-                        Interactive assessments will follow
-                        the development of the experiments.
-                    </p>
-                </div>
-            </section>
-
-
-            <!-- PREMIUM -->
-            <section class="page-view" id="view-premium">
-                <div class="page-intro">
-                    <p class="eyebrow">ADVANCED LABORATORY ACCESS</p>
-                    <h1>PhysicsLab Premium</h1>
-                    <p>
-                        A future subscription for advanced simulations,
-                        scientific analysis and enhanced learning tools.
-                    </p>
-                </div>
-
-                <div class="premium-grid">
-
-                    <article class="premium-card">
-                        <span class="lab-icon icon-purple">◇</span>
-                        <h2>Monthly Premium</h2>
-                        <p class="premium-price">
-                            GH₵40 <span>/ month</span>
-                        </p>
-                        <p>
-                            Flexible access to premium laboratory features.
-                        </p>
-                        <ul>
-                            <li>Advanced simulations</li>
-                            <li>Expanded experiment library</li>
-                            <li>Enhanced data analysis</li>
-                        </ul>
-                        <button class="secondary-btn" disabled>
-                            Coming Soon
-                        </button>
-                    </article>
-
-                    <article class="premium-card premium-featured">
-                        <span class="lab-icon icon-blue">♛</span>
-                        <span class="premium-tag">YEARLY PLAN</span>
-                        <h2>Yearly Premium</h2>
-                        <p class="premium-price">
-                            GH₵480 <span>/ year</span>
-                        </p>
-                        <p>
-                            Full-year access to the planned premium features.
-                        </p>
-                        <ul>
-                            <li>Advanced simulations</li>
-                            <li>Expanded experiment library</li>
-                            <li>Enhanced data analysis</li>
-                        </ul>
-                        <button class="primary-btn" disabled>
-                            Coming Soon
-                        </button>
-                    </article>
-
-                </div>
-
-                <p class="premium-note">
-                    Subscriptions are not active yet. Payment processing
-                    and secure premium access will be implemented and
-                    tested before any payments are accepted.
-                </p>
-            </section>
-
-
-            <section class="page-view" id="view-settings">
-                <div class="page-intro">
-                    <p class="eyebrow">PREFERENCES</p>
-                    <h1>Settings</h1>
-                    <p>Customise your laboratory interface.</p>
-                </div>
-
-                <div class="settings-card">
-                    <div>
-                        <strong>Interface Theme</strong>
-                        <p>Switch between dark and light display modes.</p>
-                    </div>
-
-                    <button class="secondary-btn" id="themeToggle">
-                        Switch Theme
-                    </button>
-                </div>
-            </section>
-
-
-            <!-- LABORATORY DETAIL -->
-            <section class="page-view" id="view-lab-detail">
-
-                <button class="back-link" data-go="laboratories">
-                    ← Back to Laboratories
-                </button>
-
-                <div class="page-intro">
-                    <p class="eyebrow" id="detailEyebrow">
-                        LABORATORY WORKSPACE
-                    </p>
-
-                    <h1 id="detailTitle">Mechanics</h1>
-
-                    <p id="detailDescription">
-                        Explore the principles governing motion and forces.
-                    </p>
-                </div>
-
-                <div class="empty-state">
-                    <div class="empty-symbol">⚗</div>
-
-                    <h2>Interactive workspace</h2>
-
-                    <p id="detailLong">
-                        The simulation engine will be introduced in Stage 2.
-                    </p>
-
-                    <button class="primary-btn" data-go="experiments">
-                        View Experiment Roadmap →
-                    </button>
-                </div>
-
-            </section>
-
-
-            <footer class="page-footer">
-                <span>
-                    PhysicsLab · Digital Physics Laboratory
-                </span>
-
-                <span>Version 0.1 · Foundation</span>
-            </footer>
-
-        </main>
-
-    </div>
-
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
+            <div class="hero-visual" aria-hidden="true">
+              <div class="orbit orbit-one"></div>
+              <div class="orbit orbit-two"></div>
+              <div class="orbit-core">Φ</div>
+              <span class="orbit-dot"></span>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card"><span>Laboratories</span><strong>05</strong><small>Interactive physics areas</small></article>
+            <article class="stat-card"><span>Experiments</span><strong id="experimentCount">00</strong><small>Started in this session</small></article>
+            <article class="stat-card"><span>Concepts</span><strong>12+</strong><small>Core ideas to explore</small></article>
+            <article class="stat-card"><span>Learning progress</span><strong id="progressValue">0%</strong><small>Session progress</small></article>
+          </div>
+
+          <div class="section-heading">
+            <div><p class="eyebrow">VIRTUAL LABORATORIES</p><h2>Choose your laboratory</h2></div>
+            <button class="text-button" data-go="laboratories">View all →</button>
+          </div>
+
+          <div class="lab-grid">
+            <button class="lab-card mechanics-card" data-lab="mechanics">
+              <span class="lab-symbol">↗</span><span class="lab-tag">01 / MOTION</span>
+              <h3>Mechanics</h3><p>Motion, forces, energy and momentum.</p><span class="card-link">Enter laboratory →</span>
+            </button>
+            <button class="lab-card electricity-card" data-lab="electricity">
+              <span class="lab-symbol">ϟ</span><span class="lab-tag">02 / CIRCUITS</span>
+              <h3>Electricity</h3><p>Voltage, current, resistance and circuits.</p><span class="card-link">Enter laboratory →</span>
+            </button>
+            <button class="lab-card optics-card" data-lab="optics">
+              <span class="lab-symbol">◉</span><span class="lab-tag">03 / LIGHT</span>
+              <h3>Optics</h3><p>Reflection, refraction, lenses and images.</p><span class="card-link">Enter laboratory →</span>
+            </button>
+            <button class="lab-card waves-card" data-lab="waves">
+              <span class="lab-symbol">〰</span><span class="lab-tag">04 / OSCILLATIONS</span>
+              <h3>Waves</h3><p>Frequency, wavelength, sound and motion.</p><span class="card-link">Enter laboratory →</span>
+            </button>
+            <button class="lab-card thermal-card" data-lab="thermal">
+              <span class="lab-symbol">♨</span><span class="lab-tag">05 / HEAT</span>
+              <h3>Thermal Physics</h3><p>Temperature, heat transfer and energy.</p><span class="card-link">Enter laboratory →</span>
+            </button>
+          </div>
+
+          <div class="bottom-banner">
+            <div><p class="eyebrow">THE SCIENTIFIC METHOD</p><h2>Think like a physicist.</h2><p>Predict a result, test your idea, measure what happens and interpret the evidence.</p></div>
+            <button class="secondary-button" data-go="experiments">Start an experiment →</button>
+          </div>
+        </section>
+
+        <section class="page-view" id="view-laboratories" hidden>
+          <p class="eyebrow">EXPLORE AND INVESTIGATE</p>
+          <h1>Physics laboratories</h1>
+          <p class="muted">Choose an area of physics to open its interactive workspace.</p>
+          <div class="lab-grid" id="allLaboratories"></div>
+        </section>
+
+        <section class="page-view" id="view-experiments" hidden>
+          <p class="eyebrow">PRACTICAL INVESTIGATION</p><h1>Experiments</h1>
+          <p class="muted">Choose a laboratory to begin an experiment and explore the relationship between physical quantities.</p>
+          <div class="experiment-options">
+            <button class="option-card" data-lab="mechanics"><strong>Motion and acceleration</strong><span>Mechanics →</span></button>
+            <button class="option-card" data-lab="electricity"><strong>Ohm's law</strong><span>Electricity →</span></button>
+            <button class="option-card" data-lab="optics"><strong>Thin lens equation</strong><span>Optics →</span></button>
+            <button class="option-card" data-lab="waves"><strong>Wave relationships</strong><span>Waves →</span></button>
+            <button class="option-card" data-lab="thermal"><strong>Heating a substance</strong><span>Thermal physics →</span></button>
+          </div>
+        </section>
+
+        <section class="page-view" id="view-analysis" hidden>
+          <p class="eyebrow">SCIENTIFIC COMPUTATION</p><h1>Data analysis</h1>
+          <p class="muted">Use this workspace for calculations and interpretation of experimental measurements.</p>
+          <div class="workspace-card">
+            <h2>Measurement calculator</h2>
+            <div class="field-grid">
+              <label>Measured value A<input type="number" id="analysisA" value="10" step="any"></label>
+              <label>Measured value B<input type="number" id="analysisB" value="2" step="any"></label>
+            </div>
+            <button class="primary-button" id="calculateAnalysis">Calculate A ÷ B</button>
+            <p class="result-line">Result: <strong id="analysisResult">5</strong></p>
+            <p class="muted small">This basic calculator is a starting tool, not a substitute for uncertainty analysis or validated scientific software.</p>
+          </div>
+        </section>
+
+        <section class="page-view" id="view-notebook" hidden>
+          <p class="eyebrow">RECORD YOUR INVESTIGATIONS</p><h1>Laboratory notebook</h1>
+          <p class="muted">Record your question, method, observations and conclusion.</p>
+          <div class="workspace-card">
+            <label>Experiment title<input id="noteTitle" placeholder="e.g. Investigating Ohm's law"></label>
+            <label>Observations and notes<textarea id="noteContent" rows="8" placeholder="Record measurements, observations and conclusions…"></textarea></label>
+            <button class="primary-button" id="saveNote">Save note</button>
+            <p class="muted small" id="noteStatus">Notes are kept in this browser on this device.</p>
+            <div id="savedNotes"></div>
+          </div>
+        </section>
+
+        <section class="page-view" id="view-concepts" hidden>
+          <p class="eyebrow">BUILD YOUR UNDERSTANDING</p><h1>Physics concepts</h1>
+          <p class="muted">Explore core principles and their mathematical relationships.</p>
+          <div class="concept-grid">
+            <article class="concept-card"><span>MECHANICS</span><h3>Newton's second law</h3><p>Net force equals mass multiplied by acceleration.</p><strong>F = ma</strong></article>
+            <article class="concept-card"><span>ELECTRICITY</span><h3>Ohm's law</h3><p>For an ohmic conductor under constant physical conditions, voltage is proportional to current.</p><strong>V = IR</strong></article>
+            <article class="concept-card"><span>WAVES</span><h3>Wave speed</h3><p>Wave speed is frequency multiplied by wavelength.</p><strong>v = fλ</strong></article>
+            <article class="concept-card"><span>THERMAL PHYSICS</span><h3>Thermal energy</h3><p>For a temperature change without a phase change, heat energy can be calculated using specific heat capacity.</p><strong>Q = mcΔT</strong></article>
+            <article class="concept-card"><span>OPTICS</span><h3>Thin lens equation</h3><p>Relates focal length to object and image distances using the standard real-is-positive convention.</p><strong>1/f = 1/u + 1/v</strong></article>
+            <article class="concept-card"><span>ENERGY</span><h3>Kinetic energy</h3><p>The energy associated with the motion of an object.</p><strong>Eₖ = ½mv²</strong></article>
+          </div>
+        </section>
+
+        <section class="page-view" id="view-assessments" hidden>
+          <p class="eyebrow">CHECK YOUR UNDERSTANDING</p><h1>Assessments</h1>
+          <p class="muted">Answer this sample question to check your understanding.</p>
+          <div class="workspace-card quiz-card">
+            <span class="lab-tag">QUESTION 01 · MECHANICS</span>
+            <h2>A net force of 12 N acts on a 3 kg object. What is its acceleration?</h2>
+            <div class="quiz-options">
+              <button data-answer="wrong">2 m/s²</button><button data-answer="correct">4 m/s²</button><button data-answer="wrong">9 m/s²</button><button data-answer="wrong">36 m/s²</button>
+            </div>
+            <p id="quizFeedback" role="status" aria-live="polite"></p>
+          </div>
+        </section>
+
+        <section class="page-view" id="view-premium" hidden>
+          <p class="eyebrow">PHYSICSLAB PREMIUM</p><h1>Go further with science.</h1>
+          <p class="muted">Premium membership is planned for expanded experiments and advanced learning tools.</p>
+          <div class="premium-grid">
+            <article class="premium-card"><span>MONTHLY</span><h2>GH₵40 <small>/ month</small></h2><p>Planned monthly membership.</p><button class="secondary-button" disabled>Coming soon</button></article>
+            <article class="premium-card premium-featured"><span>YEARLY</span><h2>GH₵480 <small>/ year</small></h2><p>Planned yearly membership.</p><button class="secondary-button" disabled>Coming soon</button></article>
+          </div>
+          <p class="muted small">Payments and subscriptions are not active. No payment will be collected from this page.</p>
+        </section>
+
+        <section class="page-view" id="view-settings" hidden>
+          <p class="eyebrow">YOUR WORKSPACE</p><h1>Settings</h1>
+          <div class="workspace-card settings-card">
+            <h2>Appearance</h2><p>Switch between dark and light themes using the sun icon in the top bar.</p>
+            <button class="secondary-button" id="settingsThemeToggle">Toggle appearance</button>
+            <h2>Local learning data</h2><p>Your notebook entries are saved in this browser. This prototype does not yet sync data to an account.</p>
+            <button class="secondary-button" id="clearLocalData">Clear saved notebook data</button>
+          </div>
+        </section>
+
+        <section class="page-view" id="view-lab-detail" hidden>
+          <button class="text-button" data-go="laboratories">← All laboratories</button>
+          <p class="eyebrow" id="detailEyebrow">VIRTUAL LABORATORY</p>
+          <h1 id="detailTitle">Laboratory workspace</h1>
+          <p class="muted" id="detailDescription"></p>
+          <div class="workspace-card">
+            <div id="physicsLabWorkspace"></div>
+          </div>
+          <p class="muted small" id="detailLong">Use the controls to change values and observe how the calculated results change.</p>
+        </section>
+      </div>
+
+      <footer class="app-footer"><span>PhysicsLab</span><span>Learn · Investigate · Analyse</span></footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
