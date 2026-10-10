@@ -2,1619 +2,1505 @@
 /* =========================================================
    PHYSICSLAB
    APPLICATION CONTROLLER
-   Stage 3 — Navigation and Interactive Lab Foundation
-   File: js/app.js
+   Stage 3 — Navigation, Laboratories and Interactivity
    ========================================================= */
 
 (function () {
-    "use strict";
+  "use strict";
 
-    /* =====================================================
-       1. APPLICATION CONFIGURATION
-       ===================================================== */
+  /* =======================================================
+     1. APPLICATION CONFIGURATION
+     ======================================================= */
 
-    const APP = {
-        name: "PhysicsLab",
-        version: "1.0.0",
-        initialized: false,
-        currentView: "dashboard",
-        currentLab: null,
-        activeSimulation: null
-    };
-
-    const LABS = {
-        mechanics: {
-            title: "Mechanics Laboratory",
-            eyebrow: "CLASSICAL PHYSICS",
-            description:
-                "Investigate motion, forces, acceleration and Newton's laws using adjustable experimental variables.",
-            longDescription:
-                "Change the applied force and mass to investigate how they affect the acceleration of an object. Observe the relationship between experimental variables and the laws of motion.",
-            icon: "⚙️",
-            variables: [
-                {
-                    id: "mass",
-                    label: "Mass",
-                    min: 1,
-                    max: 20,
-                    step: 1,
-                    value: 5,
-                    unit: "kg"
-                },
-                {
-                    id: "force",
-                    label: "Applied force",
-                    min: 1,
-                    max: 100,
-                    step: 1,
-                    value: 20,
-                    unit: "N"
-                }
-            ],
-            measurements: [
-                { id: "acceleration", label: "Acceleration", unit: "m/s²" },
-                { id: "force-result", label: "Net force", unit: "N" }
-            ],
-            equation: "F = ma"
+  const LABS = {
+    mechanics: {
+      title: "Mechanics Laboratory",
+      eyebrow: "01 / MOTION AND FORCES",
+      description:
+        "Investigate Newton's second law and the relationship between force, mass and acceleration.",
+      intro:
+        "Change the mass and applied net force to calculate acceleration using F = ma.",
+      params: [
+        {
+          id: "mass",
+          label: "Object mass",
+          min: 1,
+          max: 50,
+          step: 1,
+          value: 5,
+          unit: "kg"
         },
+        {
+          id: "force",
+          label: "Net force",
+          min: 1,
+          max: 100,
+          step: 1,
+          value: 20,
+          unit: "N"
+        }
+      ]
+    },
 
-        electricity: {
-            title: "Electricity Laboratory",
-            eyebrow: "ELECTRICITY & CIRCUITS",
-            description:
-                "Explore voltage, current and resistance through an interactive circuit investigation.",
-            longDescription:
-                "Adjust the voltage and resistance in an ideal resistor circuit. Use the resulting current to investigate Ohm's law.",
-            icon: "⚡",
-            variables: [
-                {
-                    id: "voltage",
-                    label: "Voltage",
-                    min: 1,
-                    max: 24,
-                    step: 1,
-                    value: 12,
-                    unit: "V"
-                },
-                {
-                    id: "resistance",
-                    label: "Resistance",
-                    min: 1,
-                    max: 100,
-                    step: 1,
-                    value: 6,
-                    unit: "Ω"
-                }
-            ],
-            measurements: [
-                { id: "current", label: "Current", unit: "A" },
-                { id: "power", label: "Electrical power", unit: "W" }
-            ],
-            equation: "V = IR"
+    electricity: {
+      title: "Electricity Laboratory",
+      eyebrow: "02 / ELECTRIC CIRCUITS",
+      description:
+        "Explore the relationship between voltage, current and resistance using Ohm's law.",
+      intro:
+        "Adjust voltage and resistance to calculate current using I = V/R.",
+      params: [
+        {
+          id: "voltage",
+          label: "Voltage",
+          min: 1,
+          max: 24,
+          step: 1,
+          value: 12,
+          unit: "V"
         },
+        {
+          id: "resistance",
+          label: "Resistance",
+          min: 1,
+          max: 100,
+          step: 1,
+          value: 6,
+          unit: "Ω"
+        }
+      ]
+    },
 
-        optics: {
-            title: "Optics Laboratory",
-            eyebrow: "LIGHT & OPTICAL SYSTEMS",
-            description:
-                "Investigate image formation, focal length and object distance using a simplified thin-lens model.",
-            longDescription:
-                "Adjust the focal length and object distance of an ideal thin lens. Observe the calculated image position and magnification.",
-            icon: "🔭",
-            variables: [
-                {
-                    id: "focal",
-                    label: "Focal length",
-                    min: 5,
-                    max: 40,
-                    step: 1,
-                    value: 15,
-                    unit: "cm"
-                },
-                {
-                    id: "object-distance",
-                    label: "Object distance",
-                    min: 5,
-                    max: 100,
-                    step: 1,
-                    value: 45,
-                    unit: "cm"
-                }
-            ],
-            measurements: [
-                { id: "image-distance", label: "Image distance", unit: "cm" },
-                { id: "magnification", label: "Magnification", unit: "×" }
-            ],
-            equation: "1/f = 1/u + 1/v"
+    optics: {
+      title: "Optics Laboratory",
+      eyebrow: "03 / LIGHT AND LENSES",
+      description:
+        "Investigate image formation by a thin converging lens.",
+      intro:
+        "Set the focal length and object distance. For an object beyond the focal point, calculate image distance using 1/f = 1/u + 1/v.",
+      params: [
+        {
+          id: "focalLength",
+          label: "Focal length",
+          min: 5,
+          max: 30,
+          step: 1,
+          value: 10,
+          unit: "cm"
         },
+        {
+          id: "objectDistance",
+          label: "Object distance",
+          min: 6,
+          max: 100,
+          step: 1,
+          value: 30,
+          unit: "cm"
+        }
+      ]
+    },
 
-        waves: {
-            title: "Waves Laboratory",
-            eyebrow: "OSCILLATIONS & WAVES",
-            description:
-                "Explore wave frequency, wavelength and propagation speed with a live wave model.",
-            longDescription:
-                "Change the frequency and wavelength of an ideal periodic wave and observe how the wave speed changes.",
-            icon: "〰️",
-            variables: [
-                {
-                    id: "frequency",
-                    label: "Frequency",
-                    min: 1,
-                    max: 20,
-                    step: 1,
-                    value: 5,
-                    unit: "Hz"
-                },
-                {
-                    id: "wavelength",
-                    label: "Wavelength",
-                    min: 1,
-                    max: 10,
-                    step: 0.5,
-                    value: 4,
-                    unit: "m"
-                }
-            ],
-            measurements: [
-                { id: "wave-speed", label: "Wave speed", unit: "m/s" },
-                { id: "period", label: "Period", unit: "s" }
-            ],
-            equation: "v = fλ"
+    waves: {
+      title: "Waves Laboratory",
+      eyebrow: "04 / WAVES AND OSCILLATIONS",
+      description:
+        "Explore how frequency and wavelength determine wave speed.",
+      intro:
+        "Change frequency and wavelength to calculate wave speed using v = fλ.",
+      params: [
+        {
+          id: "frequency",
+          label: "Frequency",
+          min: 1,
+          max: 100,
+          step: 1,
+          value: 10,
+          unit: "Hz"
         },
-
-        thermal: {
-            title: "Thermal Physics Laboratory",
-            eyebrow: "HEAT & ENERGY",
-            description:
-                "Investigate heat transfer and temperature change using a simplified calorimetry model.",
-            longDescription:
-                "Change the mass, specific heat capacity and temperature increase to calculate the thermal energy transferred.",
-            icon: "🌡️",
-            variables: [
-                {
-                    id: "thermal-mass",
-                    label: "Mass",
-                    min: 0.1,
-                    max: 5,
-                    step: 0.1,
-                    value: 1,
-                    unit: "kg"
-                },
-                {
-                    id: "temperature-change",
-                    label: "Temperature change",
-                    min: 1,
-                    max: 100,
-                    step: 1,
-                    value: 20,
-                    unit: "°C"
-                }
-            ],
-            measurements: [
-                { id: "thermal-energy", label: "Heat transferred", unit: "J" },
-                { id: "thermal-temperature", label: "Temperature change", unit: "°C" }
-            ],
-            equation: "Q = mcΔT"
+        {
+          id: "wavelength",
+          label: "Wavelength",
+          min: 1,
+          max: 20,
+          step: 0.5,
+          value: 2,
+          unit: "m"
         }
-    };
+      ]
+    },
 
-    const $ = (selector, root = document) =>
-        root.querySelector(selector);
-
-    const $$ = (selector, root = document) =>
-        Array.from(root.querySelectorAll(selector));
-
-
-    /* =====================================================
-       2. SHARED UTILITIES
-       ===================================================== */
-
-    function formatNumber(value, decimals = 2) {
-        if (!Number.isFinite(value)) {
-            return "Undefined";
+    thermal: {
+      title: "Thermal Physics Laboratory",
+      eyebrow: "05 / HEAT AND ENERGY",
+      description:
+        "Calculate the heat energy required to change the temperature of a substance.",
+      intro:
+        "Adjust mass, specific heat capacity and temperature change using Q = mcΔT. This model assumes no phase change.",
+      params: [
+        {
+          id: "thermalMass",
+          label: "Mass",
+          min: 0.1,
+          max: 10,
+          step: 0.1,
+          value: 1,
+          unit: "kg"
+        },
+        {
+          id: "specificHeat",
+          label: "Specific heat capacity",
+          min: 100,
+          max: 5000,
+          step: 100,
+          value: 4200,
+          unit: "J/(kg·°C)"
+        },
+        {
+          id: "temperatureChange",
+          label: "Temperature change",
+          min: 1,
+          max: 100,
+          step: 1,
+          value: 10,
+          unit: "°C"
         }
+      ]
+    }
+  };
 
-        return Number(value.toFixed(decimals)).toLocaleString(
-            undefined,
-            {
-                maximumFractionDigits: decimals
-            }
-        );
+  const VIEW_TITLES = {
+    dashboard: "Dashboard",
+    laboratories: "Laboratories",
+    experiments: "Experiments",
+    analysis: "Data Analysis",
+    notebook: "Lab Notebook",
+    concepts: "Physics Concepts",
+    assessments: "Assessments",
+    premium: "Premium",
+    settings: "Settings",
+    "lab-detail": "Laboratory Workspace"
+  };
+
+  const state = {
+    currentView: "dashboard",
+    currentLab: null,
+    experimentsStarted: 0,
+    completedActivities: new Set(),
+    toastTimeout: null
+  };
+
+  /* =======================================================
+     2. DOM HELPERS
+     ======================================================= */
+
+  const $ = (selector, parent = document) =>
+    parent.querySelector(selector);
+
+  const $$ = (selector, parent = document) =>
+    Array.from(parent.querySelectorAll(selector));
+
+  const getViewElement = (name) =>
+    document.getElementById("view-" + name);
+
+  function formatNumber(value, digits = 2) {
+    if (!Number.isFinite(value)) {
+      return "Not defined";
     }
 
-    function escapeHTML(value) {
-        return String(value).replace(/[&<>"']/g, function (character) {
-            const entities = {
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#039;"
-            };
+    return Number(value.toFixed(digits)).toLocaleString(
+      undefined,
+      {
+        maximumFractionDigits: digits
+      }
+    );
+  }
 
-            return entities[character];
-        });
+  function safeRead(key, fallback) {
+    try {
+      const value = localStorage.getItem(key);
+      return value === null ? fallback : value;
+    } catch (error) {
+      return fallback;
+    }
+  }
+
+  function safeWrite(key, value) {
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function safeRemove(key) {
+    try {
+      localStorage.removeItem(key);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /* =======================================================
+     3. NOTIFICATIONS
+     ======================================================= */
+
+  function showToast(message) {
+    const toast = $("#toast");
+
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    if (state.toastTimeout) {
+      clearTimeout(state.toastTimeout);
     }
 
-    function showToast(message, type = "success") {
-        const toast = $("#toast");
+    state.toastTimeout = setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2600);
+  }
 
-        if (!toast) {
-            console.info("[PhysicsLab]", message);
-            return;
-        }
+  /* =======================================================
+     4. NAVIGATION
+     ======================================================= */
 
-        toast.textContent = message;
-        toast.className = "toast show " + type;
-        toast.setAttribute("role", "status");
+  function navigate(viewName) {
+    const validViews = Object.keys(VIEW_TITLES);
 
-        if (APP.toastTimeout) {
-            clearTimeout(APP.toastTimeout);
-        }
-
-        APP.toastTimeout = setTimeout(function () {
-            toast.classList.remove("show");
-        }, 2800);
+    if (!validViews.includes(viewName)) {
+      showToast("That page is not available.");
+      return;
     }
 
-    function closeMobileSidebar() {
-        const sidebar = $(".sidebar");
-
-        if (sidebar) {
-            sidebar.classList.remove("open", "is-open");
-        }
+    if (viewName === "lab-detail" && !state.currentLab) {
+      viewName = "laboratories";
     }
 
-    function setText(selector, value) {
-        const element = $(selector);
+    let visibleView = viewName;
 
-        if (element) {
-            element.textContent = value;
-        }
+    if (viewName === "lab-detail") {
+      visibleView = "lab-detail";
     }
 
+    $$(".page-view").forEach((view) => {
+      view.hidden = view.id !== "view-" + visibleView;
+    });
 
-    /* =====================================================
-       3. PAGE NAVIGATION
-       ===================================================== */
+    state.currentView = viewName;
 
-    function getViewElement(viewName) {
-        return document.getElementById("view-" + viewName);
+    const title = $("#pageTitle");
+
+    if (title) {
+      title.textContent =
+        VIEW_TITLES[viewName] || "PhysicsLab";
     }
 
-    function showView(viewName, options = {}) {
-        const target = getViewElement(viewName);
+    $$(".nav-item[data-view]").forEach((button) => {
+      const isActive = button.dataset.view === viewName;
 
-        if (!target) {
-            console.warn(
-                "[PhysicsLab] View not found:",
-                "view-" + viewName
-            );
+      button.classList.toggle("active", isActive);
 
-            showToast(
-                "This page is not available yet.",
-                "error"
-            );
+      if (isActive) {
+        button.setAttribute("aria-current", "page");
+      } else {
+        button.removeAttribute("aria-current");
+      }
+    });
 
-            return false;
-        }
+    closeMobileMenu();
 
-        $$(".page-view, .view-section, [data-view-panel]").forEach(
-            function (section) {
-                section.hidden = true;
-                section.classList.remove("active");
-            }
-        );
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
 
-        /*
-         * Also support page sections whose IDs follow
-         * the view-name convention used in index.html.
-         */
-        target.hidden = false;
-        target.classList.add("active");
+  /* =======================================================
+     5. MOBILE MENU
+     ======================================================= */
 
-        APP.currentView = viewName;
+  function openMobileMenu() {
+    document.body.classList.add("sidebar-open");
 
-        $$("[data-view]").forEach(function (link) {
-            const isActive =
-                link.getAttribute("data-view") === viewName;
+    const button = $("#mobileMenu");
 
-            link.classList.toggle("active", isActive);
-
-            if (isActive) {
-                link.setAttribute("aria-current", "page");
-            } else {
-                link.removeAttribute("aria-current");
-            }
-        });
-
-        const titles = {
-            dashboard: "Dashboard",
-            laboratories: "Laboratories",
-            experiments: "Experiments",
-            analysis: "Data Analysis",
-            notebook: "Lab Notebook",
-            concepts: "Physics Concepts",
-            assessments: "Assessments",
-            premium: "PhysicsLab Premium",
-            settings: "Settings"
-        };
-
-        setText(
-            "#pageTitle",
-            titles[viewName] || "PhysicsLab"
-        );
-
-        closeMobileSidebar();
-
-        if (!options.keepScroll) {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-
-        return true;
+    if (button) {
+      button.setAttribute("aria-expanded", "true");
+      button.setAttribute("aria-label", "Close navigation menu");
     }
+  }
 
-    function openLab(labKey) {
-        const lab = LABS[labKey];
+  function closeMobileMenu() {
+    document.body.classList.remove("sidebar-open");
 
-        if (!lab) {
-            showToast("Laboratory not found.", "error");
-            return;
-        }
+    const button = $("#mobileMenu");
 
-        const detailView = $("#view-lab-detail");
-
-        if (!detailView) {
-            showToast(
-                "The laboratory workspace is missing from index.html.",
-                "error"
-            );
-            return;
-        }
-
-        APP.currentLab = labKey;
-
-        $$(".page-view, .view-section, [data-view-panel]").forEach(
-            function (section) {
-                section.hidden = true;
-                section.classList.remove("active");
-            }
-        );
-
-        detailView.hidden = false;
-        detailView.classList.add("active");
-
-        $$("[data-view]").forEach(function (link) {
-            link.classList.remove("active");
-            link.removeAttribute("aria-current");
-        });
-
-        setText("#pageTitle", lab.title);
-        setText("#detailEyebrow", lab.eyebrow);
-        setText("#detailTitle", lab.title);
-        setText("#detailDescription", lab.description);
-        setText("#detailLong", lab.longDescription);
-
-        closeMobileSidebar();
-
-        renderLabWorkspace(labKey);
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+    if (button) {
+      button.setAttribute("aria-expanded", "false");
+      button.setAttribute("aria-label", "Open navigation menu");
     }
-
-
-    /* =====================================================
-       4. LABORATORY WORKSPACE
-       ===================================================== */
-
-    function renderLabWorkspace(labKey) {
-        const lab = LABS[labKey];
-        const container = $("#view-lab-detail");
-
-        if (!lab || !container) {
-            return;
-        }
-
-        let workspace = $("#physicsLabWorkspace");
-
-        if (!workspace) {
-            workspace = document.createElement("div");
-            workspace.id = "physicsLabWorkspace";
-            workspace.className = "lab-workspace";
-
-            container.appendChild(workspace);
-        }
-
-        const variableControls = lab.variables.map(function (variable) {
-            const safeId = escapeHTML(variable.id);
-
-            return `
-                <div class="control-row">
-                    <label for="control-${safeId}">
-                        <span>${escapeHTML(variable.label)}</span>
-                        <output id="output-${safeId}">
-                            ${escapeHTML(variable.value)}
-                            ${escapeHTML(variable.unit)}
-                        </output>
-                    </label>
-
-                    <input
-                        type="range"
-                        id="control-${safeId}"
-                        data-variable="${safeId}"
-                        min="${variable.min}"
-                        max="${variable.max}"
-                        step="${variable.step}"
-                        value="${variable.value}"
-                        aria-label="${escapeHTML(variable.label)}"
-                    />
-                </div>
-            `;
-        }).join("");
-
-        const measurementCards = lab.measurements.map(function (item) {
-            return `
-                <div class="measurement-card">
-                    <span class="measurement-label">
-                        ${escapeHTML(item.label)}
-                    </span>
-
-                    <strong
-                        class="measurement-value"
-                        id="result-${escapeHTML(item.id)}"
-                    >
-                        --
-                    </strong>
-
-                    <span class="measurement-unit">
-                        ${escapeHTML(item.unit)}
-                    </span>
-                </div>
-            `;
-        }).join("");
-
-        workspace.innerHTML = `
-            <section class="simulation-panel">
-                <div class="simulation-header">
-                    <div>
-                        <span class="eyebrow">LIVE SIMULATION</span>
-                        <h3>${escapeHTML(lab.title)}</h3>
-                    </div>
-
-                    <span class="tag tag-success">
-                        <span class="live-dot"></span>
-                        Interactive
-                    </span>
-                </div>
-
-                <div class="simulation-stage">
-                    <canvas
-                        id="physicsCanvas"
-                        width="760"
-                        height="350"
-                        aria-label="${escapeHTML(lab.title)} simulation"
-                    >
-                        Your browser does not support canvas.
-                    </canvas>
-                </div>
-
-                <div class="panel">
-                    <div class="panel-header">
-                        <div>
-                            <h3>Live measurements</h3>
-                            <p>Results update when you change a variable.</p>
-                        </div>
-                    </div>
-
-                    <div class="measurement-grid">
-                        ${measurementCards}
-                    </div>
-
-                    <div class="equation-card" id="labEquation">
-                        ${escapeHTML(lab.equation)}
-                    </div>
-                </div>
-            </section>
-
-            <aside class="simulation-controls">
-                <span class="eyebrow">EXPERIMENT SETUP</span>
-                <h3>Adjust variables</h3>
-
-                <p class="muted-text">
-                    Move the sliders to change experimental conditions.
-                </p>
-
-                ${variableControls}
-
-                <div class="simulation-actions">
-                    <button
-                        class="btn btn-secondary"
-                        type="button"
-                        data-action="reset-lab"
-                    >
-                        Reset
-                    </button>
-
-                    <button
-                        class="btn btn-primary"
-                        type="button"
-                        data-action="record-result"
-                    >
-                        Record result
-                    </button>
-                </div>
-
-                <div style="margin-top:22px">
-                    <h3>Experiment notes</h3>
-
-                    <p class="muted-text">
-                        ${escapeHTML(lab.longDescription)}
-                    </p>
-
-                    <p class="muted-text">
-                        This is a simplified educational model.
-                        Compare its assumptions with real experiments.
-                    </p>
-                </div>
-            </aside>
-        `;
-
-        APP.activeSimulation = {
-            labKey: labKey,
-            values: getDefaultValues(labKey)
-        };
-
-        bindLabControls();
-        updateSimulation();
-    }
-
-    function getDefaultValues(labKey) {
-        const values = {};
-
-        LABS[labKey].variables.forEach(function (variable) {
-            values[variable.id] = variable.value;
-        });
-
-        return values;
-    }
-
-    function getCurrentValues() {
-        const values = {};
-
-        if (!APP.currentLab) {
-            return values;
-        }
-
-        LABS[APP.currentLab].variables.forEach(function (variable) {
-            const input = $(
-                '[data-variable="' + variable.id + '"]'
-            );
-
-            values[variable.id] = input
-                ? Number(input.value)
-                : variable.value;
-        });
-
-        return values;
-    }
-
-    function bindLabControls() {
-        $$("#physicsLabWorkspace [data-variable]").forEach(
-            function (input) {
-                input.addEventListener("input", updateSimulation);
-            }
-        );
-    }
-
-
-    /* =====================================================
-       5. PHYSICS CALCULATIONS
-       ===================================================== */
-
-    function calculateResults(labKey, values) {
-        switch (labKey) {
-            case "mechanics": {
-                const mass = values.mass;
-                const force = values.force;
-
-                return {
-                    acceleration: force / mass,
-                    "force-result": force
-                };
-            }
-
-            case "electricity": {
-                const voltage = values.voltage;
-                const resistance = values.resistance;
-                const current = voltage / resistance;
-
-                return {
-                    current: current,
-                    power: voltage * current
-                };
-            }
-
-            case "optics": {
-                const focal = values.focal;
-                const objectDistance = values["object-distance"];
-
-                /*
-                 * Thin-lens convention:
-                 * 1/f = 1/u + 1/v
-                 */
-                const denominator = 1 / focal - 1 / objectDistance;
-
-                const imageDistance =
-                    Math.abs(denominator) < 0.000001
-                        ? Infinity
-                        : 1 / denominator;
-
-                return {
-                    "image-distance": imageDistance,
-                    magnification: Number.isFinite(imageDistance)
-                        ? -imageDistance / objectDistance
-                        : Infinity
-                };
-            }
-
-            case "waves": {
-                const frequency = values.frequency;
-                const wavelength = values.wavelength;
-
-                return {
-                    "wave-speed": frequency * wavelength,
-                    period: 1 / frequency
-                };
-            }
-
-            case "thermal": {
-                const mass = values["thermal-mass"];
-                const temperatureChange =
-                    values["temperature-change"];
-
-                /*
-                 * Approximation: specific heat capacity of water.
-                 * c = 4180 J/(kg·°C)
-                 */
-                return {
-                    "thermal-energy":
-                        mass * 4180 * temperatureChange,
-                    "thermal-temperature": temperatureChange
-                };
-            }
-
-            default:
-                return {};
-        }
-    }
-
-    function updateSimulation() {
-        if (!APP.currentLab) {
-            return;
-        }
-
-        const lab = LABS[APP.currentLab];
-        const values = getCurrentValues();
-        const results = calculateResults(APP.currentLab, values);
-
-        APP.activeSimulation = {
-            labKey: APP.currentLab,
-            values: values,
-            results: results
-        };
-
-        lab.variables.forEach(function (variable) {
-            const output = $(
-                "#output-" + variable.id
-            );
-
-            if (output) {
-                output.textContent =
-                    formatNumber(values[variable.id]) +
-                    " " +
-                    variable.unit;
-            }
-        });
-
-        lab.measurements.forEach(function (measurement) {
-            const element = $(
-                "#result-" + measurement.id
-            );
-
-            if (!element) {
-                return;
-            }
-
-            const result = results[measurement.id];
-
-            if (result === Infinity || result === -Infinity) {
-                element.textContent = "∞";
-            } else if (result === undefined) {
-                element.textContent = "--";
-            } else {
-                element.textContent = formatNumber(result);
-            }
-        });
-
-        drawSimulation(APP.currentLab, values, results);
-    }
-
-
-    /* =====================================================
-       6. CANVAS DRAWING
-       ===================================================== */
-
-    function drawSimulation(labKey, values, results) {
-        const canvas = $("#physicsCanvas");
-
-        if (!canvas) {
-            return;
-        }
-
-        const context = canvas.getContext("2d");
-
-        if (!context) {
-            return;
-        }
-
-        const width = canvas.width;
-        const height = canvas.height;
-
-        context.clearRect(0, 0, width, height);
-
-        context.fillStyle = "#0b1321";
-        context.fillRect(0, 0, width, height);
-
-        drawGrid(context, width, height);
-
-        switch (labKey) {
-            case "mechanics":
-                drawMechanics(context, width, height, values, results);
-                break;
-
-            case "electricity":
-                drawCircuit(context, width, height, values, results);
-                break;
-
-            case "optics":
-                drawOptics(context, width, height, values, results);
-                break;
-
-            case "waves":
-                drawWave(context, width, height, values);
-                break;
-
-            case "thermal":
-                drawThermal(context, width, height, values);
-                break;
-        }
-    }
-
-    function drawGrid(context, width, height) {
-        context.strokeStyle = "rgba(130, 160, 210, 0.08)";
-        context.lineWidth = 1;
-
-        for (let x = 0; x <= width; x += 38) {
-            context.beginPath();
-            context.moveTo(x, 0);
-            context.lineTo(x, height);
-            context.stroke();
-        }
-
-        for (let y = 0; y <= height; y += 38) {
-            context.beginPath();
-            context.moveTo(0, y);
-            context.lineTo(width, y);
-            context.stroke();
-        }
-    }
-
-    function drawText(context, text, x, y, size = 16, color = "#edf3ff") {
-        context.fillStyle = color;
-        context.font = "600 " + size + "px Arial, sans-serif";
-        context.fillText(text, x, y);
-    }
-
-    function drawMechanics(context, width, height, values, results) {
-        const groundY = height * 0.72;
-        const boxX = width * 0.37;
-        const boxY = groundY - 75;
-
-        context.strokeStyle = "#6e83a6";
-        context.lineWidth = 3;
-        context.beginPath();
-        context.moveTo(40, groundY);
-        context.lineTo(width - 40, groundY);
-        context.stroke();
-
-        context.fillStyle = "#588bff";
-        context.fillRect(boxX, boxY, 95, 75);
-
-        context.strokeStyle = "#9fc0ff";
-        context.lineWidth = 2;
-        context.strokeRect(boxX, boxY, 95, 75);
-
-        drawText(
-            context,
-            values.mass + " kg",
-            boxX + 22,
-            boxY + 42,
-            17
-        );
-
-        const arrowLength = 35 + values.force * 1.7;
-        const arrowY = boxY + 37;
-        const arrowStart = boxX + 110;
-        const arrowEnd = Math.min(
-            width - 35,
-            arrowStart + arrowLength
-        );
-
-        context.strokeStyle = "#47d7e8";
-        context.fillStyle = "#47d7e8";
-        context.lineWidth = 4;
-
-        context.beginPath();
-        context.moveTo(arrowStart, arrowY);
-        context.lineTo(arrowEnd, arrowY);
-        context.stroke();
-
-        context.beginPath();
-        context.moveTo(arrowEnd, arrowY);
-        context.lineTo(arrowEnd - 12, arrowY - 8);
-        context.lineTo(arrowEnd - 12, arrowY + 8);
-        context.closePath();
-        context.fill();
-
-        drawText(context, "F = " + values.force + " N", 40, 45, 18);
-        drawText(
-            context,
-            "a = " + formatNumber(results.acceleration) + " m/s²",
-            40,
-            74,
-            15,
-            "#47d7e8"
-        );
-
-        drawText(
-            context,
-            "Illustrative force model",
-            40,
-            height - 20,
-            12,
-            "#71819b"
-        );
-    }
-
-    function drawCircuit(context, width, height, values, results) {
-        const left = width * 0.23;
-        const right = width * 0.75;
-        const top = height * 0.27;
-        const bottom = height * 0.73;
-
-        context.strokeStyle = "#47d7e8";
-        context.lineWidth = 4;
-        context.beginPath();
-        context.moveTo(left, top);
-        context.lineTo(right, top);
-        context.lineTo(right, bottom);
-        context.lineTo(left, bottom);
-        context.closePath();
-        context.stroke();
-
-        /* Battery */
-        context.strokeStyle = "#edf3ff";
-        context.lineWidth = 5;
-
-        context.beginPath();
-        context.moveTo(left - 12, top - 17);
-        context.lineTo(left - 12, top + 17);
-        context.moveTo(left + 12, top - 10);
-        context.lineTo(left + 12, top + 10);
-        context.stroke();
-
-        /* Resistor symbol */
-        const resistorX = right;
-        const resistorY = (top + bottom) / 2;
-
-        context.strokeStyle = "#ffd166";
-        context.lineWidth = 4;
-        context.beginPath();
-        context.moveTo(resistorX, resistorY - 35);
-        context.lineTo(resistorX - 9, resistorY - 27);
-        context.lineTo(resistorX + 9, resistorY - 17);
-        context.lineTo(resistorX - 9, resistorY - 7);
-        context.lineTo(resistorX + 9, resistorY + 3);
-        context.lineTo(resistorX - 9, resistorY + 13);
-        context.lineTo(resistorX + 9, resistorY + 23);
-        context.lineTo(resistorX, resistorY + 35);
-        context.stroke();
-
-        drawText(context, values.voltage + " V", left - 55, top - 34);
-        drawText(
-            context,
-            values.resistance + " Ω",
-            right + 18,
-            resistorY + 5,
-            15,
-            "#ffd166"
-        );
-
-        drawText(
-            context,
-            "I = " + formatNumber(results.current) + " A",
-            40,
-            height - 30,
-            16,
-            "#47d7e8"
-        );
-
-        drawText(context, "Ideal DC circuit", 40, 38, 15);
-    }
-
-    function drawOptics(context, width, height, values, results) {
-        const axisY = height * 0.55;
-        const lensX = width * 0.59;
-
-        context.strokeStyle = "#8194b4";
-        context.lineWidth = 2;
-        context.beginPath();
-        context.moveTo(35, axisY);
-        context.lineTo(width - 35, axisY);
-        context.stroke();
-
-        /* Thin lens */
-        context.strokeStyle = "#47d7e8";
-        context.lineWidth = 5;
-        context.beginPath();
-        context.ellipse(lensX, axisY, 12, 100, 0, 0, Math.PI * 2);
-        context.stroke();
-
-        /* Object arrow */
-        const objectX = Math.max(
-            55,
-            lensX - Math.min(values["object-distance"] * 4, 240)
-        );
-
-        context.strokeStyle = "#ffd166";
-        context.lineWidth = 4;
-        context.beginPath();
-        context.moveTo(objectX, axisY);
-        context.lineTo(objectX, axisY - 65);
-        context.stroke();
-
-        context.fillStyle = "#ffd166";
-        context.beginPath();
-        context.moveTo(objectX, axisY - 76);
-        context.lineTo(objectX - 8, axisY - 62);
-        context.lineTo(objectX + 8, axisY - 62);
-        context.closePath();
-        context.fill();
-
-        drawText(context, "Object", objectX - 25, axisY + 28, 13);
-        drawText(context, "Lens", lensX - 17, axisY + 125, 13, "#47d7e8");
-
-        drawText(
-            context,
-            "f = " + values.focal + " cm",
-            35,
-            35,
-            16
-        );
-
-        const imageDistance = results["image-distance"];
-
-        drawText(
-            context,
-            "Image distance: " +
-                (
-                    Number.isFinite(imageDistance)
-                        ? formatNumber(imageDistance) + " cm"
-                        : "at infinity"
-                ),
-            35,
-            height - 22,
-            14,
-            "#47d7e8"
-        );
-    }
-
-    function drawWave(context, width, height, values) {
-        const midY = height / 2;
-        const amplitude = Math.min(height * 0.28, 90);
-        const cycles = values.frequency / 4;
-        const phase = values.wavelength;
-
-        context.strokeStyle = "#47d7e8";
-        context.lineWidth = 3;
-        context.beginPath();
-
-        for (let x = 0; x <= width; x += 2) {
-            const y =
-                midY -
-                Math.sin(
-                    (x / width) * Math.PI * 2 * cycles
-                ) *
-                amplitude;
-
-            if (x === 0) {
-                context.moveTo(x, y);
-            } else {
-                context.lineTo(x, y);
-            }
-        }
-
-        context.stroke();
-
-        context.strokeStyle = "rgba(255, 209, 102, 0.8)";
-        context.setLineDash([6, 6]);
-        context.beginPath();
-        context.moveTo(30, midY);
-        context.lineTo(width - 30, midY);
-        context.stroke();
-        context.setLineDash([]);
-
-        drawText(
-            context,
-            "f = " + values.frequency + " Hz",
-            35,
-            36,
-            16
-        );
-
-        drawText(
-            context,
-            "λ = " + formatNumber(phase) + " m",
-            35,
-            height - 25,
-            16,
-            "#ffd166"
-        );
-    }
-
-    function drawThermal(context, width, height, values) {
-        const beakerX = width * 0.34;
-        const beakerY = height * 0.24;
-        const beakerWidth = width * 0.32;
-        const beakerHeight = height * 0.53;
-
-        const temperatureRatio =
-            values["temperature-change"] / 100;
-
-        const red = Math.round(40 + 180 * temperatureRatio);
-        const green = Math.round(120 - 75 * temperatureRatio);
-
-        context.strokeStyle = "#a9bddc";
-        context.lineWidth = 4;
-        context.beginPath();
-        context.moveTo(beakerX, beakerY);
-        context.lineTo(beakerX + 12, beakerY + beakerHeight);
-        context.lineTo(beakerX + beakerWidth - 12, beakerY + beakerHeight);
-        context.lineTo(beakerX + beakerWidth, beakerY);
-        context.stroke();
-
-        context.fillStyle =
-            "rgba(" + red + "," + green + ",90,0.65)";
-
-        context.fillRect(
-            beakerX + 14,
-            beakerY + beakerHeight * (1 - temperatureRatio * 0.55),
-            beakerWidth - 28,
-            beakerHeight * temperatureRatio * 0.55
-        );
-
-        drawText(
-            context,
-            "Mass: " + formatNumber(values["thermal-mass"]) + " kg",
-            35,
-            40,
-            16
-        );
-
-        drawText(
-            context,
-            "ΔT: " + values["temperature-change"] + " °C",
-            35,
-            67,
-            15,
-            "#ffd166"
-        );
-
-        drawText(
-            context,
-            "Idealized calorimetry model",
-            35,
-            height - 24,
-            12,
-            "#71819b"
-        );
-    }
-
-
-    /* =====================================================
-       7. RESET AND RECORD EXPERIMENTS
-       ===================================================== */
-
-    function resetLab() {
-        if (!APP.currentLab) {
-            return;
-        }
-
-        LABS[APP.currentLab].variables.forEach(function (variable) {
-            const input = $(
-                '[data-variable="' + variable.id + '"]'
-            );
-
-            if (input) {
-                input.value = variable.value;
-            }
-        });
-
-        updateSimulation();
-        showToast("Experiment variables reset.");
-    }
-
-    function recordResult() {
-        if (!APP.currentLab || !APP.activeSimulation) {
-            showToast("Open a laboratory first.", "error");
-            return;
-        }
-
-        const lab = LABS[APP.currentLab];
-        const values = APP.activeSimulation.values;
-        const results = APP.activeSimulation.results || {};
-
-        const record = {
-            id: Date.now(),
-            lab: APP.currentLab,
-            title: lab.title,
-            date: new Date().toISOString(),
-            variables: values,
-            results: results,
-            equation: lab.equation
-        };
-
-        /*
-         * Save records locally on this device.
-         * This is not cloud synchronization.
-         */
-        try {
-            const key = "physicslab_records";
-            const existing = JSON.parse(
-                localStorage.getItem(key) || "[]"
-            );
-
-            existing.unshift(record);
-
-            localStorage.setItem(
-                key,
-                JSON.stringify(existing.slice(0, 100))
-            );
-
-            showToast("Result saved to this browser.");
-        } catch (error) {
-            console.error("Could not save experiment:", error);
-
-            showToast(
-                "Could not save this result on the device.",
-                "error"
-            );
-        }
-    }
-
-
-    /* =====================================================
-       8. NOTEBOOK
-       ===================================================== */
-
-    function loadNotebook() {
-        const container = $(
-            "#notebookEntries, #notebookList, [data-notebook-entries]"
-        );
-
-        if (!container) {
-            return;
-        }
-
-        let records = [];
-
-        try {
-            records = JSON.parse(
-                localStorage.getItem("physicslab_records") || "[]"
-            );
-        } catch (error) {
-            console.warn("Notebook data could not be read.", error);
-        }
-
-        if (!records.length) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-state-icon">📓</div>
-                    <h3>Your notebook is ready</h3>
-                    <p>
-                        Open a laboratory and select “Record result”
-                        to save your first experiment.
-                    </p>
-                </div>
-            `;
-
-            return;
-        }
-
-        container.innerHTML = records.map(function (record) {
-            const date = new Date(record.date);
-
-            const resultLines = Object.entries(
-                record.results || {}
-            ).map(function (entry) {
-                return (
-                    escapeHTML(entry[0]) +
-                    ": " +
-                    escapeHTML(formatNumber(entry[1]))
-                );
-            }).join(" · ");
-
-            return `
-                <article class="notebook-entry">
-                    <div class="notebook-meta">
-                        <span>${escapeHTML(
-                            Number.isNaN(date.getTime())
-                                ? "Saved experiment"
-                                : date.toLocaleString()
-                        )}</span>
-
-                        <span class="tag tag-primary">
-                            ${escapeHTML(record.lab)}
-                        </span>
-                    </div>
-
-                    <h3>${escapeHTML(record.title)}</h3>
-
-                    <p class="muted-text">
-                        ${escapeHTML(record.equation || "")}
-                    </p>
-
-                    <p class="muted-text">
-                        ${resultLines}
-                    </p>
-                </article>
-            `;
-        }).join("");
-    }
-
-
-    /* =====================================================
-       9. EXPERIMENT SEARCH AND FILTERING
-       ===================================================== */
-
-    function filterExperiments(searchTerm) {
-        const term = searchTerm.trim().toLowerCase();
-
-        const cards = $$(
-            ".experiment-card, .laboratory-card, .lab-card, " +
-            "[data-lab], [data-experiment]"
-        );
-
-        cards.forEach(function (card) {
-            const text = (
-                card.textContent +
-                " " +
-                (card.getAttribute("data-lab") || "") +
-                " " +
-                (card.getAttribute("data-experiment") || "")
-            ).toLowerCase();
-
-            card.hidden = Boolean(term) && !text.includes(term);
-        });
-    }
-
-
-    /* =====================================================
-       10. THEME
-       ===================================================== */
-
-    function initializeTheme() {
-        const button = $("#themeToggle");
-
-        let savedTheme = "dark";
-
-        try {
-            savedTheme = localStorage.getItem(
-                "physicslab_theme"
-            ) || "dark";
-        } catch (error) {
-            /* Continue using the default theme. */
-        }
-
-        document.body.classList.toggle(
-            "light-theme",
-            savedTheme === "light"
-        );
-
-        if (button) {
-            button.setAttribute(
-                "aria-pressed",
-                String(savedTheme === "light")
-            );
-        }
-    }
-
-    function toggleTheme() {
-        const isLight =
-            !document.body.classList.contains("light-theme");
-
-        document.body.classList.toggle("light-theme", isLight);
-
-        try {
-            localStorage.setItem(
-                "physicslab_theme",
-                isLight ? "light" : "dark"
-            );
-        } catch (error) {
-            console.warn("Theme preference was not saved.");
-        }
-
-        const button = $("#themeToggle");
-
-        if (button) {
-            button.setAttribute(
-                "aria-pressed",
-                String(isLight)
-            );
-        }
-
-        showToast(
-            isLight ? "Light theme enabled." : "Dark theme enabled."
-        );
-
-        if (APP.currentLab) {
-            updateSimulation();
-        }
-    }
-
-
-    /* =====================================================
-       11. EVENT HANDLERS
-       ===================================================== */
-
-    function bindNavigation() {
-        document.addEventListener("click", function (event) {
-            const navigationLink = event.target.closest("[data-view]");
-
-            if (navigationLink) {
-                event.preventDefault();
-
-                const viewName =
-                    navigationLink.getAttribute("data-view");
-
-                if (viewName) {
-                    showView(viewName);
-
-                    if (viewName === "notebook") {
-                        loadNotebook();
-                    }
-                }
-
-                return;
-            }
-
-            const labCard = event.target.closest("[data-lab]");
-
-            if (labCard) {
-                const labKey = labCard.getAttribute("data-lab");
-
-                if (LABS[labKey]) {
-                    event.preventDefault();
-                    openLab(labKey);
-                }
-
-                return;
-            }
-
-            const actionElement = event.target.closest("[data-action]");
-
-            if (!actionElement) {
-                return;
-            }
-
-            const action = actionElement.getAttribute("data-action");
-
-            switch (action) {
-                case "reset-lab":
-                    resetLab();
-                    break;
-
-                case "record-result":
-                    recordResult();
-                    break;
-
-                case "back-to-labs":
-                    showView("laboratories");
-                    break;
-
-                case "back-to-dashboard":
-                    showView("dashboard");
-                    break;
-
-                case "toggle-theme":
-                    toggleTheme();
-                    break;
-
-                case "open-premium":
-                    showView("premium");
-                    break;
-
-                case "open-notebook":
-                    showView("notebook");
-                    loadNotebook();
-                    break;
-            }
-        });
-
-        const mobileMenu = $("#mobileMenu");
-
-        if (mobileMenu) {
-            mobileMenu.addEventListener("click", function () {
-                const sidebar = $(".sidebar");
-
-                if (sidebar) {
-                    sidebar.classList.toggle("open");
-                    sidebar.classList.toggle("is-open");
-                }
-            });
-        }
-
-        const themeToggle = $("#themeToggle");
-
-        if (themeToggle) {
-            themeToggle.addEventListener("click", toggleTheme);
-        }
-
-        const searchInputs = $$(
-            "#globalSearch, #searchInput, .search-box input, " +
-            "[data-experiment-search]"
-        );
-
-        searchInputs.forEach(function (input) {
-            input.addEventListener("input", function () {
-                filterExperiments(input.value);
-
-                if (input.value.trim()) {
-                    const experimentsView = getViewElement("experiments");
-
-                    if (experimentsView && experimentsView.hidden) {
-                        showView("experiments");
-                    }
-                }
-            });
-
-            input.addEventListener("keydown", function (event) {
-                if (event.key === "Escape") {
-                    input.value = "";
-                    filterExperiments("");
-                    input.blur();
-                }
-            });
-        });
-
-        document.addEventListener("keydown", function (event) {
-            const isSearchShortcut =
-                (event.ctrlKey || event.metaKey) &&
-                event.key.toLowerCase() === "k";
-
-            if (isSearchShortcut) {
-                event.preventDefault();
-
-                const search = $(
-                    "#globalSearch, #searchInput, .search-box input, " +
-                    "[data-experiment-search]"
-                );
-
-                if (search) {
-                    search.focus();
-                }
-            }
-
-            if (event.key === "Escape") {
-                closeMobileSidebar();
-            }
-        });
-    }
-
-
-    /* =====================================================
-       12. DASHBOARD INITIALIZATION
-       ===================================================== */
-
-    function initializeDashboard() {
-        const startButtons = $$(
-            "[data-start-learning], .start-learning-button"
-        );
-
-        startButtons.forEach(function (button) {
-            button.addEventListener("click", function () {
-                showView("laboratories");
-            });
-        });
-
-        const today = new Date();
-
-        setText(
-            "#currentDate",
-            today.toLocaleDateString(undefined, {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-            })
-        );
-    }
-
-
-    /* =====================================================
-       13. START APPLICATION
-       ===================================================== */
-
-    function initialize() {
-        if (APP.initialized) {
-            return;
-        }
-
-        initializeTheme();
-        bindNavigation();
-        initializeDashboard();
-
-        /*
-         * Display the dashboard when the application loads.
-         */
-        const dashboard = getViewElement("dashboard");
-
-        if (dashboard) {
-            showView("dashboard", { keepScroll: true });
-        } else {
-            console.warn(
-                "[PhysicsLab] Could not find #view-dashboard."
-            );
-        }
-
-        APP.initialized = true;
-
-        console.info(
-            APP.name + " v" + APP.version + " initialized."
-        );
-    }
-
-    if (document.readyState === "loading") {
-        document.addEventListener(
-            "DOMContentLoaded",
-            initialize,
-            { once: true }
-        );
+  }
+
+  function toggleMobileMenu() {
+    if (document.body.classList.contains("sidebar-open")) {
+      closeMobileMenu();
     } else {
-        initialize();
+      openMobileMenu();
+    }
+  }
+
+  /* =======================================================
+     6. DARK AND LIGHT THEME
+     ======================================================= */
+
+  function applyTheme(theme) {
+    const light = theme === "light";
+
+    document.body.classList.toggle("light-theme", light);
+
+    const button = $("#themeToggle");
+
+    if (button) {
+      button.textContent = light ? "☾" : "☼";
+
+      button.setAttribute(
+        "aria-label",
+        light ? "Switch to dark theme" : "Switch to light theme"
+      );
     }
 
-    /*
-     * Expose a small API for future PhysicsLab modules.
-     */
-    window.PhysicsLab = {
-        version: APP.version,
-        showView: showView,
-        openLab: openLab,
-        updateSimulation: updateSimulation,
-        getLabs: function () {
-            return Object.keys(LABS);
-        },
-        getCurrentLab: function () {
-            return APP.currentLab;
-        }
+    safeWrite("physicsLabTheme", light ? "light" : "dark");
+  }
+
+  function toggleTheme() {
+    const isLight =
+      document.body.classList.contains("light-theme");
+
+    applyTheme(isLight ? "dark" : "light");
+  }
+
+  /* =======================================================
+     7. BUILD LABORATORY CARDS
+     ======================================================= */
+
+  function createLabCard(key) {
+    const lab = LABS[key];
+
+    const symbols = {
+      mechanics: "↗",
+      electricity: "ϟ",
+      optics: "◉",
+      waves: "〰",
+      thermal: "♨"
     };
 
+    const classes = {
+      mechanics: "mechanics-card",
+      electricity: "electricity-card",
+      optics: "optics-card",
+      waves: "waves-card",
+      thermal: "thermal-card"
+    };
+
+    const descriptions = {
+      mechanics: "Motion, forces, energy and momentum.",
+      electricity: "Voltage, current, resistance and circuits.",
+      optics: "Reflection, refraction, lenses and images.",
+      waves: "Frequency, wavelength, sound and wave motion.",
+      thermal: "Temperature, heat transfer and energy."
+    };
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "lab-card " + classes[key];
+    button.dataset.lab = key;
+
+    const symbol = document.createElement("span");
+    symbol.className = "lab-symbol";
+    symbol.textContent = symbols[key];
+
+    const tag = document.createElement("span");
+    tag.className = "lab-tag";
+    tag.textContent = lab.eyebrow;
+
+    const title = document.createElement("h3");
+    title.textContent = lab.title.replace(" Laboratory", "");
+
+    const description = document.createElement("p");
+    description.textContent = descriptions[key];
+
+    const link = document.createElement("span");
+    link.className = "card-link";
+    link.textContent = "Enter laboratory →";
+
+    button.append(symbol, tag, title, description, link);
+
+    return button;
+  }
+
+  function populateLaboratories() {
+    const container = $("#allLaboratories");
+
+    if (!container) return;
+
+    container.replaceChildren();
+
+    Object.keys(LABS).forEach((key) => {
+      container.appendChild(createLabCard(key));
+    });
+  }
+
+  /* =======================================================
+     8. LABORATORY WORKSPACE
+     ======================================================= */
+
+  function openLab(key) {
+    const lab = LABS[key];
+
+    if (!lab) {
+      showToast("Laboratory not found.");
+      return;
+    }
+
+    state.currentLab = key;
+
+    if (!state.completedActivities.has(key)) {
+      state.completedActivities.add(key);
+      state.experimentsStarted += 1;
+      updateDashboardStats();
+    }
+
+    const eyebrow = $("#detailEyebrow");
+    const title = $("#detailTitle");
+    const description = $("#detailDescription");
+    const longDescription = $("#detailLong");
+    const workspace = $("#physicsLabWorkspace");
+
+    if (!workspace) {
+      showToast("Laboratory workspace could not be loaded.");
+      return;
+    }
+
+    if (eyebrow) eyebrow.textContent = lab.eyebrow;
+    if (title) title.textContent = lab.title;
+    if (description) description.textContent = lab.description;
+    if (longDescription) {
+      longDescription.textContent =
+        "This is an educational mathematical model. Compare its predictions with real measurements when performing a physical experiment.";
+    }
+
+    workspace.replaceChildren();
+
+    const intro = document.createElement("p");
+    intro.textContent = lab.intro;
+
+    const controls = document.createElement("div");
+    controls.className = "lab-controls";
+
+    lab.params.forEach((param) => {
+      const wrapper = document.createElement("label");
+      wrapper.className = "lab-parameter";
+
+      const titleLine = document.createElement("span");
+      titleLine.className = "parameter-title";
+      titleLine.textContent = param.label + ": ";
+
+      const output = document.createElement("strong");
+      output.id = "output-" + param.id;
+      output.textContent =
+        formatNumber(param.value) + " " + param.unit;
+
+      titleLine.appendChild(output);
+
+      const range = document.createElement("input");
+      range.type = "range";
+      range.min = String(param.min);
+      range.max = String(param.max);
+      range.step = String(param.step);
+      range.value = String(param.value);
+      range.dataset.param = param.id;
+      range.setAttribute(
+        "aria-label",
+        param.label
+      );
+
+      wrapper.append(titleLine, range);
+      controls.appendChild(wrapper);
+    });
+
+    const resultArea = document.createElement("div");
+    resultArea.className = "simulation-result";
+    resultArea.id = "simulationResults";
+
+    const visual = document.createElement("div");
+    visual.className = "simulation-visual";
+    visual.id = "simulationVisual";
+    visual.setAttribute("aria-label", "Illustration of the current physics model");
+    visual.setAttribute("role", "img");
+
+    const actions = document.createElement("div");
+    actions.className = "simulation-actions";
+
+    const resetButton = document.createElement("button");
+    resetButton.type = "button";
+    resetButton.className = "secondary-button";
+    resetButton.dataset.simulationReset = "true";
+    resetButton.textContent = "Reset values";
+
+    const notebookButton = document.createElement("button");
+    notebookButton.type = "button";
+    notebookButton.className = "primary-button";
+    notebookButton.dataset.recordLab = key;
+    notebookButton.textContent = "Record in notebook";
+
+    actions.append(resetButton, notebookButton);
+
+    workspace.append(intro, controls, resultArea, visual, actions);
+
+    navigate("lab-detail");
+    updateSimulation();
+  }
+
+  /* =======================================================
+     9. READ SIMULATION VALUES
+     ======================================================= */
+
+  function getSimulationValues() {
+    const key = state.currentLab;
+    const lab = LABS[key];
+
+    if (!lab) return null;
+
+    const values = {};
+
+    lab.params.forEach((param) => {
+      const input = $(
+        '[data-param="' + param.id + '"]',
+        $("#physicsLabWorkspace")
+      );
+
+      values[param.id] = input
+        ? Number(input.value)
+        : param.value;
+    });
+
+    return values;
+  }
+
+  /* =======================================================
+     10. PHYSICS CALCULATIONS
+     ======================================================= */
+
+  function calculateSimulation(key, v) {
+    switch (key) {
+      case "mechanics": {
+        const acceleration = v.force / v.mass;
+
+        return {
+          results: [
+            ["Acceleration", formatNumber(acceleration) + " m/s²"],
+            ["Net force", formatNumber(v.force) + " N"],
+            ["Mass", formatNumber(v.mass) + " kg"],
+            ["Kinetic energy at 1 m/s", formatNumber(0.5 * v.mass) + " J"]
+          ],
+          summary:
+            "Acceleration = force ÷ mass = " +
+            formatNumber(acceleration) +
+            " m/s²."
+        };
+      }
+
+      case "electricity": {
+        const current = v.voltage / v.resistance;
+        const power = v.voltage * current;
+
+        return {
+          results: [
+            ["Current", formatNumber(current) + " A"],
+            ["Voltage", formatNumber(v.voltage) + " V"],
+            ["Resistance", formatNumber(v.resistance) + " Ω"],
+            ["Electrical power", formatNumber(power) + " W"]
+          ],
+          summary:
+            "Current = voltage ÷ resistance = " +
+            formatNumber(current) +
+            " A. Assumes an ohmic resistor."
+        };
+      }
+
+      case "optics": {
+        const f = v.focalLength;
+        const u = v.objectDistance;
+
+        if (Math.abs(u - f) < 0.000001) {
+          return {
+            results: [
+              ["Image distance", "At infinity (ideal model)"],
+              ["Focal length", formatNumber(f) + " cm"],
+              ["Object distance", formatNumber(u) + " cm"],
+              ["Magnification", "Not finite"]
+            ],
+            summary:
+              "The object is at the focal point of the ideal thin lens. The emerging rays are parallel."
+          };
+        }
+
+        const imageDistance = (f * u) / (u - f);
+        const magnification = -imageDistance / u;
+
+        return {
+          results: [
+            ["Image distance", formatNumber(imageDistance) + " cm"],
+            ["Focal length", formatNumber(f) + " cm"],
+            ["Object distance", formatNumber(u) + " cm"],
+            ["Magnification", formatNumber(magnification)]
+          ],
+          summary:
+            u > f
+              ? "The ideal converging lens forms a real, inverted image."
+              : "The ideal converging lens forms a virtual, upright image."
+        };
+      }
+
+      case "waves": {
+        const speed = v.frequency * v.wavelength;
+        const period = 1 / v.frequency;
+
+        return {
+          results: [
+            ["Wave speed", formatNumber(speed) + " m/s"],
+            ["Frequency", formatNumber(v.frequency) + " Hz"],
+            ["Wavelength", formatNumber(v.wavelength) + " m"],
+            ["Period", formatNumber(period) + " s"]
+          ],
+          summary:
+            "Wave speed = frequency × wavelength = " +
+            formatNumber(speed) +
+            " m/s."
+        };
+      }
+
+      case "thermal": {
+        const energy =
+          v.thermalMass *
+          v.specificHeat *
+          v.temperatureChange;
+
+        return {
+          results: [
+            ["Heat energy", formatNumber(energy) + " J"],
+            ["Mass", formatNumber(v.thermalMass) + " kg"],
+            ["Specific heat capacity", formatNumber(v.specificHeat) + " J/(kg·°C)"],
+            ["Temperature change", formatNumber(v.temperatureChange) + " °C"]
+          ],
+          summary:
+            "Heat energy = mass × specific heat capacity × temperature change = " +
+            formatNumber(energy) +
+            " J. Assumes no phase change and no heat loss."
+        };
+      }
+
+      default:
+        return {
+          results: [],
+          summary: "Choose a laboratory to begin."
+        };
+    }
+  }
+
+  /* =======================================================
+     11. RENDER SIMULATION RESULTS
+     ======================================================= */
+
+  function updateSimulation() {
+    const key = state.currentLab;
+    const values = getSimulationValues();
+
+    if (!key || !values) return;
+
+    const lab = LABS[key];
+
+    lab.params.forEach((param) => {
+      const output = $("#output-" + param.id);
+
+      if (output) {
+        output.textContent =
+          formatNumber(values[param.id]) +
+          " " +
+          param.unit;
+      }
+    });
+
+    const calculated = calculateSimulation(key, values);
+    const results = $("#simulationResults");
+    const visual = $("#simulationVisual");
+
+    if (results) {
+      results.replaceChildren();
+
+      calculated.results.forEach(([label, value]) => {
+        const card = document.createElement("div");
+
+        const caption = document.createElement("span");
+        caption.textContent = label;
+
+        const result = document.createElement("strong");
+        result.textContent = value;
+
+        card.append(caption, result);
+        results.appendChild(card);
+      });
+
+      const summary = document.createElement("p");
+      summary.textContent = calculated.summary;
+      summary.style.gridColumn = "1 / -1";
+      results.appendChild(summary);
+    }
+
+    if (visual) {
+      renderSimulationVisual(visual, key, values);
+    }
+  }
+
+  /* =======================================================
+     12. SIMPLE VISUAL MODEL
+     ======================================================= */
+
+  function renderSimulationVisual(container, key, values) {
+    const width = 640;
+    const height = 180;
+
+    const svgNS = "http://www.w3.org/2000/svg";
+
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("viewBox", "0 0 " + width + " " + height);
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", String(height));
+    svg.setAttribute("role", "img");
+
+    const description = document.createElementNS(svgNS, "title");
+    description.textContent = "Illustrative " + LABS[key].title;
+    svg.appendChild(description);
+
+    const addShape = (tag, attrs, textContent) => {
+      const element = document.createElementNS(svgNS, tag);
+
+      Object.entries(attrs).forEach(([name, value]) => {
+        element.setAttribute(name, String(value));
+      });
+
+      if (textContent !== undefined) {
+        element.textContent = textContent;
+      }
+
+      svg.appendChild(element);
+      return element;
+    };
+
+    const stroke = "#6685ff";
+    const cyan = "#55d9ed";
+    const muted = "#96a6bd";
+
+    if (key === "mechanics") {
+      addShape("line", {
+        x1: 45, y1: 130, x2: 595, y2: 130,
+        stroke: muted, "stroke-width": 2
+      });
+
+      const x = 75 + Math.min(values.force, 100) * 4.3;
+
+      addShape("rect", {
+        x: x, y: 87, width: 58, height: 43,
+        rx: 8, fill: stroke
+      });
+
+      addShape("line", {
+        x1: x + 65, y1: 108, x2: x + 130, y2: 108,
+        stroke: cyan, "stroke-width": 4,
+        "stroke-linecap": "round"
+      });
+
+      addShape("path", {
+        d: `M ${x + 118} 97 L ${x + 132} 108 L ${x + 118} 119`,
+        fill: "none", stroke: cyan, "stroke-width": 4
+      });
+
+      addShape("text", {
+        x: 45, y: 40, fill: muted, "font-size": 16
+      }, "Net force: " + formatNumber(values.force) + " N");
+    }
+
+    if (key === "electricity") {
+      addShape("rect", {
+        x: 55, y: 45, width: 530, height: 100,
+        rx: 12, fill: "none", stroke: muted, "stroke-width": 2
+      });
+
+      addShape("rect", {
+        x: 105, y: 77, width: 65, height: 36,
+        rx: 4, fill: stroke
+      });
+
+      addShape("text", {
+        x: 137, y: 100, fill: "#ffffff",
+        "font-size": 15, "text-anchor": "middle"
+      }, "V");
+
+      addShape("rect", {
+        x: 350, y: 77, width: 75, height: 36,
+        rx: 4, fill: cyan
+      });
+
+      addShape("text", {
+        x: 387, y: 100, fill: "#0b1120",
+        "font-size": 15, "text-anchor": "middle"
+      }, "R");
+
+      addShape("text", {
+        x: 240, y: 35, fill: muted,
+        "font-size": 15, "text-anchor": "middle"
+      }, "Simple circuit model");
+    }
+
+    if (key === "optics") {
+      const axisY = 95;
+      const lensX = 320;
+
+      addShape("line", {
+        x1: 45, y1: axisY, x2: 595, y2: axisY,
+        stroke: muted, "stroke-width": 1.5
+      });
+
+      addShape("path", {
+        d: `M ${lensX} 35 Q ${lensX - 32} ${axisY} ${lensX} 155 Q ${lensX + 32} ${axisY} ${lensX} 35`,
+        fill: "none", stroke: cyan, "stroke-width": 3
+      });
+
+      const objectX = Math.max(70, lensX - values.objectDistance * 5);
+      const imageX = Math.min(
+        575,
+        lensX + Math.abs(
+          (values.focalLength * values.objectDistance) /
+          (values.objectDistance - values.focalLength)
+        ) * 2.3
+      );
+
+      addShape("line", {
+        x1: objectX, y1: axisY, x2: objectX, y2: 45,
+        stroke: stroke, "stroke-width": 4
+      });
+
+      addShape("path", {
+        d: `M ${objectX - 8} 55 L ${objectX} 43 L ${objectX + 8} 55`,
+        fill: "none", stroke: stroke, "stroke-width": 3
+      });
+
+      addShape("line", {
+        x1: imageX, y1: axisY, x2: imageX, y2: 140,
+        stroke: "#ffbd75", "stroke-width": 4
+      });
+
+      addShape("text", {
+        x: lensX, y: 22, fill: muted,
+        "font-size": 13, "text-anchor": "middle"
+      }, "Lens");
+    }
+
+    if (key === "waves") {
+      let path = "";
+
+      for (let x = 35; x <= 605; x += 3) {
+        const y =
+          90 -
+          37 * Math.sin(
+            ((x - 35) / 570) *
+            Math.min(values.frequency, 40) *
+            Math.PI / 2
+          );
+
+        path += (x === 35 ? "M " : " L ") + x + " " + y;
+      }
+
+      addShape("path", {
+        d: path,
+        fill: "none",
+        stroke: cyan,
+        "stroke-width": 3
+      });
+
+      addShape("line", {
+        x1: 35, y1: 90, x2: 605, y2: 90,
+        stroke: muted, "stroke-width": 1,
+        "stroke-dasharray": "5 5"
+      });
+    }
+
+    if (key === "thermal") {
+      addShape("rect", {
+        x: 245, y: 38, width: 150, height: 105,
+        rx: 12, fill: "none", stroke: muted, "stroke-width": 2
+      });
+
+      const temperatureFraction =
+        Math.min(values.temperatureChange / 100, 1);
+
+      addShape("rect", {
+        x: 256,
+        y: 49 + (1 - temperatureFraction) * 70,
+        width: 128,
+        height: 83 - (1 - temperatureFraction) * 70,
+        rx: 6,
+        fill: "#ffbd75",
+        opacity: 0.9
+      });
+
+      addShape("text", {
+        x: 320, y: 25, fill: muted,
+        "font-size": 14, "text-anchor": "middle"
+      }, "Heating model");
+
+      addShape("path", {
+        d: "M 275 32 Q 265 22 275 12 M 320 32 Q 310 22 320 12 M 365 32 Q 355 22 365 12",
+        fill: "none", stroke: "#ffbd75", "stroke-width": 3
+      });
+    }
+
+    container.replaceChildren(svg);
+  }
+
+  /* =======================================================
+     13. RESET LABORATORY
+     ======================================================= */
+
+  function resetSimulation() {
+    const key = state.currentLab;
+    const lab = LABS[key];
+
+    if (!lab) return;
+
+    lab.params.forEach((param) => {
+      const input = $(
+        '[data-param="' + param.id + '"]',
+        $("#physicsLabWorkspace")
+      );
+
+      if (input) {
+        input.value = String(param.value);
+      }
+    });
+
+    updateSimulation();
+    showToast("Experiment values reset.");
+  }
+
+  /* =======================================================
+     14. DASHBOARD STATISTICS
+     ======================================================= */
+
+  function updateDashboardStats() {
+    const experimentCount = $("#experimentCount");
+    const progressValue = $("#progressValue");
+
+    if (experimentCount) {
+      experimentCount.textContent =
+        String(state.experimentsStarted).padStart(2, "0");
+    }
+
+    if (progressValue) {
+      const progress = Math.round(
+        (state.completedActivities.size / Object.keys(LABS).length) * 100
+      );
+
+      progressValue.textContent = progress + "%";
+    }
+  }
+
+  /* =======================================================
+     15. DATA ANALYSIS CALCULATOR
+     ======================================================= */
+
+  function calculateAnalysis() {
+    const aInput = $("#analysisA");
+    const bInput = $("#analysisB");
+    const output = $("#analysisResult");
+
+    if (!aInput || !bInput || !output) return;
+
+    const a = Number(aInput.value);
+    const b = Number(bInput.value);
+
+    if (
+      aInput.value.trim() === "" ||
+      bInput.value.trim() === "" ||
+      !Number.isFinite(a) ||
+      !Number.isFinite(b)
+    ) {
+      output.textContent = "Enter valid numbers";
+      return;
+    }
+
+    if (b === 0) {
+      output.textContent = "Cannot divide by zero";
+      return;
+    }
+
+    output.textContent = formatNumber(a / b, 6);
+  }
+
+  /* =======================================================
+     16. LAB NOTEBOOK
+     ======================================================= */
+
+  const NOTEBOOK_KEY = "physicsLabNotebook";
+
+  function readNotes() {
+    try {
+      const raw = safeRead(NOTEBOOK_KEY, "[]");
+      const parsed = JSON.parse(raw);
+
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function renderNotes() {
+    const container = $("#savedNotes");
+
+    if (!container) return;
+
+    container.replaceChildren();
+
+    const notes = readNotes();
+
+    if (notes.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "muted small";
+      empty.textContent = "No saved notes yet.";
+      container.appendChild(empty);
+      return;
+    }
+
+    notes.forEach((note) => {
+      const article = document.createElement("article");
+      article.className = "saved-note";
+
+      const title = document.createElement("h3");
+      title.textContent = note.title || "Untitled experiment";
+
+      const content = document.createElement("p");
+      content.textContent = note.content || "";
+
+      const date = document.createElement("small");
+      date.textContent = note.date || "";
+
+      const removeButton = document.createElement("button");
+      removeButton.type = "button";
+      removeButton.className = "secondary-button";
+      removeButton.textContent = "Delete note";
+      removeButton.dataset.deleteNote = String(note.id);
+
+      article.append(title, content, date, removeButton);
+      container.appendChild(article);
+    });
+  }
+
+  function saveNotebookNote(title, content) {
+    const notes = readNotes();
+
+    const note = {
+      id: Date.now(),
+      title: title.trim() || "Untitled experiment",
+      content: content.trim(),
+      date: new Date().toLocaleString()
+    };
+
+    notes.unshift(note);
+
+    if (!safeWrite(NOTEBOOK_KEY, JSON.stringify(notes))) {
+      showToast("Could not save. Browser storage may be unavailable.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function saveNoteFromForm() {
+    const titleInput = $("#noteTitle");
+    const contentInput = $("#noteContent");
+    const status = $("#noteStatus");
+
+    if (!titleInput || !contentInput) return;
+
+    if (!contentInput.value.trim()) {
+      showToast("Enter your observations before saving.");
+      contentInput.focus();
+      return;
+    }
+
+    const saved = saveNotebookNote(
+      titleInput.value,
+      contentInput.value
+    );
+
+    if (!saved) return;
+
+    titleInput.value = "";
+    contentInput.value = "";
+
+    if (status) {
+      status.textContent = "Your note has been saved in this browser.";
+    }
+
+    renderNotes();
+    showToast("Notebook entry saved.");
+  }
+
+  function recordLabInNotebook(key) {
+    const lab = LABS[key];
+    const values = getSimulationValues();
+
+    if (!lab || !values) return;
+
+    const calculated = calculateSimulation(key, values);
+
+    const details = [
+      lab.description,
+      "",
+      "Recorded parameters:",
+      ...lab.params.map((param) =>
+        param.label + ": " +
+        formatNumber(values[param.id]) + " " + param.unit
+      ),
+      "",
+      "Results:",
+      ...calculated.results.map(([label, value]) =>
+        label + ": " + value
+      ),
+      "",
+      calculated.summary
+    ].join("\n");
+
+    if (!saveNotebookNote(lab.title, details)) return;
+
+    renderNotes();
+    navigate("notebook");
+    showToast("Experiment recorded in your notebook.");
+  }
+
+  function deleteNotebookNote(id) {
+    const notes = readNotes().filter(
+      (note) => String(note.id) !== String(id)
+    );
+
+    if (!safeWrite(NOTEBOOK_KEY, JSON.stringify(notes))) {
+      showToast("Could not update notebook storage.");
+      return;
+    }
+
+    renderNotes();
+    showToast("Notebook entry deleted.");
+  }
+
+  function clearNotebook() {
+    const confirmed = window.confirm(
+      "Delete all saved PhysicsLab notebook entries from this browser?"
+    );
+
+    if (!confirmed) return;
+
+    if (!safeRemove(NOTEBOOK_KEY)) {
+      showToast("Could not clear notebook storage.");
+      return;
+    }
+
+    renderNotes();
+    showToast("Saved notebook entries cleared.");
+  }
+
+  /* =======================================================
+     17. SAMPLE ASSESSMENT
+     ======================================================= */
+
+  function handleQuizAnswer(button) {
+    const feedback = $("#quizFeedback");
+
+    if (!feedback) return;
+
+    const buttons = $$(".quiz-options button");
+
+    buttons.forEach((item) => {
+      item.disabled = true;
+    });
+
+    if (button.dataset.answer === "correct") {
+      feedback.textContent =
+        "Correct! Using F = ma, acceleration = 12 ÷ 3 = 4 m/s².";
+
+      feedback.style.color = "var(--green)";
+
+      state.completedActivities.add("sample-quiz");
+    } else {
+      feedback.textContent =
+        "Not quite. Use a = F ÷ m, so 12 N ÷ 3 kg = 4 m/s².";
+
+      feedback.style.color = "var(--danger)";
+    }
+
+    updateDashboardStats();
+
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.className = "secondary-button";
+    retry.textContent = "Try again";
+    retry.dataset.quizRetry = "true";
+
+    feedback.appendChild(document.createElement("br"));
+    feedback.appendChild(retry);
+  }
+
+  function resetQuiz() {
+    const feedback = $("#quizFeedback");
+
+    if (feedback) {
+      feedback.replaceChildren();
+    }
+
+    $$(".quiz-options button").forEach((button) => {
+      button.disabled = false;
+    });
+  }
+
+  /* =======================================================
+     18. SEARCH
+     ======================================================= */
+
+  function handleSearch() {
+    const input = $("#globalSearch");
+
+    if (!input) return;
+
+    const query = input.value.trim().toLowerCase();
+
+    if (!query) {
+      if (state.currentView === "laboratories") {
+        populateLaboratories();
+      }
+
+      return;
+    }
+
+    navigate("laboratories");
+
+    const container = $("#allLaboratories");
+
+    if (!container) return;
+
+    $$(".lab-card", container).forEach((card) => {
+      const key = card.dataset.lab;
+      const lab = LABS[key];
+
+      const searchableText = [
+        lab.title,
+        lab.eyebrow,
+        lab.description,
+        lab.intro
+      ].join(" ").toLowerCase();
+
+      card.hidden = !searchableText.includes(query);
+    });
+
+    const anyVisible = $$(".lab-card", container).some(
+      (card) => !card.hidden
+    );
+
+    if (!anyVisible) {
+      const message = document.createElement("p");
+      message.className = "muted search-empty";
+      message.textContent =
+        "No matching laboratory found. Try mechanics, electricity, optics, waves or thermal physics.";
+
+      container.appendChild(message);
+    } else {
+      $$(".search-empty", container).forEach((item) => item.remove());
+    }
+  }
+
+  /* =======================================================
+     19. GLOBAL CLICK HANDLER
+     ======================================================= */
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+
+    if (!(target instanceof Element)) return;
+
+    const viewButton = target.closest("[data-view]");
+
+    if (viewButton) {
+      navigate(viewButton.dataset.view);
+      return;
+    }
+
+    const goButton = target.closest("[data-go]");
+
+    if (goButton) {
+      navigate(goButton.dataset.go);
+      return;
+    }
+
+    const labButton = target.closest("[data-lab]");
+
+    if (labButton) {
+      openLab(labButton.dataset.lab);
+      return;
+    }
+
+    if (target.closest("#mobileMenu")) {
+      toggleMobileMenu();
+      return;
+    }
+
+    if (target.closest("#themeToggle") ||
+        target.closest("#settingsThemeToggle")) {
+      toggleTheme();
+      return;
+    }
+
+    if (target.closest("#calculateAnalysis")) {
+      calculateAnalysis();
+      return;
+    }
+
+    if (target.closest("#saveNote")) {
+      saveNoteFromForm();
+      return;
+    }
+
+    if (target.closest("#clearLocalData")) {
+      clearNotebook();
+      return;
+    }
+
+    const resetButton = target.closest("[data-simulation-reset]");
+
+    if (resetButton) {
+      resetSimulation();
+      return;
+    }
+
+    const recordButton = target.closest("[data-record-lab]");
+
+    if (recordButton) {
+      recordLabInNotebook(recordButton.dataset.recordLab);
+      return;
+    }
+
+    const deleteButton = target.closest("[data-delete-note]");
+
+    if (deleteButton) {
+      deleteNotebookNote(deleteButton.dataset.deleteNote);
+      return;
+    }
+
+    const quizButton = target.closest("[data-answer]");
+
+    if (quizButton) {
+      handleQuizAnswer(quizButton);
+      return;
+    }
+
+    if (target.closest("[data-quiz-retry]")) {
+      resetQuiz();
+      return;
+    }
+
+    if (
+      document.body.classList.contains("sidebar-open") &&
+      !target.closest("#sidebar")
+    ) {
+      closeMobileMenu();
+    }
+  });
+
+  /* =======================================================
+     20. GLOBAL INPUT HANDLER
+     ======================================================= */
+
+  document.addEventListener("input", (event) => {
+    const target = event.target;
+
+    if (!(target instanceof HTMLInputElement)) return;
+
+    if (target.dataset.param) {
+      updateSimulation();
+      return;
+    }
+
+    if (target.id === "globalSearch") {
+      handleSearch();
+      return;
+    }
+
+    if (
+      target.id === "analysisA" ||
+      target.id === "analysisB"
+    ) {
+      calculateAnalysis();
+    }
+  });
+
+  /* =======================================================
+     21. KEYBOARD SUPPORT
+     ======================================================= */
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMobileMenu();
+    }
+  });
+
+  /* =======================================================
+     22. INITIALISE APPLICATION
+     ======================================================= */
+
+  function initialise() {
+    populateLaboratories();
+
+    const savedTheme = safeRead("physicsLabTheme", "dark");
+    applyTheme(savedTheme);
+
+    renderNotes();
+    updateDashboardStats();
+    calculateAnalysis();
+
+    $$(".page-view").forEach((view) => {
+      view.hidden = view.id !== "view-dashboard";
+    });
+
+    const pageTitle = $("#pageTitle");
+
+    if (pageTitle) {
+      pageTitle.textContent = "Dashboard";
+    }
+
+    $$(".nav-item[data-view]").forEach((button) => {
+      button.classList.toggle(
+        "active",
+        button.dataset.view === "dashboard"
+      );
+    });
+
+    console.info("PhysicsLab application initialised.");
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialise);
+  } else {
+    initialise();
+  }
 })();
